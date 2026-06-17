@@ -9,6 +9,9 @@ const io = new IntersectionObserver(
   (entries) => {
     for (const e of entries) {
       if (e.isIntersecting) {
+        // stagger siblings: each reveal in a group waits a touch longer than the last
+        const sibs = [...e.target.parentElement.children].filter((c) => c.classList.contains('reveal'));
+        e.target.style.setProperty('--i', Math.max(0, sibs.indexOf(e.target)));
         e.target.classList.add('in');
         io.unobserve(e.target);
       }
@@ -19,7 +22,8 @@ const io = new IntersectionObserver(
 document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
 // ───────────────── 2. Phone mockup animation ─────────────────
-const ageEl = document.getElementById('bioAge');
+const ageEl = document.getElementById('bioAge');    // hero dial — single source of truth
+const psAgeEl = document.getElementById('psAge');   // phone mirror of the same number
 const pointsEl = document.getElementById('chipPoints');
 const floatEl = document.getElementById('psFloat');
 const routines = Array.from(document.querySelectorAll('.ps-routine'));
@@ -34,8 +38,10 @@ function fmtAge(v) {
 }
 
 function renderAge() {
-  ageEl.textContent = fmtAge(age);
-  pointsEl.textContent = points;
+  const s = fmtAge(age);
+  if (ageEl) ageEl.textContent = s;
+  if (psAgeEl) psAgeEl.textContent = s;
+  if (pointsEl) pointsEl.textContent = points;
 }
 
 function tickMockup() {
@@ -61,7 +67,29 @@ function tickMockup() {
   step++;
 }
 renderAge();
-setInterval(tickMockup, 1700);
+
+// Run the mockup loop only when it helps: respect reduced-motion, pause off-screen and on hidden tabs.
+const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let phoneTimer = null;
+function startPhone() { if (RM || phoneTimer) return; phoneTimer = setInterval(tickMockup, 1700); }
+function stopPhone() { if (phoneTimer) { clearInterval(phoneTimer); phoneTimer = null; } }
+
+if (RM) {
+  routines.forEach((r) => r.classList.add('done')); // show a calm, finished state, never animate
+} else {
+  const phone = document.querySelector('.hero-phone');
+  if (phone && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      (es) => { es[0].isIntersecting ? startPhone() : stopPhone(); },
+      { threshold: 0.2 }
+    ).observe(phone);
+  } else {
+    startPhone();
+  }
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopPhone() : startPhone();
+  });
+}
 
 // ───────────────── 3. Language toggle ─────────────────
 const i18n = {
@@ -75,13 +103,17 @@ const i18n = {
     hero_badge: 'Coming soon to the App Store & Google Play',
     hero_title: 'How old are you<br><span class="grad">really</span>?',
     hero_sub:
-      'Get your estimated biological age for free – and lower the number with daily, science-backed routines. Every check counts, and you see it instantly.',
-    badge_soon: 'Soon on the',
-    badge_soon2: 'Soon on',
+      'Find out in under 2 minutes how old your body really is – and watch the number drop with every healthy habit. Free, no account.',
+    hero_compare: 'Example: chronological 38 · biological <b>34.76</b>',
+    hero_delta: '0.04 yrs today',
+    hero_answer_sr: 'Example answer: an estimated biological age of 34.76 years.',
+    badge_soon: 'Download on the',
+    badge_soon2: 'Get it on',
+    badge_ribbon: 'Coming soon',
     trust_1: '✓ Free bio-age estimate',
     trust_2: '✓ No account needed',
     trust_3: '✓ 100% local data',
-    cred_label: 'Your estimate is based on recognized factors from longevity research',
+    cred_label: '7 evidence-based factors from longevity research',
     cred_1: 'Sleep',
     cred_2: 'Movement',
     cred_3: 'Nutrition',
@@ -89,6 +121,15 @@ const i18n = {
     cred_5: 'Stress',
     cred_6: 'Smoking',
     cred_7: 'Social connection',
+    cred_cites: 'Based on recognized longevity research – incl. telomeres, cardiorespiratory fitness and social-connection studies.',
+    eyebrow_how: '01 · Step by step',
+    eyebrow_screens: '02 · The app',
+    eyebrow_pillars: '03 · Holistic',
+    eyebrow_features: '04 · Features',
+    eyebrow_pricing: '05 · Pricing',
+    eyebrow_faq: '06 · Good to know',
+    eyebrow_cta: 'Launching soon',
+    spark_cap: 'Example · projection',
     screens_title: 'Take a look inside',
     screens_sub: 'From your first estimate to your daily routine – this is how Young by Yount feels.',
     shot_1_t: 'Your free estimate',
