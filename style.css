@@ -163,34 +163,12 @@ main, .nav, .footer { position: relative; z-index: 1; }
   margin: 0 auto;
   padding: clamp(48px, 9vh, 110px) clamp(20px, 5vw, 56px) clamp(48px, 8vh, 90px);
 }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 9px;
-  background: var(--surface);
-  border: 1px solid var(--stroke);
-  border-radius: 100px;
-  padding: 7px 16px;
-  font-size: 13px; font-weight: 600; color: var(--text-2);
-  margin-bottom: 24px;
-}
-.hero-badge .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--mint);
-  box-shadow: 0 0 12px var(--mint);
-  animation: pulse 2.2s ease-in-out 2; /* two calm beats, then a steady lit dot */
-}
-@keyframes pulse { 50% { opacity: .35; } }
-
 .hero h1 {
   font-size: clamp(38px, 5.6vw, 64px);
   font-weight: 900; letter-spacing: -2.2px; line-height: 1.05;
   margin-bottom: 18px;
 }
-.grad {
-  background: linear-gradient(100deg, var(--mint) 10%, var(--mint-bright) 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+.grad { color: var(--mint); } /* one deliberate accent on the key word — not a clipped gradient */
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -221,16 +199,6 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .store-badge:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
 .store-badge small { display: block; font-size: 11px; color: var(--text-3); line-height: 1.2; }
 .store-badge strong { font-size: 16.5px; letter-spacing: -.3px; }
-.soon-ribbon {
-  position: absolute; top: -9px; right: 12px;
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; font-weight: 800; letter-spacing: .04em;
-  color: var(--gold);
-  background: rgba(245,201,123,.14);
-  border: 1px solid rgba(245,201,123,.3);
-  border-radius: var(--r-pill); padding: 2px 9px;
-}
-.soon-ribbon .ic { width: 11px; height: 11px; color: var(--gold); stroke-width: 2.2; }
 
 .hero-trust {
   display: flex; flex-wrap: wrap; gap: 8px 22px;
@@ -413,7 +381,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .step h3 { font-size: 18.5px; letter-spacing: -.4px; margin-bottom: 8px; }
 .step p { font-size: 14.5px; color: var(--text-2); }
 
-/* ── Pillars: lean hard into the per-pillar colour ── */
+/* ── Pillars: one accent (mint) — the custom monoline icon carries each pillar's identity ── */
 .pillars {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -421,10 +389,10 @@ main, .nav, .footer { position: relative; z-index: 1; }
   margin-top: 48px;
 }
 .pillar {
+  --pc: var(--mint); /* all pillars are "the data" → mint; gold stays reserved for credentials */
   position: relative; overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--stroke);
-  border-top: 3px solid var(--pc);
   border-radius: 20px;
   padding: 26px 20px;
   text-align: center;
@@ -473,13 +441,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
   transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 .feature.span-2 { grid-column: span 2; }
-.feature::after {
-  content: ''; position: absolute; left: 0; top: 0;
-  height: 2px; width: 0; background: var(--mint);
-  transition: width var(--dur) var(--ease-out);
-}
 .feature:hover { border-color: var(--stroke-hi); box-shadow: var(--e-2); }
-.feature:hover::after { width: 100%; }
 .feat-ic {
   position: relative; z-index: 1;
   width: 50px; height: 50px; margin-bottom: 16px;
@@ -760,7 +722,6 @@ main, .nav, .footer { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; transition-delay: 0s; }
-  .hero-badge .dot { animation: none; }
   .btn::after { display: none; }
   .spark .line { animation: none; stroke-dashoffset: 0; }
   .spark .tip { opacity: 1; transform: none; }
