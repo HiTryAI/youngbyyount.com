@@ -70,16 +70,35 @@ const i18n = {
     nav_pillars: '5 pillars',
     nav_features: 'Features',
     nav_pricing: 'Pricing',
+    nav_screens: 'App',
     nav_cta: 'Get the app',
     hero_badge: 'Coming soon to the App Store & Google Play',
     hero_title: 'How old are you<br><span class="grad">really</span>?',
     hero_sub:
-      'Young by Yount estimates your biological age – and helps you lower your estimate with daily, science-backed routines. Every check counts – and you see it instantly.',
+      'Get your estimated biological age for free – and lower the number with daily, science-backed routines. Every check counts, and you see it instantly.',
     badge_soon: 'Soon on the',
     badge_soon2: 'Soon on',
     trust_1: '✓ Free bio-age estimate',
     trust_2: '✓ No account needed',
     trust_3: '✓ 100% local data',
+    cred_label: 'Your estimate is based on recognized factors from longevity research',
+    cred_1: 'Sleep',
+    cred_2: 'Movement',
+    cred_3: 'Nutrition',
+    cred_4: 'BMI',
+    cred_5: 'Stress',
+    cred_6: 'Smoking',
+    cred_7: 'Social connection',
+    screens_title: 'Take a look inside',
+    screens_sub: 'From your first estimate to your daily routine – this is how Young by Yount feels.',
+    shot_1_t: 'Your free estimate',
+    shot_1_b: 'Your biological age – with an honest range.',
+    shot_2_t: 'Your day at a glance',
+    shot_2_b: 'Bio age, streak, points and your 5 pillars.',
+    shot_3_t: '24 science-backed routines',
+    shot_3_b: 'Activate what fits you – each one earns points.',
+    shot_4_t: 'Watch your number drop',
+    shot_4_b: 'Every check counts – plus daily insights.',
     ps_label: 'YOUR BIO AGE',
     ps_unit: 'years · estimate',
     ps_today: 'yrs today',
@@ -188,6 +207,10 @@ function setLang(next) {
     const key = el.dataset.i18n;
     const value = next === 'de' ? deCache[key] : i18n.en[key];
     if (value) el.innerHTML = value;
+  });
+  // Swap screenshots to the matching language folder.
+  document.querySelectorAll('[data-shot]').forEach((img) => {
+    img.src = `assets/screens/${next}/${img.dataset.shot}.png`;
   });
   renderAge();
   try { localStorage.setItem('yby-lang', next); } catch (_) {}
