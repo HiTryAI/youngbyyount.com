@@ -58,7 +58,7 @@ body {
     linear-gradient(180deg, var(--bg-deep), var(--bg) 30%);
   color: var(--text);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (not hidden) avoids a scroll-container that would break position:sticky */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -176,7 +176,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--mint);
   box-shadow: 0 0 12px var(--mint);
-  animation: pulse 2.2s ease-in-out infinite;
+  animation: pulse 2.2s ease-in-out 2; /* two calm beats, then a steady lit dot */
 }
 @keyframes pulse { 50% { opacity: .35; } }
 
@@ -191,54 +191,6 @@ main, .nav, .footer { position: relative; z-index: 1; }
   background-clip: text;
   color: transparent;
 }
-
-/* ── Hero answer: the Age Dial (the page answers its own question) ── */
-.hero-answer {
-  display: flex; flex-direction: column; align-items: flex-start;
-  gap: 12px;
-  margin: 4px 0 28px;
-}
-.age-dial {
-  position: relative;
-  width: min(316px, 72vw);
-  aspect-ratio: 1;
-  display: grid; place-items: center;
-}
-.age-dial::before {
-  content: '';
-  position: absolute; inset: 0; border-radius: 50%;
-  background: var(--ring-grad);
-  -webkit-mask: radial-gradient(closest-side, transparent 78%, #000 79.5%);
-  mask: radial-gradient(closest-side, transparent 78%, #000 79.5%);
-  opacity: .95;
-}
-.age-dial::after {
-  content: '';
-  position: absolute; inset: 13%; border-radius: 50%;
-  background: radial-gradient(circle, rgba(74,222,194,.16), transparent 70%);
-}
-.age-num {
-  position: relative;
-  font-weight: 900; font-size: var(--fs-hero-num);
-  line-height: .9; letter-spacing: -.04em;
-  color: var(--mint);
-  text-shadow: var(--glow-signature);
-}
-.age-meta { display: flex; flex-direction: column; gap: 5px; }
-.age-unit {
-  font-size: 12px; font-weight: 700; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--text-3);
-}
-.age-compare { font-size: 13.5px; color: var(--text-2); }
-.age-compare b { color: var(--text); font-weight: 700; }
-.age-delta {
-  display: inline-flex; align-items: center; gap: 6px;
-  align-self: flex-start; margin-top: 2px;
-  background: rgba(74,222,194,.12); color: var(--mint);
-  font-size: 12px; font-weight: 700;
-  border-radius: var(--r-pill); padding: 5px 12px;
-}
-.age-delta .dn { font-size: 9px; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -544,8 +496,10 @@ main, .nav, .footer { position: relative; z-index: 1; }
   position: absolute; right: 16px; bottom: -14px; z-index: 0;
   font-weight: 900; font-size: 92px; letter-spacing: -.05em;
   color: rgba(74,222,194,.07);
+  opacity: 0; transition: opacity .7s var(--ease-out);
   pointer-events: none; user-select: none;
 }
+.feature.in .f-ghost { opacity: 1; }
 /* honest projection sparkline in the "90-day" bento cell */
 .spark { position: relative; z-index: 1; display: block; width: 100%; max-width: 300px; height: auto; margin-top: 16px; }
 .spark .area { fill: url(#sparkFill); }
@@ -553,9 +507,15 @@ main, .nav, .footer { position: relative; z-index: 1; }
   fill: none; stroke: var(--mint); stroke-width: 2.5;
   stroke-linecap: round; stroke-linejoin: round;
   stroke-dasharray: 240; stroke-dashoffset: 240;
-  animation: sparkdraw 1.1s var(--ease-out) forwards;
 }
-.spark .tip { fill: var(--mint-bright); filter: drop-shadow(0 0 5px var(--mint)); }
+.spark.drawn .line { animation: sparkdraw 1.1s var(--ease-out) forwards; }
+.spark .tip {
+  fill: var(--mint-bright); filter: drop-shadow(0 0 5px var(--mint));
+  opacity: 0; transform: scale(.4);
+  transform-box: fill-box; transform-origin: center;
+  transition: opacity .3s var(--ease-out) .85s, transform .3s var(--ease-out) .85s;
+}
+.spark.drawn .tip { opacity: 1; transform: scale(1); }
 .spark-cap {
   position: relative; z-index: 1;
   display: block; font-size: 11px; font-weight: 700;
@@ -563,6 +523,84 @@ main, .nav, .footer { position: relative; z-index: 1; }
   color: var(--text-3); margin-top: 8px;
 }
 @keyframes sparkdraw { to { stroke-dashoffset: 0; } }
+
+/* ═══════════ The Calibration · signature scroll moment ═══════════ */
+/* A full-viewport pinned scene at the Pillars→Features seam. As you scroll,
+   one JS rAF loop scrubs: number 38→34,76, the dial draws mint→gold, four
+   routines check off, two copy lines complete a sentence. Reversible.
+   Default CSS = the "armed/start" look; JS scrubs it; reduced-motion shows the
+   finished state in a collapsed (un-pinned) section. */
+.calibration { position: relative; }
+.cal-track { position: relative; height: 240vh; }
+.cal-stage {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: clamp(16px, 3.5vh, 38px);
+  overflow: hidden;
+}
+.cal-vignette {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(58% 50% at 50% 50%, transparent 38%, rgba(7,10,20,.72) 100%);
+}
+.cal-stage > *:not(.cal-vignette) { position: relative; z-index: 1; }
+
+.cal-line {
+  font-size: clamp(20px, 3.2vw, 32px);
+  font-weight: 800; letter-spacing: -.6px; line-height: 1.15;
+  text-align: center; max-width: 16ch;
+  will-change: opacity, transform;
+}
+.cal-line-1 { color: var(--text-2); opacity: 0; }
+.cal-line-2 { color: var(--mint); opacity: 0; transform: translateY(10px); }
+
+.cal-phone { position: relative; display: flex; justify-content: center; }
+.cal-phone .phone { width: auto; height: min(58vh, 540px); max-width: 78vw; }
+.cal-screen {
+  position: relative; height: 100%;
+  background: linear-gradient(180deg, #0E1426 0%, var(--bg) 60%);
+  border-radius: 36px; overflow: hidden;
+  padding: clamp(34px, 6vh, 52px) 18px clamp(18px, 3vh, 24px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(12px, 2.4vh, 18px);
+}
+.cal-dial-wrap {
+  position: relative;
+  width: clamp(126px, 22vh, 172px); height: clamp(126px, 22vh, 172px);
+  flex-shrink: 0;
+}
+.cal-dial-wrap::before {
+  content: ''; position: absolute; inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74,222,194,.32), transparent 64%);
+  opacity: 0; transition: opacity .55s var(--ease-out);
+  pointer-events: none;
+}
+.cal-dial-wrap.bloom::before { opacity: 1; }
+.cal-dial { display: block; width: 100%; height: 100%; }
+.cal-dial-track { fill: none; stroke: var(--stroke); stroke-width: 6; }
+.cal-dial-arc {
+  fill: none; stroke: url(#calArcGrad); stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+.cal-dial-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+}
+.cal-label { font-size: 9px; font-weight: 800; letter-spacing: 2px; color: var(--text-2); }
+.cal-age {
+  font-size: clamp(30px, 5.2vh, 42px); font-weight: 800;
+  letter-spacing: -2px; line-height: 1;
+  color: var(--mint); text-shadow: 0 0 22px rgba(74,222,194,.45);
+  margin: 4px 0 2px;
+  transition: text-shadow .55s var(--ease-out);
+}
+.cal-dial-wrap.bloom .cal-age { text-shadow: var(--glow-signature); } /* the reserved hero-number glow, finally used */
+.cal-unit { font-size: 9.5px; font-weight: 600; color: var(--text-3); }
+.cal-routines { width: 100%; display: flex; flex-direction: column; gap: 7px; }
 
 /* ── Privacy: a full-bleed deep-navy act-break ── */
 .privacy-banner {
@@ -713,9 +751,9 @@ main, .nav, .footer { position: relative; z-index: 1; }
 /* ── Scroll reveal (staggered) ── */
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 70ms);
+  transform: translateY(12px);
+  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 55ms);
 }
 .reveal.in { opacity: 1; transform: none; }
 
@@ -725,6 +763,16 @@ main, .nav, .footer { position: relative; z-index: 1; }
   .hero-badge .dot { animation: none; }
   .btn::after { display: none; }
   .spark .line { animation: none; stroke-dashoffset: 0; }
+  .spark .tip { opacity: 1; transform: none; }
+  .f-ghost { opacity: 1; transition: none; }
+  /* Calibration: collapse the pin to a normal-height section showing the finished scene */
+  .cal-track { height: auto; }
+  .cal-stage { position: static; height: auto; padding: clamp(48px, 9vh, 90px) 0; overflow: visible; }
+  .cal-line { opacity: 1; transform: none; }
+  .cal-line-2 { transform: none; }
+  .cal-dial-arc { stroke-dashoffset: 0; }
+  .cal-dial-wrap::before { opacity: 1; transition: none; }
+  .cal-age { text-shadow: var(--glow-signature); }
 }
 
 /* ═══════════ Monoline icons ═══════════ */
@@ -796,15 +844,27 @@ main, .nav, .footer { position: relative; z-index: 1; }
     padding-top: 44px;
   }
   .hero-sub { margin-left: auto; margin-right: auto; }
-  .hero-answer { align-items: center; }
-  .age-dial { margin-left: auto; margin-right: auto; }
-  .age-meta { align-items: center; text-align: center; }
-  .age-delta { align-self: center; }
   .store-badges, .hero-trust { justify-content: center; }
   .hero-phone { order: 6; margin-top: 8px; }
   .features { grid-template-columns: 1fr; }
   .feature.span-2 { grid-column: auto; }
   .pb-inner { flex-direction: column; text-align: center; }
+  .cal-phone .phone { height: min(64vh, 520px); max-width: 74vw; }
+  .cal-dial-wrap { width: clamp(118px, 18vh, 150px); height: clamp(118px, 18vh, 150px); }
+  .cal-screen { padding-top: clamp(30px, 4.5vh, 42px); gap: clamp(10px, 1.8vh, 15px); }
+  .cal-routines { gap: 6px; }
+  .cal-line { font-size: clamp(19px, 5.4vw, 26px); }
+}
+/* Short viewports (small phones, landscape): compress the Calibration so all 4 routines stay inside the screen */
+@media (max-height: 720px) {
+  .cal-track { height: 220vh; }
+  .cal-phone .phone { height: min(70vh, 440px); }
+  .cal-dial-wrap { width: clamp(98px, 15vh, 128px); height: clamp(98px, 15vh, 128px); }
+  .cal-screen { padding-top: clamp(24px, 3.4vh, 34px); gap: clamp(6px, 1.2vh, 11px); }
+  .cal-routines { gap: 5px; }
+  .cal-routines .ps-routine { padding: 7px 11px; }
+  .cal-stage { gap: clamp(10px, 2vh, 20px); padding-top: 56px; } /* clear the sticky nav so line 1 isn't occluded */
+  .cal-line { font-size: clamp(16px, 4.4vw, 21px); }
 }
 @media (max-width: 560px) {
   .shots { grid-template-columns: repeat(2, 1fr); gap: 22px 14px; }

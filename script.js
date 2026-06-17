@@ -10,8 +10,9 @@ const io = new IntersectionObserver(
     for (const e of entries) {
       if (e.isIntersecting) {
         // stagger siblings: each reveal in a group waits a touch longer than the last
+        // (clamped so late siblings never lag behind — keeps the cascade tight)
         const sibs = [...e.target.parentElement.children].filter((c) => c.classList.contains('reveal'));
-        e.target.style.setProperty('--i', Math.max(0, sibs.indexOf(e.target)));
+        e.target.style.setProperty('--i', Math.min(4, Math.max(0, sibs.indexOf(e.target))));
         e.target.classList.add('in');
         io.unobserve(e.target);
       }
@@ -26,7 +27,7 @@ const ageEl = document.getElementById('bioAge');    // hero dial — single sour
 const psAgeEl = document.getElementById('psAge');   // phone mirror of the same number
 const pointsEl = document.getElementById('chipPoints');
 const floatEl = document.getElementById('psFloat');
-const routines = Array.from(document.querySelectorAll('.ps-routine'));
+const routines = Array.from(document.querySelectorAll('#psRoutines .ps-routine')); // hero phone only — Calibration reuses .ps-routine outside #psRoutines
 
 let age = 34.76;
 let points = 580;
@@ -91,6 +92,114 @@ if (RM) {
   });
 }
 
+// ───────────── 2b. Scroll-triggered effects (draw + count-up) ─────────────
+// One extra observer, fired once per element: the 90-day projection sparkline
+// draws itself the moment you reach it, and the pricing number settles into place
+// like a gauge locking on. Reuses the same reduced-motion gate as the phone.
+function animateCount(el) {
+  if (el.dataset.counted) return;
+  el.dataset.counted = '1';
+  const raw = el.textContent.trim();                  // authored, locale-formatted target
+  const sep = raw.indexOf(',') > -1 ? ',' : '.';
+  const target = parseFloat(raw.replace(',', '.'));
+  if (!isFinite(target) || target <= 0) { el.textContent = raw; return; }
+  const decimals = raw.indexOf(sep) > -1 ? (raw.split(sep)[1] || '').length : 0;
+  const dur = 900, t0 = performance.now();
+  (function frame(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    const eased = 1 - Math.pow(1 - t, 3);             // ease-out, no overshoot
+    el.textContent = (target * eased).toFixed(decimals).replace('.', sep);
+    if (t < 1) requestAnimationFrame(frame);
+    else el.textContent = raw;                         // land exactly on the authored value
+  })(t0);
+}
+
+const fx = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const el = e.target;
+      if (el.classList.contains('spark')) el.classList.add('drawn'); // reduce-block keeps the end-state
+      else if (!RM) animateCount(el);                                 // numbers stay static under reduced-motion
+      fx.unobserve(el);
+    }
+  },
+  { threshold: 0.4 }
+);
+document.querySelectorAll('.spark, [data-count]').forEach((el) => fx.observe(el));
+
+// ───────────── 2c. The Calibration · signature scroll-scrub ─────────────
+// One rAF loop (armed only while the pinned section is on screen) scrubs the
+// whole scene from a single scroll-progress value: the bio-age counts 38→34,76,
+// the dial draws mint→gold, four routines check off, two copy lines complete a
+// sentence. Fully reversible. Driven in JS (not animation-timeline) so it stays
+// perfectly in sync with the number and smooth on every browser incl. older iOS.
+const calSection = document.querySelector('.calibration');
+const calTrack = calSection && calSection.querySelector('.cal-track');
+const calArc = calSection && calSection.querySelector('.cal-dial-arc');
+const calAgeEl = document.getElementById('calAge');
+const calLine1 = calSection && calSection.querySelector('.cal-line-1');
+const calLine2 = calSection && calSection.querySelector('.cal-line-2');
+const calDialWrap = calSection && calSection.querySelector('.cal-dial-wrap');
+const calRoutines = calSection ? Array.from(calSection.querySelectorAll('.ps-routine')) : [];
+const CAL_FROM = 38, CAL_TO = 34.76;
+let calVal = CAL_FROM;
+
+function renderCalAge() { if (calAgeEl) calAgeEl.textContent = fmtAge(calVal); } // reuses hero locale logic
+
+function calSetProgress(p) {
+  p = Math.min(1, Math.max(0, p));
+  calVal = CAL_FROM - p * (CAL_FROM - CAL_TO);
+  renderCalAge();
+  if (calArc) calArc.style.strokeDashoffset = String(1 - p);       // dial draws from top, clockwise
+  if (calLine1) calLine1.style.opacity = String(Math.min(1, p / 0.1));
+  if (calLine2) {
+    const l2 = Math.min(1, Math.max(0, (p - 0.5) / 0.22));         // second line lands past halfway
+    calLine2.style.opacity = String(l2);
+    calLine2.style.transform = 'translateY(' + (1 - l2) * 10 + 'px)';
+  }
+  for (let i = 0; i < calRoutines.length; i++) {
+    calRoutines[i].classList.toggle('done', p >= (i + 1) * 0.2);   // check off at .2 .4 .6 .8
+  }
+  if (calDialWrap) calDialWrap.classList.toggle('bloom', p >= 0.985); // glow blooms once it locks on
+}
+
+if (calSection) {
+  if (RM) {
+    calSetProgress(1); // a calm, finished state — never animates (section is un-pinned via CSS)
+  } else {
+    calSetProgress(0); // armed/start state
+    // rAF-throttled scroll handler — work happens only while actually scrolling,
+    // and only while the pinned section is on screen (bound/unbound by the observer).
+    let ticking = false;
+    const calUpdate = () => {
+      ticking = false;
+      const rect = calTrack.getBoundingClientRect();              // single read, before writes — no thrash
+      const travel = calTrack.offsetHeight - window.innerHeight;  // pin distance
+      calSetProgress(travel > 0 ? -rect.top / travel : 0);
+    };
+    const onCalScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(calUpdate); } };
+    let calBound = false;
+    const calBind = (on) => {
+      if (on === calBound) return;
+      calBound = on;
+      if (on) {
+        window.addEventListener('scroll', onCalScroll, { passive: true });
+        window.addEventListener('resize', onCalScroll);
+        onCalScroll();
+      } else {
+        window.removeEventListener('scroll', onCalScroll);
+        window.removeEventListener('resize', onCalScroll);
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => calBind(es[0].isIntersecting), { threshold: 0 }).observe(calSection);
+    } else {
+      calBind(true);
+    }
+  }
+}
+
 // ───────────────── 3. Language toggle ─────────────────
 const i18n = {
   en: {
@@ -130,6 +239,9 @@ const i18n = {
     eyebrow_faq: '06 · Good to know',
     eyebrow_cta: 'Launching soon',
     spark_cap: 'Example · projection',
+    cal_line1: 'Your chronological age.',
+    cal_line2: 'Becomes your biological one.',
+    cal_unit: 'years',
     screens_title: 'Take a look inside',
     screens_sub: 'From your first estimate to your daily routine – this is how Young by Yount feels.',
     shot_1_t: 'Your free estimate',
@@ -254,6 +366,7 @@ function setLang(next) {
     img.src = `assets/screens/${next}/${img.dataset.shot}.png`;
   });
   renderAge();
+  renderCalAge(); // re-localize the calibration number's resting value
   try { localStorage.setItem('yby-lang', next); } catch (_) {}
 }
 

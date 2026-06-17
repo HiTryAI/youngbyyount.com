@@ -84,19 +84,6 @@
     </div>
     <h1 data-i18n="hero_title">Wie alt bist du<br><span class="grad">wirklich</span>?</h1>
 
-    <!-- ── The answer: a staged Age Dial ── -->
-    <div class="hero-answer">
-      <div class="age-dial" aria-hidden="true">
-        <span class="age-num num" id="bioAge">34,76</span>
-      </div>
-      <div class="age-meta">
-        <span class="age-unit" data-i18n="ps_unit">Jahre · Schätzung</span>
-        <span class="age-compare" data-i18n="hero_compare">Beispiel: chronologisch 38 · biologisch <b>34,76</b></span>
-        <span class="age-delta num" id="heroDelta"><span class="dn" aria-hidden="true">▼</span> <span data-i18n="hero_delta">0,04 J. heute</span></span>
-      </div>
-      <span class="sr-only" data-i18n="hero_answer_sr">Beispiel-Antwort: ein geschätztes biologisches Alter von 34,76 Jahren.</span>
-    </div>
-
     <p class="hero-sub" data-i18n="hero_sub">
       Finde in unter 2 Minuten heraus, wie alt dein Körper wirklich ist – und sieh die Zahl
       mit jeder gesunden Gewohnheit sinken. Kostenlos, kein Konto.
@@ -245,6 +232,51 @@
   </div>
 </section>
 
+<!-- ════════ The Calibration · signature scroll moment ════════ -->
+<section class="calibration">
+  <div class="cal-track">
+    <div class="cal-stage">
+      <div class="cal-vignette" aria-hidden="true"></div>
+      <p class="cal-line cal-line-1" data-i18n="cal_line1">Dein chronologisches Alter.</p>
+
+      <div class="cal-phone" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen cal-screen">
+            <div class="cal-dial-wrap">
+              <svg class="cal-dial" viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="calArcGrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0" stop-color="#2BB39A"/>
+                    <stop offset=".5" stop-color="#4ADEC2"/>
+                    <stop offset=".8" stop-color="#6CF0D8"/>
+                    <stop offset="1" stop-color="#F5C97B"/>
+                  </linearGradient>
+                </defs>
+                <circle class="cal-dial-track" cx="60" cy="60" r="52"/>
+                <path class="cal-dial-arc" d="M60 8 A52 52 0 0 1 60 112 A52 52 0 0 1 60 8" pathLength="1"/>
+              </svg>
+              <div class="cal-dial-center">
+                <span class="cal-label" data-i18n="ps_label">DEIN BIO-ALTER</span>
+                <span class="cal-age num"><span id="calAge">38,00</span></span>
+                <span class="cal-unit" data-i18n="cal_unit">Jahre</span>
+              </div>
+            </div>
+            <div class="cal-routines">
+              <div class="ps-routine" data-pillar="movement"><span class="pr-ic"><svg class="ic"><use href="#i-movement"/></svg></span><span class="pr-t" data-i18n="r1">30 Min. Bewegung</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="sleep"><span class="pr-ic"><svg class="ic"><use href="#i-sleep"/></svg></span><span class="pr-t" data-i18n="r2">7+ Stunden Schlaf</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="mind"><span class="pr-ic"><svg class="ic"><use href="#i-mind"/></svg></span><span class="pr-t" data-i18n="r3">10 Min. Meditation</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="nutrition"><span class="pr-ic"><svg class="ic"><use href="#i-nutrition"/></svg></span><span class="pr-t" data-i18n="r4">5 Portionen Gemüse</span><span class="pr-check"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="cal-line cal-line-2" data-i18n="cal_line2">Wird zu deinem biologischen.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ════════ Features ════════ -->
 <section class="section" id="features">
   <span class="eyebrow reveal" data-i18n="eyebrow_features">04 · Features</span>
@@ -311,7 +343,7 @@
   <div class="plans">
     <div class="plan reveal">
       <h3 data-i18n="plan_free_t">Kostenlos</h3>
-      <div class="plan-price num">0&nbsp;€</div>
+      <div class="plan-price num"><span data-count>0</span>&nbsp;€</div>
       <ul>
         <li data-i18n="plan_free_1">Bio-Alter-Schätzung</li>
         <li data-i18n="plan_free_2">Bis zu 5 aktive Routinen</li>
@@ -323,7 +355,7 @@
     <div class="plan plan-pro reveal">
       <div class="plan-flag" data-i18n="plan_flag">Beliebt</div>
       <h3>Premium</h3>
-      <div class="plan-price num">29,99&nbsp;€<small data-i18n="per_year">/ Jahr</small></div>
+      <div class="plan-price num"><span data-count>29,99</span>&nbsp;€<small data-i18n="per_year">/ Jahr</small></div>
       <div class="plan-alt" data-i18n="plan_alt">oder 4,99 € / Monat · 79,99 € Lifetime</div>
       <ul>
         <li data-i18n="plan_pro_1">Unbegrenzt viele Routinen</li>
