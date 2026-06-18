@@ -39,6 +39,10 @@
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
     <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l3.4-4.6"/></symbol>
     <symbol id="i-nosmoke" viewBox="0 0 24 24"><rect x="3" y="13.5" width="13" height="3.5" rx="1"/><path d="M18.5 13.5v3.5M21 13.5v3.5"/><path d="M14 9c0-2 2-2 2-4"/></symbol>
+    <symbol id="i-water" viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7 6 10a6 6 0 0 1-12 0c0-3 2.5-5.8 6-10Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4"/></symbol>
+    <symbol id="i-breath" viewBox="0 0 24 24"><path d="M2 8h12a3 3 0 1 0-3-3"/><path d="M2 12h16a3 3 0 1 1-3 3"/><path d="M2 16h8a2.5 2.5 0 1 1-2.5 2.5"/></symbol>
+    <symbol id="i-no" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6 18.4 18.4"/></symbol>
   </defs>
 </svg>
 
@@ -256,11 +260,18 @@
                 <span class="cal-unit" data-i18n="cal_unit">Jahre</span>
               </div>
             </div>
+            <div class="cal-streak">
+              <div class="cal-streak-row">
+                <span class="cal-streak-label"><svg class="ic"><use href="#i-streak"/></svg><span data-i18n="cal_day">Tag</span>&nbsp;<b class="num" id="calDay">0</b></span>
+                <span class="cal-streak-max num">90</span>
+              </div>
+              <div class="cal-streak-track"><span class="cal-streak-fill" id="calStreakFill"></span></div>
+            </div>
             <div class="cal-routines">
-              <div class="ps-routine" data-pillar="movement"><span class="pr-ic"><svg class="ic"><use href="#i-movement"/></svg></span><span class="pr-t" data-i18n="r1">30 Min. Bewegung</span><span class="pr-check"></span></div>
-              <div class="ps-routine" data-pillar="sleep"><span class="pr-ic"><svg class="ic"><use href="#i-sleep"/></svg></span><span class="pr-t" data-i18n="r2">7+ Stunden Schlaf</span><span class="pr-check"></span></div>
-              <div class="ps-routine" data-pillar="mind"><span class="pr-ic"><svg class="ic"><use href="#i-mind"/></svg></span><span class="pr-t" data-i18n="r3">10 Min. Meditation</span><span class="pr-check"></span></div>
-              <div class="ps-routine" data-pillar="nutrition"><span class="pr-ic"><svg class="ic"><use href="#i-nutrition"/></svg></span><span class="pr-t" data-i18n="r4">5 Portionen Gemüse</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="movement"><span class="pr-ic"><svg class="ic"><use href="#i-movement"/></svg></span><span class="pr-t">30 Min. Bewegung</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="sleep"><span class="pr-ic"><svg class="ic"><use href="#i-sleep"/></svg></span><span class="pr-t">7+ Stunden Schlaf</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="mind"><span class="pr-ic"><svg class="ic"><use href="#i-mind"/></svg></span><span class="pr-t">10 Min. Meditation</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="nutrition"><span class="pr-ic"><svg class="ic"><use href="#i-nutrition"/></svg></span><span class="pr-t">5 Portionen Gemüse</span><span class="pr-check"></span></div>
             </div>
           </div>
         </div>

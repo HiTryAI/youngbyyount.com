@@ -141,11 +141,68 @@ const calAgeEl = document.getElementById('calAge');
 const calLine1 = calSection && calSection.querySelector('.cal-line-1');
 const calLine2 = calSection && calSection.querySelector('.cal-line-2');
 const calDialWrap = calSection && calSection.querySelector('.cal-dial-wrap');
-const calRoutines = calSection ? Array.from(calSection.querySelectorAll('.ps-routine')) : [];
-const CAL_FROM = 38, CAL_TO = 34.76;
+const calRoutines = calSection ? Array.from(calSection.querySelectorAll('.cal-routines .ps-routine')) : [];
+const calDayEl = document.getElementById('calDay');
+const calStreakFill = document.getElementById('calStreakFill');
+const CAL_FROM = 38, CAL_TO = 34.76, CAL_DAYS = 90;
 let calVal = CAL_FROM;
 
+// Six rotating routine sets (4 rows each). As the streak climbs 0→90, the scene
+// flips through these "days" — each set swaps in fresh routines that check off
+// quickly, then the next day brings a slightly different mix. Each item carries a
+// pillar (drives the accent colour), an icon symbol id, and DE/EN copy.
+const CAL_SETS = [
+  [ { pillar: 'movement',  icon: 'i-movement',  de: '30 Min. Bewegung',   en: '30 min movement' },
+    { pillar: 'sleep',     icon: 'i-sleep',     de: '7+ Stunden Schlaf',  en: '7+ hours of sleep' },
+    { pillar: 'mind',      icon: 'i-mind',      de: '10 Min. Meditation', en: '10 min meditation' },
+    { pillar: 'nutrition', icon: 'i-nutrition', de: '5 Portionen Gemüse', en: '5 servings of veg' } ],
+  [ { pillar: 'water',     icon: 'i-water',     de: '2 L Wasser',         en: '2 L of water' },
+    { pillar: 'sun',       icon: 'i-sun',       de: '15 Min. Tageslicht', en: '15 min daylight' },
+    { pillar: 'breath',    icon: 'i-breath',    de: 'Atemübung',          en: 'Breathwork' },
+    { pillar: 'cold',      icon: 'i-freeze',    de: 'Kalt duschen',       en: 'Cold shower' } ],
+  [ { pillar: 'challenge', icon: 'i-clock',     de: '16:8 Fasten-Tag',    en: '16:8 fasting day' },
+    { pillar: 'nutrition', icon: 'i-nutrition', de: '30 g Protein',       en: '30 g protein' },
+    { pillar: 'movement',  icon: 'i-movement',  de: '10.000 Schritte',    en: '10,000 steps' },
+    { pillar: 'mind',      icon: 'i-mind',      de: 'Dankbarkeit',        en: 'Gratitude' } ],
+  [ { pillar: 'challenge', icon: 'i-no',        de: 'Zuckerfreier Tag',   en: 'Sugar-free day' },
+    { pillar: 'sleep',     icon: 'i-sleep',     de: 'Vor 23 Uhr im Bett', en: 'In bed by 11 pm' },
+    { pillar: 'water',     icon: 'i-water',     de: 'Kräutertee',         en: 'Herbal tea' },
+    { pillar: 'social',    icon: 'i-social',    de: 'Freunde treffen',    en: 'See friends' } ],
+  [ { pillar: 'challenge', icon: 'i-no',        de: 'Alkoholfreier Tag',  en: 'Alcohol-free day' },
+    { pillar: 'movement',  icon: 'i-movement',  de: 'Krafttraining',      en: 'Strength training' },
+    { pillar: 'nutrition', icon: 'i-nutrition', de: 'Fermentiertes',      en: 'Fermented food' },
+    { pillar: 'mind',      icon: 'i-mind',      de: '10 Min. lesen',      en: 'Read 10 min' } ],
+  [ { pillar: 'sun',       icon: 'i-sun',       de: 'Spazieren gehen',    en: 'Go for a walk' },
+    { pillar: 'breath',    icon: 'i-breath',    de: 'Box-Atmung',         en: 'Box breathing' },
+    { pillar: 'cold',      icon: 'i-freeze',    de: 'Eisbad',             en: 'Ice bath' },
+    { pillar: 'social',    icon: 'i-social',    de: 'Familie anrufen',    en: 'Call family' } ],
+];
+const CAL_BLOCKS = CAL_SETS.length;
+let calBlock = -1; // which set is currently rendered (cached so we only rewrite text on a real swap → no flicker)
+
 function renderCalAge() { if (calAgeEl) calAgeEl.textContent = fmtAge(calVal); } // reuses hero locale logic
+
+// Swap the four routine rows to the given set. Only called when the block index
+// actually changes (or on language toggle) — never per scroll frame.
+function renderCalSet(idx) {
+  const set = CAL_SETS[idx];
+  if (!set) return;
+  for (let i = 0; i < calRoutines.length; i++) {
+    const row = calRoutines[i], item = set[i];
+    if (!item) continue;
+    // Swap instantly with transitions suppressed and the check reset, so a freshly
+    // swapped-in day never inherits the previous day's "completed" look as it fades out.
+    row.classList.add('cal-swap');
+    row.classList.remove('done');
+    if (row.dataset.pillar !== item.pillar) row.dataset.pillar = item.pillar;
+    const use = row.querySelector('use');
+    if (use) { use.setAttribute('href', '#' + item.icon); use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#' + item.icon); }
+    const label = row.querySelector('.pr-t');
+    if (label) label.textContent = lang === 'de' ? item.de : item.en;
+  }
+  // Re-enable transitions next frame so this set's check-offs animate normally.
+  requestAnimationFrame(() => { for (const r of calRoutines) r.classList.remove('cal-swap'); });
+}
 
 function calSetProgress(p) {
   p = Math.min(1, Math.max(0, p));
@@ -158,46 +215,64 @@ function calSetProgress(p) {
     calLine2.style.opacity = String(l2);
     calLine2.style.transform = 'translateY(' + (1 - l2) * 10 + 'px)';
   }
+  // 90-day streak: number + bar climb in lockstep with the scroll.
+  const day = Math.round(p * CAL_DAYS);
+  if (calDayEl) calDayEl.textContent = String(day);
+  if (calStreakFill) calStreakFill.style.transform = 'scaleX(' + p.toFixed(4) + ')'; // composited; gold end only shows near day 90
+  // Rotating routine sets: split the scroll into one block per set. Within a block
+  // the four rows check off quickly, then the next block swaps in a fresh "day".
+  const block = Math.min(CAL_BLOCKS - 1, Math.floor(p * CAL_BLOCKS));
+  if (block !== calBlock) { calBlock = block; renderCalSet(block); }
+  const lp = p * CAL_BLOCKS - block;                                // local progress within the block, 0→1
   for (let i = 0; i < calRoutines.length; i++) {
-    calRoutines[i].classList.toggle('done', p >= (i + 1) * 0.2);   // check off at .2 .4 .6 .8
+    calRoutines[i].classList.toggle('done', lp >= 0.12 + i * 0.14); // quick stagger early in each block
   }
   if (calDialWrap) calDialWrap.classList.toggle('bloom', p >= 0.985); // glow blooms once it locks on
 }
 
 if (calSection) {
-  if (RM) {
-    calSetProgress(1); // a calm, finished state — never animates (section is un-pinned via CSS)
+  // The scene is pinned and scrubbed in portrait. But on viewports too short to fit
+  // the whole scene (landscape phones), or under reduced-motion, CSS un-pins it into
+  // normal flow and we simply paint the finished state — it can never clip.
+  const calStaticMQ = window.matchMedia('(max-height: 560px)');
+  const calIsStatic = () => RM || calStaticMQ.matches;
+
+  // rAF-throttled scroll handler — work happens only while actually scrolling.
+  let ticking = false;
+  const calUpdate = () => {
+    ticking = false;
+    const rect = calTrack.getBoundingClientRect();              // single read, before writes — no thrash
+    const travel = calTrack.offsetHeight - window.innerHeight;  // pin distance
+    calSetProgress(travel > 0 ? -rect.top / travel : 0);
+  };
+  const onCalScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(calUpdate); } };
+
+  let calBound = false;
+  const bindScrub = (on) => {
+    if (on === calBound) return;
+    calBound = on;
+    if (on) { window.addEventListener('scroll', onCalScroll, { passive: true }); onCalScroll(); }
+    else { window.removeEventListener('scroll', onCalScroll); }
+  };
+
+  // One place decides the mode: static finished scene, live scrub, or armed-and-waiting.
+  let calVisible = false;
+  const refreshCalMode = () => {
+    if (calIsStatic()) { bindScrub(false); calSetProgress(1); }  // finished, static (CSS un-pins)
+    else if (calVisible) { bindScrub(true); }                    // live scrub while on screen
+    else { bindScrub(false); calSetProgress(0); }                // armed/start, off screen
+  };
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { calVisible = es[0].isIntersecting; refreshCalMode(); }, { threshold: 0 }).observe(calSection);
   } else {
-    calSetProgress(0); // armed/start state
-    // rAF-throttled scroll handler — work happens only while actually scrolling,
-    // and only while the pinned section is on screen (bound/unbound by the observer).
-    let ticking = false;
-    const calUpdate = () => {
-      ticking = false;
-      const rect = calTrack.getBoundingClientRect();              // single read, before writes — no thrash
-      const travel = calTrack.offsetHeight - window.innerHeight;  // pin distance
-      calSetProgress(travel > 0 ? -rect.top / travel : 0);
-    };
-    const onCalScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(calUpdate); } };
-    let calBound = false;
-    const calBind = (on) => {
-      if (on === calBound) return;
-      calBound = on;
-      if (on) {
-        window.addEventListener('scroll', onCalScroll, { passive: true });
-        window.addEventListener('resize', onCalScroll);
-        onCalScroll();
-      } else {
-        window.removeEventListener('scroll', onCalScroll);
-        window.removeEventListener('resize', onCalScroll);
-      }
-    };
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((es) => calBind(es[0].isIntersecting), { threshold: 0 }).observe(calSection);
-    } else {
-      calBind(true);
-    }
+    calVisible = true;
   }
+  // Re-evaluate on resize/orientation change (recompute progress, and switch modes if we
+  // crossed the short-viewport threshold).
+  window.addEventListener('resize', () => { refreshCalMode(); if (calBound) onCalScroll(); });
+  if (calStaticMQ.addEventListener) calStaticMQ.addEventListener('change', refreshCalMode);
+  refreshCalMode();
 }
 
 // ───────────────── 3. Language toggle ─────────────────
@@ -240,6 +315,7 @@ const i18n = {
     cal_line1: 'Your chronological age.',
     cal_line2: 'Becomes your biological one.',
     cal_unit: 'years',
+    cal_day: 'Day',
     screens_title: 'Take a look inside',
     screens_sub: 'From your first estimate to your daily routine – this is how Young by Yount feels.',
     shot_1_t: 'Your free estimate',
@@ -365,6 +441,7 @@ function setLang(next) {
   });
   renderAge();
   renderCalAge(); // re-localize the calibration number's resting value
+  if (calRoutines.length) renderCalSet(calBlock < 0 ? 0 : calBlock); // re-localize the rotating routine rows
   try { localStorage.setItem('yby-lang', next); } catch (_) {}
 }
 

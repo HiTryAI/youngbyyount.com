@@ -21,6 +21,8 @@
   --text: #F2F5FA;
   --text-2: #9AA6C0;
   --text-3: #5E6A87;
+  /* sticky-nav height (logo 34 + 14/14 padding) — used to clear pinned scenes below it */
+  --nav-h: 62px;
   /* radius scale */
   --radius: 24px;
   --r-chip: 14px;
@@ -501,9 +503,12 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .cal-stage {
   position: sticky; top: 0;
   height: 100vh;
+  height: 100dvh; /* match the visual viewport on iOS so the pin doesn't sit under the URL bar */
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: clamp(16px, 3.5vh, 38px);
+  gap: clamp(14px, 3vh, 34px);
+  /* shift the whole scene below the sticky nav (line 1 was getting occluded on tall phones) */
+  padding: calc(var(--nav-h) + env(safe-area-inset-top) + 6px) 16px calc(env(safe-area-inset-bottom) + 10px);
   overflow: hidden;
 }
 .cal-vignette {
@@ -527,13 +532,13 @@ main, .nav, .footer { position: relative; z-index: 1; }
   position: relative; height: 100%;
   background: linear-gradient(180deg, #0E1426 0%, var(--bg) 60%);
   border-radius: 36px; overflow: hidden;
-  padding: clamp(34px, 6vh, 52px) 18px clamp(18px, 3vh, 24px);
+  padding: clamp(30px, 5vh, 46px) 18px clamp(16px, 2.6vh, 22px);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: clamp(12px, 2.4vh, 18px);
+  gap: clamp(10px, 2vh, 16px);
 }
 .cal-dial-wrap {
   position: relative;
-  width: clamp(126px, 22vh, 172px); height: clamp(126px, 22vh, 172px);
+  width: clamp(118px, 19vh, 158px); height: clamp(118px, 19vh, 158px);
   flex-shrink: 0;
 }
 .cal-dial-wrap::before {
@@ -566,7 +571,45 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 .cal-dial-wrap.bloom .cal-age { text-shadow: var(--glow-signature); } /* the reserved hero-number glow, finally used */
 .cal-unit { font-size: 9.5px; font-weight: 600; color: var(--text-3); }
+
+/* ── 90-day streak: a mini progress bar that fills 0→90 as you scroll ── */
+.cal-streak { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.cal-streak-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10px; font-weight: 700; line-height: 1;
+}
+.cal-streak-label { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); letter-spacing: .4px; }
+.cal-streak-label .ic { width: 12px; height: 12px; color: var(--gold); stroke-width: 2; }
+.cal-streak-label b { color: var(--text); font-size: 12px; }
+.cal-streak-max { color: var(--text-3); font-size: 10px; letter-spacing: .4px; }
+.cal-streak-track {
+  position: relative; width: 100%; height: 5px;
+  border-radius: 100px; background: rgba(255,255,255,.08);
+  overflow: hidden;
+}
+.cal-streak-fill {
+  position: absolute; inset: 0; width: 100%;
+  transform-origin: left center; transform: scaleX(0); /* composited — JS drives scaleX(p) */
+  will-change: transform;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--mint-dark), var(--mint) 58%, var(--gold));
+  box-shadow: 0 0 12px rgba(74,222,194,.4);
+}
+
 .cal-routines { width: 100%; display: flex; flex-direction: column; gap: 7px; }
+/* rotating routine labels stay on one line (uniform row height, never wrap/clip the fixed phone) */
+.cal-routines .ps-routine .pr-t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* on the frame a day-set swaps in, kill transitions so the prior "done" look doesn't ghost-fade */
+.cal-routines .ps-routine.cal-swap,
+.cal-routines .ps-routine.cal-swap .pr-t,
+.cal-routines .ps-routine.cal-swap .pr-check { transition: none; }
+/* extra pillar accents used by the rotating routine sets */
+.cal-routines .ps-routine[data-pillar="water"] { --pc: #4AD7FF; }
+.cal-routines .ps-routine[data-pillar="sun"] { --pc: #F5C97B; }
+.cal-routines .ps-routine[data-pillar="breath"] { --pc: #6FE0CF; }
+.cal-routines .ps-routine[data-pillar="cold"] { --pc: #8FC0FF; }
+.cal-routines .ps-routine[data-pillar="social"] { --pc: #FF9E9E; }
+.cal-routines .ps-routine[data-pillar="challenge"] { --pc: #F5C97B; }
 
 /* ── Privacy: a full-bleed deep-navy act-break ── */
 .privacy-banner {
@@ -814,22 +857,43 @@ main, .nav, .footer { position: relative; z-index: 1; }
   .features { grid-template-columns: 1fr; }
   .feature.span-2 { grid-column: auto; }
   .pb-inner { flex-direction: column; text-align: center; }
-  .cal-phone .phone { height: min(64vh, 520px); max-width: 74vw; }
-  .cal-dial-wrap { width: clamp(118px, 18vh, 150px); height: clamp(118px, 18vh, 150px); }
-  .cal-screen { padding-top: clamp(30px, 4.5vh, 42px); gap: clamp(10px, 1.8vh, 15px); }
+  .cal-phone .phone { height: min(64vh, 524px); max-width: 74vw; }
+  .cal-dial-wrap { width: clamp(112px, 17vh, 146px); height: clamp(112px, 17vh, 146px); }
+  .cal-screen { padding: clamp(28px, 4vh, 40px) 16px clamp(14px, 2.2vh, 20px); gap: clamp(8px, 1.6vh, 14px); }
   .cal-routines { gap: 6px; }
   .cal-line { font-size: clamp(19px, 5.4vw, 26px); }
 }
-/* Short viewports (small phones, landscape): compress the Calibration so all 4 routines stay inside the screen */
+/* Short viewports (small phones, landscape): compress the Calibration so the dial,
+   streak bar and all 4 routines stay inside the phone and below the sticky nav */
 @media (max-height: 720px) {
   .cal-track { height: 220vh; }
-  .cal-phone .phone { height: min(70vh, 440px); }
-  .cal-dial-wrap { width: clamp(98px, 15vh, 128px); height: clamp(98px, 15vh, 128px); }
-  .cal-screen { padding-top: clamp(24px, 3.4vh, 34px); gap: clamp(6px, 1.2vh, 11px); }
+  .cal-phone .phone { height: min(72vh, 452px); }
+  .cal-dial-wrap { width: clamp(94px, 14vh, 122px); height: clamp(94px, 14vh, 122px); }
+  .cal-screen { padding: clamp(22px, 3vh, 32px) 16px clamp(12px, 2vh, 18px); gap: clamp(6px, 1.2vh, 11px); }
   .cal-routines { gap: 5px; }
   .cal-routines .ps-routine { padding: 7px 11px; }
-  .cal-stage { gap: clamp(10px, 2vh, 20px); padding-top: 56px; } /* clear the sticky nav so line 1 isn't occluded */
+  .cal-streak { gap: 4px; }
+  .cal-streak-track { height: 4px; }
+  .cal-stage { gap: clamp(8px, 1.6vh, 16px); padding-top: calc(var(--nav-h) + env(safe-area-inset-top)); }
   .cal-line { font-size: clamp(16px, 4.4vw, 21px); }
+}
+/* Too short to pin the whole scene (landscape phones): un-pin it into a normal,
+   scrollable section in its finished state. The phone gets a fixed height so its
+   dial + streak + 4 routines fit; JS paints the end-state (see refreshCalMode). */
+@media (max-height: 560px) {
+  .cal-track { height: auto; }
+  .cal-stage {
+    position: static; height: auto; overflow: visible;
+    padding: clamp(36px, 9vh, 60px) 16px;
+    gap: clamp(16px, 4vh, 28px);
+  }
+  .cal-phone .phone { height: 408px; max-width: 215px; }
+  .cal-dial-wrap { width: 108px; height: 108px; }
+  .cal-screen { padding: 26px 16px 16px; gap: 9px; }
+  .cal-routines { gap: 5px; }
+  .cal-routines .ps-routine { padding: 6px 11px; }
+  .cal-line { opacity: 1; transform: none; font-size: clamp(17px, 3.4vw, 22px); }
+  .cal-line-2 { transform: none; }
 }
 @media (max-width: 560px) {
   .shots { grid-template-columns: repeat(2, 1fr); gap: 22px 14px; }
