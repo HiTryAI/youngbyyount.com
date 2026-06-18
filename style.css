@@ -515,11 +515,9 @@ main, .nav, .footer { position: relative; z-index: 1; }
   padding: calc(var(--nav-h) + env(safe-area-inset-top) + 6px) 16px calc(env(safe-area-inset-bottom) + 10px);
   overflow: hidden;
 }
-.cal-vignette {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(58% 50% at 50% 50%, transparent 38%, rgba(7,10,20,.72) 100%);
-}
-.cal-stage > *:not(.cal-vignette) { position: relative; z-index: 1; }
+/* (removed the edge vignette — its darkened top/bottom read as bars framing a lighter
+   centre instead of a uniform full-bleed scene; the measurement-grid backdrop carries the depth) */
+.cal-stage > * { position: relative; z-index: 1; }
 
 .cal-line {
   font-size: clamp(20px, 3.2vw, 32px);
@@ -557,7 +555,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .cal-dial-track { fill: none; stroke: var(--stroke); stroke-width: 6; }
 .cal-dial-arc {
   fill: none; stroke: url(#calArcGrad); stroke-width: 7;
-  stroke-linecap: round;
+  stroke-linecap: round; stroke-linejoin: round; /* round join closes the seam once the dash is dropped at the end */
   stroke-dasharray: 1; stroke-dashoffset: 1;
 }
 .cal-dial-center {

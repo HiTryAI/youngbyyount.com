@@ -208,7 +208,13 @@ function calSetProgress(p) {
   p = Math.min(1, Math.max(0, p));
   calVal = CAL_FROM - p * (CAL_FROM - CAL_TO);
   renderCalAge();
-  if (calArc) calArc.style.strokeDashoffset = String(1 - p);       // dial draws from top, clockwise
+  if (calArc) {
+    calArc.style.strokeDashoffset = String(1 - p);                 // dial draws from top, clockwise
+    // Once it locks on, drop the dash so the closed ring strokes as ONE continuous loop.
+    // (A dash pattern forces round end-caps at its seam — exactly at 12 o'clock — which
+    // leaves a visible notch where the ring should close. linejoin:round handles it instead.)
+    calArc.style.strokeDasharray = p >= 0.985 ? 'none' : '1';
+  }
   if (calLine1) calLine1.style.opacity = String(Math.min(1, p / 0.1));
   if (calLine2) {
     const l2 = Math.min(1, Math.max(0, (p - 0.5) / 0.22));         // second line lands past halfway
