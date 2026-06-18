@@ -52,8 +52,12 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  /* fills the iOS safe areas (notch / home indicator) so no white bars show */
-  background: var(--bg-deep);
+  /* iOS Safari paints the ROOT background behind its toolbars, in the safe areas
+     (notch / home indicator) and in the overscroll bounce. It must match the body's
+     content floor (var(--bg)) AND the theme-color meta (#0A0E1A) — otherwise those
+     zones render a slightly darker near-black (#070A14) and read as bars top & bottom
+     on OLED. The hero keeps its deeper top via the body gradient painting over this. */
+  background: var(--bg);
 }
 
 body {
