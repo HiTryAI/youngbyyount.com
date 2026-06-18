@@ -48,7 +48,11 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* fills the iOS safe areas (notch / home indicator) so no white bars show */
+  background: var(--bg-deep);
+}
 
 body {
   font-family: var(--font);
@@ -86,7 +90,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px;
-  padding: 14px clamp(20px, 5vw, 56px);
+  padding: calc(14px + env(safe-area-inset-top)) calc(clamp(20px, 5vw, 56px) + env(safe-area-inset-right)) 14px calc(clamp(20px, 5vw, 56px) + env(safe-area-inset-left));
   background: rgba(10, 14, 26, .78);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -686,7 +690,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
 /* ── Footer ── */
 .footer {
   border-top: 1px solid var(--stroke);
-  padding: 44px clamp(20px, 5vw, 56px) 36px;
+  padding: 44px calc(clamp(20px, 5vw, 56px) + env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) calc(clamp(20px, 5vw, 56px) + env(safe-area-inset-left));
   max-width: 1180px;
   margin: 0 auto;
 }
