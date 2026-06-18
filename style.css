@@ -757,14 +757,11 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 .footer-copy { color: var(--text-3); font-size: 12px; margin-top: 12px; }
 
-/* ── Scroll reveal (staggered) ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 55ms);
-}
-.reveal.in { opacity: 1; transform: none; }
+/* ── Content is present immediately — no scroll-triggered fade-up.
+   Feels more solid/confident and avoids the staggered "everything floats in" look.
+   The signature animations still play (calibration scrub, hero phone, count-ups,
+   sparkline, and the feature number-echo, which keys off .feature.in below). ── */
+.reveal { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
