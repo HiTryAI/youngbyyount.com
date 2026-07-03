@@ -1,4 +1,4 @@
-/* Young by Yount – landing page interactions
+/* Young by You – landing page interactions
    1. Scroll-reveal animations
    2. Animated phone mockup (routine check loop → bio age ticks down)
    3. DE/EN language toggle
@@ -323,7 +323,7 @@ const i18n = {
     cal_unit: 'years',
     cal_day: 'Day',
     screens_title: 'Take a look inside',
-    screens_sub: 'From your first estimate to your daily routine – this is how Young by Yount feels.',
+    screens_sub: 'From your first estimate to your daily routine – this is how Young by You feels.',
     shot_1_t: 'Your free estimate',
     shot_1_b: 'Your biological age – with an honest range.',
     shot_2_t: 'Your day at a glance',
@@ -380,7 +380,7 @@ const i18n = {
     f6_b: 'All data stays on your device. No account, no cloud, no sharing. Period.',
     priv_t: 'Your health data belongs to you.',
     priv_b:
-      'Young by Yount works entirely without servers. What you enter never leaves your phone – that’s not a setting, that’s architecture.',
+      'Young by You works entirely without servers. What you enter never leaves your phone – that’s not a setting, that’s architecture.',
     price_title: 'Fair & transparent',
     price_sub: 'The core is free. Premium unlocks everything.',
     plan_free_t: 'Free',
@@ -412,7 +412,7 @@ const i18n = {
       'The core app is free – including the estimate, 5 routines, points and streaks. Premium (€4.99/month, €29.99/year or €79.99 once) unlocks the full catalog, custom routines and the projection.',
     faq_5_q: 'Does the app replace a doctor?',
     faq_5_a:
-      'No. Young by Yount is a motivational tool for a healthier everyday life. For health concerns or before major lifestyle changes, please talk to a doctor.',
+      'No. Young by You is a motivational tool for a healthier everyday life. For health concerns or before major lifestyle changes, please talk to a doctor.',
     cta_title: 'Your future self starts today.',
     cta_sub: 'Get your free bio-age estimate – in under 2 minutes.',
     cta_btn: 'Start for free',
