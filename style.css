@@ -613,6 +613,91 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .cal-routines .ps-routine[data-pillar="social"] { --pc: #FF9E9E; }
 .cal-routines .ps-routine[data-pillar="challenge"] { --pc: #F5C97B; }
 
+/* ═══════════ Mission · full-bleed act-break ═══════════ */
+.mission {
+  margin: clamp(56px, 9vh, 110px) 0 0;
+  padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 56px);
+  background:
+    radial-gradient(90% 120% at 50% 0, rgba(74,222,194,.07), transparent 60%),
+    var(--bg-deep);
+  border-top: 1px solid var(--stroke);
+  border-bottom: 1px solid var(--stroke);
+  box-shadow: inset 0 1px 0 var(--stroke-hi);
+  text-align: center;
+}
+.mission h2 {
+  font-size: clamp(26px, 3.8vw, 44px);
+  font-weight: 900; letter-spacing: -1.4px; line-height: 1.18;
+  max-width: 22ch;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+.mission h2 em { font-style: normal; color: var(--mint); }
+.mission-story {
+  max-width: 620px;
+  margin: 22px auto 0;
+  color: var(--text-2);
+  font-size: clamp(14.5px, 1.5vw, 16.5px);
+}
+.mission-story + .mission-story { margin-top: 14px; }
+.mission-sig { margin-top: 20px; color: var(--text-3); font-size: 13.5px; font-weight: 600; }
+
+/* ═══════════ Two trees ═══════════ */
+.trees {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 18px;
+  max-width: 920px;
+  margin: 48px auto 0;
+}
+.tree-card {
+  --tc: var(--mint); /* accent: mint for the in-app tree */
+  position: relative; overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 32px 30px;
+  box-shadow: var(--e-1);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.tree-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 50% 0, color-mix(in srgb, var(--tc) 10%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.tree-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--e-1), 0 18px 44px -18px color-mix(in srgb, var(--tc) 45%, transparent);
+}
+.tree-card > * { position: relative; z-index: 1; }
+.tree-card-real { --tc: #8BE04A; } /* the real tree is leaf-green, not data-mint */
+.tree-badge {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tc);
+  background: color-mix(in srgb, var(--tc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tc) 35%, transparent);
+  border-radius: 100px;
+  padding: 5px 12px;
+  margin-bottom: 18px;
+}
+.tree-badge-soon { color: var(--gold); background: rgba(245,201,123,.10); border-color: rgba(245,201,123,.35); }
+.tree-ic {
+  width: 54px; height: 54px; margin-bottom: 16px;
+  display: grid; place-items: center;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tc) 13%, transparent);
+  color: var(--tc);
+}
+.tree-ic .ic { width: 27px; height: 27px; }
+.tree-card h3 { font-size: 19px; letter-spacing: -.4px; margin-bottom: 9px; }
+.tree-card p { font-size: 14.5px; color: var(--text-2); }
+.tree-card .tree-foot {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid var(--stroke);
+  font-size: 12px; color: var(--text-3);
+}
+
 /* ── Privacy: a full-bleed deep-navy act-break ── */
 .privacy-banner {
   max-width: none;

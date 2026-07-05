@@ -286,6 +286,7 @@ const i18n = {
   en: {
     nav_how: 'How it works',
     nav_pillars: '5 pillars',
+    nav_trees: 'Trees',
     nav_features: 'Features',
     nav_pricing: 'Pricing',
     nav_screens: 'App',
@@ -310,6 +311,27 @@ const i18n = {
     cred_6: 'Smoking',
     cred_7: 'Social connection',
     cred_cites: 'Based on recognized longevity research – incl. telomeres, cardiorespiratory fitness and social-connection studies.',
+    eyebrow_mission: 'Our mission',
+    mission_title: 'Helping millions of people stay <em>young</em>, healthy and full of energy for longer.',
+    mission_p1:
+      'Young by You is built independently – no ads, no data selling, no account. Behind it is a simple belief: the small things you do every day shape how young you feel.',
+    mission_p2:
+      'So Young by You makes exactly those small things visible and countable – and beautiful enough that you’ll want to keep going. For the hike at 80. For energy as your default.',
+    mission_sig: '– Ben, founder of Young by You',
+    eyebrow_trees: 'Growth that stays',
+    trees_title: 'Two trees grow with you',
+    trees_sub:
+      'One lives in the app, one takes root in real soil. Both grow through what you do – neither through what you pay.',
+    tree1_badge: 'In the app',
+    tree1_t: 'Your Life Tree',
+    tree1_b:
+      'Every routine feeds it: its five branches are your five pillars – they fill out the more balanced you live. Your streak makes it blossom. And when life gets in the way, it simply rests. It never dies.',
+    tree2_badge: 'Soon · The Grove',
+    tree2_t: 'Real trees for strong weeks',
+    tree2_b:
+      'With an active membership, every strong week (5 of 7 days active) grows your seedling – after four strong weeks we plant a real tree for it. You choose where: into the forest, or as a fruit tree whose harvest feeds local families. Every tree gets a public certificate in your planting register.',
+    tree2_foot:
+      'Paid from our revenue and strictly capped. Tree plantings are a voluntary contribution, not part of any purchase – and real trees grant no advantage in the app.',
     eyebrow_how: 'Step by step',
     eyebrow_screens: 'The app',
     eyebrow_pillars: 'Holistic',
@@ -328,7 +350,7 @@ const i18n = {
     shot_1_b: 'Your biological age – with an honest range.',
     shot_2_t: 'Your day at a glance',
     shot_2_b: 'Bio age, streak, points and your 5 pillars.',
-    shot_3_t: '24 science-backed routines',
+    shot_3_t: '28 science-backed routines',
     shot_3_b: 'Activate what fits you – each one earns points.',
     shot_4_t: 'Watch your number drop',
     shot_4_b: 'Every check counts – plus daily insights.',
@@ -347,7 +369,7 @@ const i18n = {
       'Answer a few questions about sleep, movement, nutrition & more – and get your estimated biological age for free.',
     how_2_t: 'Check off routines',
     how_2_b:
-      'Choose from 24 science-backed routines. Every check earns Young Points – and visibly lowers your number.',
+      'Choose from 28 science-backed routines. Every check earns Young Points – and visibly lowers your number.',
     how_3_t: 'Watch your number drop',
     how_3_b:
       'Track your history, keep your streak alive with freeze days, and see in your projection where your estimate can go in 90 days.',
@@ -391,9 +413,10 @@ const i18n = {
     plan_cta_free: 'Start for free',
     plan_flag: 'Popular',
     per_year: '/ year',
+    price_num_pro: '29.99',
     plan_alt: 'or €4.99 / month · €79.99 lifetime',
     plan_pro_1: 'Unlimited routines',
-    plan_pro_2: 'Full catalog (24 routines)',
+    plan_pro_2: 'Full catalog (28 routines)',
     plan_pro_3: 'Create custom routines',
     plan_pro_4: '90-day projection',
     plan_pro_5: 'Detailed statistics',
@@ -413,6 +436,9 @@ const i18n = {
     faq_5_q: 'Does the app replace a doctor?',
     faq_5_a:
       'No. Young by You is a motivational tool for a healthier everyday life. For health concerns or before major lifestyle changes, please talk to a doctor.',
+    faq_6_q: 'Do you really plant real trees?',
+    faq_6_a:
+      'Yes. With an active membership, strong weeks grow a seedling – and for every fully grown seedling we plant a real tree through established planting partners, with a public certificate per tree. Honesty matters to us: we don’t promise climate impact and we don’t sell offsets. With us, a tree is exactly that – a real tree that grows.',
     cta_title: 'Your future self starts today.',
     cta_sub: 'Get your free bio-age estimate – in under 2 minutes.',
     cta_btn: 'Start for free',
