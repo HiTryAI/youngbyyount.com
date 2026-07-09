@@ -698,6 +698,84 @@ main, .nav, .footer { position: relative; z-index: 1; }
   font-size: 12px; color: var(--text-3);
 }
 
+/* ── Apple Health / Health Connect: real values flow into the estimate ── */
+.health-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 22px;
+  align-items: stretch;
+  margin-top: 44px;
+}
+.health-visual {
+  background: linear-gradient(165deg, var(--surface-hi), var(--surface) 70%);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-panel);
+  box-shadow: var(--e-1);
+  padding: clamp(24px, 3vw, 34px) 20px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+.hv-chips {
+  display: flex; flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 340px;
+}
+.hv-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 13px;
+  background: var(--surface-glass);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 1px 0 var(--stroke-hi);
+}
+.hv-chip .ic { width: 15px; height: 15px; stroke-width: 2; color: var(--c, var(--mint)); }
+.hv-chip span { display: flex; align-items: baseline; gap: 5px; }
+.hv-chip b { font-size: 13px; letter-spacing: -.2px; }
+.hv-chip small { font-size: 11px; color: var(--text-3); }
+.hv-arrow { color: var(--mint-dark); line-height: 0; }
+.hv-result {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 18px 34px;
+  background: radial-gradient(120% 130% at 50% -20%, rgba(74,222,194,.14), transparent 60%), var(--surface);
+  border: 1px solid rgba(74,222,194,.30);
+  border-radius: var(--r-card);
+  box-shadow: var(--glow-focus);
+}
+.hv-label { font-size: 10px; font-weight: 700; letter-spacing: 1.6px; color: var(--text-3); }
+.hv-age { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; color: var(--mint); }
+.hv-note { font-size: 12px; color: var(--text-2); }
+.health-points { display: grid; gap: 14px; align-content: center; }
+.hp {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-card);
+  box-shadow: var(--e-1);
+  padding: 18px 20px;
+}
+.hp-ic {
+  width: 42px; height: 42px; flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 13px;
+  background: rgba(74,222,194,.11);
+  color: var(--mint);
+}
+.hp-ic .ic { width: 20px; height: 20px; }
+.hp h3 { font-size: 15.5px; letter-spacing: -.3px; margin-bottom: 4px; }
+.hp p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+.health-foot {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+@media (max-width: 900px) {
+  .health-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Privacy: a full-bleed deep-navy act-break ── */
 .privacy-banner {
   max-width: none;

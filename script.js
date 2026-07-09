@@ -391,6 +391,31 @@ const i18n = {
     f5_b: 'See today where your estimate could be in three months if you keep your pace.',
     f6_t: '100% private',
     f6_b: 'All data stays on your device. No account, no cloud, no sharing. Period.',
+    eyebrow_health: 'New · Apple Health & Health Connect',
+    health_title: 'Real values. A <span class="grad">more personal</span> estimate.',
+    health_sub:
+      'Connect Apple Health on iPhone or Health Connect on Android – and your bio-age estimate uses real measurements instead of just your answers. Optional, read-only, and everything stays on your device.',
+    hv_sleep_v: '7.4 h',
+    hv_sleep: 'Sleep',
+    hv_hr: 'Resting HR',
+    hv_active: 'Active days',
+    hv_weight: 'Weight',
+    hv_age_v: '34.76',
+    hv_note: 'gets more personal – never harsher',
+    hp1_t: 'Read-only – never writes',
+    hp1_b:
+      'The app asks once for permission, then reads sleep, resting heart rate, activity, weight and VO₂max. Nothing is ever written back.',
+    hp2_t: 'Never leaves your phone',
+    hp2_b:
+      'Values are processed only on your device – like everything in Young by You. No account, no server, no cloud.',
+    hp3_t: 'Missing a value? No penalty.',
+    hp3_b:
+      'Only measurements that exist flow in. Whatever your watch or phone doesn’t track never counts against you.',
+    hp4_t: 'Optional – disconnect anytime',
+    hp4_b:
+      'One switch in your profile. Connect, disconnect, done – the app works fully without it.',
+    health_foot:
+      'Apple Health on iPhone & Apple Watch · Health Connect on Android. The estimate stays a motivating compass – not a lab value, not a medical assessment.',
     priv_t: 'Your health data belongs to you.',
     priv_b:
       'Young by You works entirely without servers. What you enter never leaves your phone – that’s not a setting, that’s architecture.',
@@ -424,6 +449,9 @@ const i18n = {
     faq_4_q: 'How much does the app cost?',
     faq_4_a:
       'The core app is free – including the estimate, 5 routines, points and streaks. Premium (€4.99/month, €39.99/year or €79.99 once) unlocks the full catalog, custom routines and the projection.',
+    faq_6_q: 'Do I have to connect Apple Health or Health Connect?',
+    faq_6_a:
+      'No. The connection is optional and read-only: it makes your estimate more personal because real measurements (e.g. sleep and resting heart rate) flow in. Everything is processed only on your device – and you can disconnect anytime in your profile.',
     faq_5_q: 'Does the app replace a doctor?',
     faq_5_a:
       'No. Young by You is a motivational tool for a healthier everyday life. For health concerns or before major lifestyle changes, please talk to a doctor.',
