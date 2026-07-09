@@ -315,9 +315,6 @@ const i18n = {
     mission_title: 'Helping millions of people stay <em>young</em>, healthy and full of energy for longer.',
     mission_p1:
       'Young by You is built independently – no ads, no data selling, no account. Behind it is a simple belief: the small things you do every day shape how young you feel.',
-    mission_p2:
-      'So Young by You makes exactly those small things visible and countable – and beautiful enough that you’ll want to keep going. For the hike at 80. For energy as your default.',
-    mission_sig: '– Ben, founder of Young by You',
     eyebrow_trees: 'Growth that stays',
     trees_title: 'A tree that grows with you',
     trees_sub:
@@ -325,7 +322,7 @@ const i18n = {
     tree1_badge: 'In the app',
     tree1_t: 'Your Life Tree',
     tree1_b:
-      'Every routine feeds it: its five branches are your five pillars – they fill out the more balanced you live. Your streak makes it blossom. And when life gets in the way, it simply rests. It never dies.',
+      'Every routine feeds it: its five branches are your five pillars – they fill out the more balanced you live. Your streak makes it blossom. And when life gets in the way, it simply rests.',
     eyebrow_how: 'Step by step',
     eyebrow_screens: 'The app',
     eyebrow_pillars: 'Holistic',
