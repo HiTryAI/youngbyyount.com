@@ -319,19 +319,13 @@ const i18n = {
       'So Young by You makes exactly those small things visible and countable – and beautiful enough that you’ll want to keep going. For the hike at 80. For energy as your default.',
     mission_sig: '– Ben, founder of Young by You',
     eyebrow_trees: 'Growth that stays',
-    trees_title: 'Two trees grow with you',
+    trees_title: 'A tree that grows with you',
     trees_sub:
-      'One lives in the app, one takes root in real soil. Both grow through what you do – neither through what you pay.',
+      'It lives in the app and grows through what you do – never through what you pay.',
     tree1_badge: 'In the app',
     tree1_t: 'Your Life Tree',
     tree1_b:
       'Every routine feeds it: its five branches are your five pillars – they fill out the more balanced you live. Your streak makes it blossom. And when life gets in the way, it simply rests. It never dies.',
-    tree2_badge: 'Soon · The Grove',
-    tree2_t: 'Real trees for strong weeks',
-    tree2_b:
-      'With an active membership, every strong week (5 of 7 days active) grows your seedling – after four strong weeks we plant a real tree for it. You choose where: into the forest, or as a fruit tree whose harvest feeds local families. Every tree gets a public certificate in your planting register.',
-    tree2_foot:
-      'Paid from our revenue and strictly capped. Tree plantings are a voluntary contribution, not part of any purchase – and real trees grant no advantage in the app.',
     eyebrow_how: 'Step by step',
     eyebrow_screens: 'The app',
     eyebrow_pillars: 'Holistic',
@@ -413,7 +407,7 @@ const i18n = {
     plan_cta_free: 'Start for free',
     plan_flag: 'Popular',
     per_year: '/ year',
-    price_num_pro: '29.99',
+    price_num_pro: '39.99',
     plan_alt: 'or €4.99 / month · €79.99 lifetime',
     plan_pro_1: 'Unlimited routines',
     plan_pro_2: 'Full catalog (30 routines)',
@@ -432,13 +426,10 @@ const i18n = {
       'Nothing. It stays on your device. There is no account, no server and no analytics trackers. Delete the app and the data is gone.',
     faq_4_q: 'How much does the app cost?',
     faq_4_a:
-      'The core app is free – including the estimate, 5 routines, points and streaks. Premium (€4.99/month, €29.99/year or €79.99 once) unlocks the full catalog, custom routines and the projection.',
+      'The core app is free – including the estimate, 5 routines, points and streaks. Premium (€4.99/month, €39.99/year or €79.99 once) unlocks the full catalog, custom routines and the projection.',
     faq_5_q: 'Does the app replace a doctor?',
     faq_5_a:
       'No. Young by You is a motivational tool for a healthier everyday life. For health concerns or before major lifestyle changes, please talk to a doctor.',
-    faq_6_q: 'Do you really plant real trees?',
-    faq_6_a:
-      'Yes. With an active membership, strong weeks grow a seedling – and for every fully grown seedling we plant a real tree through established planting partners, with a public certificate per tree. Honesty matters to us: we don’t promise climate impact and we don’t sell offsets. With us, a tree is exactly that – a real tree that grows.',
     cta_title: 'Your future self starts today.',
     cta_sub: 'Get your free bio-age estimate – in under 2 minutes.',
     cta_btn: 'Start for free',
