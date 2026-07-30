@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["7922UMJ9ZY.com.youngbyyount.youngByYount"],
+        "components": [
+          { "/": "/d", "comment": "Duel challenge landing without code" },
+          { "/": "/d/*", "comment": "Duel challenge landing (code in ?c=)" },
+          { "/": "/g/*", "comment": "Per-game landing pages" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["7922UMJ9ZY.com.youngbyyount.youngByYount"]
+  }
+}

@@ -108,17 +108,19 @@
       </div>
     </div>
 
+    <p style="margin-top:14px"><a id="openApp" href="#" hidden
+      style="font-size:13.5px;font-weight:700;color:var(--mint);text-decoration:none">
+      App schon installiert? Hier öffnen →</a></p>
+
     <p class="foot"><a href="/">youngbyyou.com</a> · Werde jünger, gemeinsam.</p>
   </main>
 
+  <script src="/store.js"></script>
   <script>
-    // ── Fill in once the app is published ────────────────────────────────────
-    //   const APP_STORE_URL = 'https://apps.apple.com/app/idXXXXXXXXXX';
-    //   const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.youngbyyount.youngByYount';
-    // Until then the buttons fall back to the marketing homepage, which forwards
-    // visitors to the store when it goes live.
-    const APP_STORE_URL = '';
-    const PLAY_STORE_URL = '';
+    // Store links live in /store.js — ONE flip on launch day covers every
+    // landing page. Until then the buttons fall back to the homepage.
+    const APP_STORE_URL = (window.YBY_STORE && YBY_STORE.appStore) || '';
+    const PLAY_STORE_URL = (window.YBY_STORE && YBY_STORE.playStore) || '';
 
     document.getElementById('appStore').href = APP_STORE_URL || '/';
     document.getElementById('playStore').href = PLAY_STORE_URL || '/';
@@ -130,6 +132,12 @@
     if (code) {
       document.getElementById('codeText').textContent = code;
       document.getElementById('codeBox').hidden = false;
+      // With the app installed this page normally never shows (universal
+      // link) — but from a same-site tap Safari stays in the browser, so
+      // offer the youngbyyou:// jump straight into the duel.
+      const openApp = document.getElementById('openApp');
+      openApp.href = 'youngbyyou://d?c=' + encodeURIComponent(code);
+      openApp.hidden = false;
       const row = document.getElementById('codeRow');
       row.addEventListener('click', async () => {
         try {

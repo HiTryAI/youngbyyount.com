@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Maulwurf-Duell · Young by You</title>
+  <meta name="description" content="Maulwurf-Duell – ein Brain-Game bei Young by You. Lade die App und zeig, dass du es besser kannst." />
+  <meta name="robots" content="noindex" />
+  <meta property="og:title" content="🔨 Maulwurf-Duell – schaffst du das besser?" />
+  <meta property="og:description" content="Ein Brain-Game bei Young by You. Lade die App, spiel die gleiche Runde und teile dein Ergebnis." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #0A0E1A; --bg-deep: #070A14; --surface: #131A2C; --surface-hi: #1B2440;
+      --stroke: #263150; --accent: #69C779; --gold: #F5C97B;
+      --text: #F2F5FA; --text-dim: #9AA6C0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(120% 80% at 50% -10%, #69C77924, transparent 60%),
+        radial-gradient(100% 70% at 50% 110%, rgba(245,201,123,0.08), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: 100%; max-width: 460px;
+      background: linear-gradient(180deg, var(--surface-hi), var(--surface));
+      border: 1px solid var(--stroke); border-radius: 28px;
+      padding: 32px 26px; text-align: center;
+      box-shadow: 0 30px 80px -30px rgba(0,0,0,0.8);
+    }
+    .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 26px; }
+    .mono {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, #6CF0D8, #4ADEC2);
+      color: #06231C; font-weight: 900; font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .word { font-weight: 800; font-size: 17px; letter-spacing: -0.2px; }
+    .emoji { font-size: 52px; line-height: 1; margin-bottom: 12px; }
+    h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 10px; }
+    .sub { font-size: 15px; color: var(--text-dim); line-height: 1.5; margin-bottom: 24px; }
+    .stores { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .store {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-decoration: none; font-weight: 800; font-size: 16px;
+      padding: 15px 18px; border-radius: 16px; border: 1px solid var(--stroke);
+      color: var(--text); background: var(--bg-deep); transition: transform .12s ease;
+    }
+    .store:active { transform: scale(0.98); }
+    .store.primary { background: linear-gradient(135deg, #6CF0D8, #4ADEC2); color: #06231C; border-color: transparent; }
+    .store svg { width: 22px; height: 22px; flex: none; }
+    .openapp {
+      display: inline-block; margin-bottom: 18px; font-size: 13.5px; font-weight: 700;
+      color: var(--accent); text-decoration: none;
+    }
+    .foot { margin-top: 8px; font-size: 12px; color: var(--text-dim); }
+    .foot a { color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo"><div class="mono">Y</div><div class="word">Young by You</div></div>
+    <div class="emoji">🔨</div>
+    <h1>Maulwurf-Duell</h1>
+    <p class="sub">Du hast dieses Spiel in einem Video gesehen?
+      Hol dir die App und zeig, dass du es besser kannst.<br />
+      <span style="opacity:.75">Saw this game in a video? Get the app and beat it.</span></p>
+
+    <div class="stores">
+      <a class="store primary" id="appStore" href="/">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 1.6c0 1.1-.4 2.1-1.2 3-.9.9-1.9 1.5-3 1.4-.1-1.1.4-2.2 1.2-3 .8-.9 2-1.5 3-1.4zM20.4 17.1c-.5 1.2-.8 1.7-1.5 2.8-1 1.5-2.3 3.4-4 3.4-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2-2.7-4.2-3-9.1-1.3-11.7 1.2-1.9 3-2.9 4.8-2.9 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.6 0 3.2.9 4.4 2.4-3.8 2.1-3.2 7.5.6 9z"/></svg>
+        Im App Store laden
+      </a>
+      <a class="store" id="playStore" href="/">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.7-.5 1.2v17c0 .5.2.9.5 1.2l.1.1L13 12.6v-.2L3.7 2.2l-.1.1zM17 15.9l-3.1-3.1v-.2l3.1-3.1 3.7 2.1c1 .6 1 1.6 0 2.2L17 15.9zm-.6.4l-3.2-3.2-9.3 9.3c.4.3 1 .4 1.6.1l10.9-6.2zM3.9 1.6l9.3 9.3 3.2-3.2L5.5 1.5c-.6-.3-1.2-.2-1.6.1z"/></svg>
+        Bei Google Play
+      </a>
+    </div>
+
+    <a class="openapp" href="youngbyyou://g/mole">App schon installiert? Hier öffnen →</a>
+
+    <p class="foot"><a href="/">youngbyyou.com</a> · Werde jünger, gemeinsam.</p>
+  </main>
+  <script src="/store.js"></script>
+  <script>
+    if (window.YBY_STORE) {
+      if (YBY_STORE.appStore) document.getElementById('appStore').href = YBY_STORE.appStore;
+      if (YBY_STORE.playStore) document.getElementById('playStore').href = YBY_STORE.playStore;
+    }
+  </script>
+</body>
+</html>
