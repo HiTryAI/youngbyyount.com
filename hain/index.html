@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Der Hain · Young by You</title>
+  <meta name="description" content="Der Hain von Young by You: echte Bäume, freigeschaltet durch tägliche Routinen. Alle 30 aktiven Tage erstrahlt ein Baum in deinem Lebenswerk – und echte Pflanzungen erhalten ein öffentliches Zertifikat." />
+  <meta property="og:title" content="Der Hain · Young by You" />
+  <meta property="og:description" content="Echte Bäume, freigeschaltet durch das, was du tust – nie durch das, was du zahlst. Alle 30 aktiven Tage erstrahlt ein neuer Baum in deinem Lebenswerk." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://youngbyyou.com/hain/lebenswerk.jpg" />
+  <meta name="theme-color" content="#0A0E1A" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="../assets/app_icon_1024.png" />
+  <style>
+    :root {
+      --bg: #0A0E1A; --bg-deep: #070A14; --surface: #131A2C; --surface-hi: #1B2440;
+      --stroke: #263150; --stroke-hi: rgba(120,150,210,.20);
+      --mint: #4ADEC2; --mint-bright: #6CF0D8;
+      --gold: #F5C97B; --gold-deep: #E9B45F;
+      --text: #F2F5FA; --text-2: #9AA6C0; --text-3: #5E6A87;
+      --r-card: 20px; --r-panel: 28px; --r-pill: 100px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(120% 70% at 50% -10%, rgba(245,201,123,0.10), transparent 60%),
+        radial-gradient(100% 70% at 50% 115%, rgba(74,222,194,0.08), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding: 0 20px calc(48px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 760px; margin: 0 auto; }
+
+    header.top {
+      display: flex; align-items: center; gap: 10px;
+      padding: 18px 0 6px;
+    }
+    header.top a {
+      color: var(--text-2); text-decoration: none; font-size: 14px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    header.top a:hover { color: var(--text); }
+    header.top img { width: 30px; height: 30px; border-radius: 8px; display: block; }
+
+    .hero { text-align: center; padding: 34px 0 10px; }
+    .eyebrow {
+      display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--gold);
+      border: 1px solid rgba(245,201,123,.35); border-radius: var(--r-pill);
+      padding: 6px 14px; background: rgba(245,201,123,.07);
+    }
+    h1 { font-size: clamp(30px, 6vw, 44px); line-height: 1.12; letter-spacing: -.02em; margin: 18px 0 12px; }
+    h1 .grad {
+      background: linear-gradient(100deg, var(--gold) 10%, #FFE3AE 50%, var(--gold-deep) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub { color: var(--text-2); font-size: 16.5px; line-height: 1.65; max-width: 620px; margin: 0 auto; }
+
+    .heroimg {
+      margin: 26px auto 0; border-radius: var(--r-panel); overflow: hidden;
+      border: 1px solid rgba(245,201,123,.30);
+      box-shadow: inset 0 1px 0 var(--stroke-hi), 0 40px 90px -40px rgba(0,0,0,.9), 0 0 60px -18px rgba(245,201,123,.25);
+    }
+    .heroimg img { display: block; width: 100%; height: auto; }
+    .heroimg figcaption { font-size: 12.5px; color: var(--text-3); padding: 10px 14px 12px; background: var(--bg-deep); }
+
+    /* Personalized tree card (?baum=&seit=) */
+    .mytree {
+      display: none; margin: 26px 0 0; padding: 18px 20px;
+      background: linear-gradient(160deg, var(--surface-hi), var(--surface));
+      border: 1px solid rgba(245,201,123,.45); border-radius: var(--r-card);
+      box-shadow: inset 0 1px 0 var(--stroke-hi), 0 24px 60px -30px rgba(0,0,0,.85);
+      align-items: center; gap: 16px; text-align: left;
+    }
+    .mytree.show { display: flex; }
+    .mytree .ring {
+      flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 26px;
+      background: rgba(245,201,123,.12); border: 1px solid rgba(245,201,123,.5);
+      box-shadow: 0 0 26px -6px rgba(245,201,123,.55);
+    }
+    .mytree h2 { font-size: 18px; letter-spacing: -.01em; margin-bottom: 3px; }
+    .mytree p { color: var(--text-2); font-size: 13.5px; line-height: 1.5; }
+    .mytree b { color: var(--gold); font-weight: 800; }
+
+    section { margin-top: 44px; }
+    section > h2 { font-size: 24px; letter-spacing: -.015em; margin-bottom: 6px; }
+    section > p.lead { color: var(--text-2); font-size: 15px; line-height: 1.6; max-width: 640px; }
+
+    .steps { display: grid; gap: 12px; margin-top: 18px; }
+    @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr 1fr; } }
+    .step {
+      background: var(--surface); border: 1px solid var(--stroke); border-radius: var(--r-card);
+      padding: 18px 16px 16px;
+      box-shadow: inset 0 1px 0 var(--stroke-hi), 0 18px 40px -24px rgba(0,0,0,.8);
+    }
+    .step .n {
+      display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 10px;
+      background: rgba(245,201,123,.12); color: var(--gold); font-weight: 800; font-size: 14px;
+      border: 1px solid rgba(245,201,123,.35); margin-bottom: 10px;
+    }
+    .step h3 { font-size: 15.5px; margin-bottom: 6px; letter-spacing: -.01em; }
+    .step p { color: var(--text-2); font-size: 13.5px; line-height: 1.55; }
+    .step p b { color: var(--text); }
+
+    .promise {
+      margin-top: 18px; display: grid; gap: 10px;
+    }
+    .promise .row {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--surface); border: 1px solid var(--stroke); border-radius: 16px; padding: 13px 15px;
+    }
+    .promise .dot {
+      flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+      background: rgba(74,222,194,.10); color: var(--mint); border: 1px solid rgba(74,222,194,.35); font-size: 13px;
+    }
+    .promise h3 { font-size: 14.5px; margin-bottom: 2px; }
+    .promise p { color: var(--text-2); font-size: 13px; line-height: 1.5; }
+
+    .rounds {
+      margin-top: 18px; background: var(--surface); border: 1px dashed var(--stroke);
+      border-radius: var(--r-card); padding: 22px 20px; text-align: center; color: var(--text-2);
+      font-size: 14px; line-height: 1.6;
+    }
+    .rounds b { color: var(--text); }
+
+    .cert {
+      margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      border-radius: var(--r-pill); padding: 8px 14px; font-size: 13px; font-weight: 700;
+    }
+    .chip.reserved { border: 1px solid rgba(245,201,123,.5); color: var(--gold); }
+    .chip.planted { border: 1px solid rgba(74,222,194,.55); color: var(--mint); background: rgba(74,222,194,.08); }
+    .chip .arrow { color: var(--text-3); font-weight: 400; }
+
+    .footnote {
+      margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--stroke);
+      color: var(--text-3); font-size: 12.5px; line-height: 1.6;
+    }
+    .cta {
+      margin-top: 26px; text-align: center;
+    }
+    .cta a {
+      display: inline-block; text-decoration: none; font-weight: 800; font-size: 15px;
+      color: #241A06; background: linear-gradient(100deg, var(--gold), #FFE0A3);
+      border-radius: 16px; padding: 14px 26px;
+      box-shadow: 0 18px 40px -18px rgba(245,201,123,.55);
+    }
+    .cta p { margin-top: 10px; color: var(--text-3); font-size: 12.5px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a href="/"><img src="../assets/app_icon_1024.png" alt="" /> Young by You</a>
+    </header>
+
+    <div class="hero">
+      <span class="eyebrow">Der Hain</span>
+      <h1>Echte Bäume.<br /><span class="grad">Verdient durch echte Tage.</span></h1>
+      <p class="sub">
+        In Young by You wächst dein „Lebenswerk“: ein Anwesen an der Küste, das mit
+        jedem aktiven Tag weiterentsteht. Alle <b>30 aktiven Tage</b> erscheint das
+        nächste Bild – und im Hain erstrahlt ein neuer Baum. Zwölf Bäume für zwölf
+        Monate. Und hinter den goldenen Bäumen stehen echte.
+      </p>
+
+      <div class="mytree" id="mytree">
+        <div class="ring">🌳</div>
+        <div>
+          <h2 id="mytree-title">Dein Baum</h2>
+          <p id="mytree-sub">Verdient durch 30 aktive Tage.</p>
+        </div>
+      </div>
+
+      <figure class="heroimg">
+        <img src="lebenswerk.jpg" alt="Das vollendete Lebenswerk: eine Villa an der Küste mit zwölf golden leuchtenden Bäumen im Hain" />
+        <figcaption>Bild 13 von 13 – „Dein Lebenswerk“ mit allen zwölf Bäumen im Hain.</figcaption>
+      </figure>
+    </div>
+
+    <section>
+      <h2>So funktioniert der Hain</h2>
+      <p class="lead">Drei Schritte – und bei jedem bleibt die gleiche Regel: Bäume entstehen durch das, was du tust. Nie durch das, was du zahlst.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="n">1</span>
+          <h3>Du bleibst dran</h3>
+          <p>Jeder Tag mit mindestens einer abgehakten Routine ist ein <b>aktiver Tag</b>. Alle 30 aktiven Tage wächst dein Lebenswerk-Bild – und ein Baum erstrahlt golden in deinem Hain.</p>
+        </div>
+        <div class="step">
+          <span class="n">2</span>
+          <h3>Nutzung schaltet frei</h3>
+          <p>Starke Wochen lassen deinen Setzling im Hain-Register heranwachsen. <b>Zahlungen finanzieren</b> die echten Pflanzungen nur – fest gedeckelt, aus unseren Einnahmen. Kaufen kann man einen Baum nie.</p>
+        </div>
+        <div class="step">
+          <span class="n">3</span>
+          <h3>Gepflanzt &amp; belegt</h3>
+          <p>Nach jeder Pflanzrunde wird dein Baum im Register von „Vorgemerkt“ zu „Gepflanzt“ – mit einem <b>öffentlichen Zertifikat</b> pro Baum, direkt in der App verlinkt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dein Zertifikat</h2>
+      <p class="lead">
+        Die Anzeige verspricht nie mehr als die Wirklichkeit: Ein Baum erscheint im
+        Register zuerst als „Vorgemerkt“ und erst nach der echten Pflanzung als
+        „Gepflanzt“ – dann mit seinem Beleg, den du direkt vom Baum in deinem
+        Lebenswerk aus öffnen kannst.
+      </p>
+      <div class="cert">
+        <span class="chip reserved">Vorgemerkt</span>
+        <span class="chip"><span class="arrow">→ Pflanzrunde →</span></span>
+        <span class="chip planted">Gepflanzt · Zertifikat ansehen</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Wo wird gepflanzt?</h2>
+      <p class="lead">
+        Gepflanzt wird über etablierte Aufforstungspartner. Jede Pflanzrunde
+        veröffentlichen wir an dieser Stelle – mit Projekt, Ort und Anzahl der
+        Bäume.
+      </p>
+      <div class="rounds">
+        <b>Die erste Pflanzrunde wird hier veröffentlicht.</b><br />
+        Projekt, Ort und Anzahl der Bäume erscheinen nach der Runde – zusammen mit
+        den öffentlichen Zertifikaten.
+      </div>
+    </section>
+
+    <div class="cta">
+      <a href="/">Mehr über Young by You</a>
+      <p>Dein Hain lebt in der App – unter „Dein Lebenswerk“.</p>
+    </div>
+
+    <p class="footnote">
+      Baumpflanzungen sind eine freiwillige Leistung von Young by You und kein
+      Bestandteil eines Kaufs. Echte Bäume geben keinen Vorteil in der App.
+      Young by You funktioniert ohne Konto – auch dein Hain-Register gehört dir.
+    </p>
+  </div>
+
+  <script>
+    // Personalized card from the app link: /hain/?baum=3&seit=2026-08-01
+    // Strictly validated; values are written via textContent only.
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search);
+        var baum = parseInt(q.get('baum') || '', 10);
+        var seit = (q.get('seit') || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        var card = document.getElementById('mytree');
+        if (!card) return;
+        var title = document.getElementById('mytree-title');
+        var sub = document.getElementById('mytree-sub');
+        var lines = [];
+        if (baum >= 1 && baum <= 12) {
+          title.textContent = 'Dein Baum Nr. ' + baum;
+        } else if (!seit) {
+          return; // nothing to personalize
+        }
+        if (seit) {
+          var d = new Date(
+            parseInt(seit[1], 10),
+            parseInt(seit[2], 10) - 1,
+            parseInt(seit[3], 10)
+          );
+          if (!isNaN(d.getTime())) {
+            var fmt = new Intl.DateTimeFormat('de-DE', {
+              day: 'numeric', month: 'long', year: 'numeric'
+            }).format(d);
+            lines.push('Erstrahlt seit ' + fmt + '.');
+          }
+        }
+        lines.push('Verdient durch 30 aktive Tage in Young by You.');
+        sub.textContent = lines.join(' ');
+        card.classList.add('show');
+      } catch (e) { /* personalization is a bonus – never break the page */ }
+    })();
+  </script>
+</body>
+</html>
