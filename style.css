@@ -163,6 +163,15 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .btn-ghost::after { display: none; }
 .btn-ghost:hover { background: rgba(74,222,194,.08); box-shadow: none; }
 
+/* Games teaser – a language-neutral strip of game emoji tiles (#spiele) */
+.game-emojis { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 600px; margin: 30px auto 0; }
+.game-emoji {
+  width: 52px; height: 52px; display: grid; place-items: center;
+  font-size: 26px; line-height: 1;
+  background: var(--surface); border: 1px solid var(--stroke); border-radius: 14px;
+  box-shadow: var(--e-1);
+}
+
 /* ═══════════ Hero ═══════════ */
 .hero {
   display: grid;

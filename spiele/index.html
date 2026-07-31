@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Die Spiele · Young by You</title>
+  <meta name="description" content="32 kurze Denk-Duelle in Young by You: Reaktion, Gedächtnis und Konzentration – spiel gegen dich, gegen die Zeit und gegen Freunde. Lade die App." />
+  <meta property="og:title" content="32 Denk-Duelle · Young by You" />
+  <meta property="og:description" content="Kurze, schnelle Brain-Games für Reaktion, Gedächtnis und Fokus. Spiel gegen dich, die Zeit und deine Freunde." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://youngbyyou.com/assets/app_icon_1024.png" />
+  <meta name="theme-color" content="#0A0E1A" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="../assets/app_icon_1024.png" />
+  <style>
+    :root {
+      --bg: #0A0E1A; --bg-deep: #070A14; --surface: #131A2C; --surface-hi: #1B2440;
+      --stroke: #263150; --stroke-hi: rgba(120,150,210,.20);
+      --mint: #4ADEC2; --mint-bright: #6CF0D8; --gold: #F5C97B;
+      --text: #F2F5FA; --text-2: #9AA6C0; --text-3: #5E6A87;
+      --r-card: 18px; --r-pill: 100px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(120% 70% at 50% -10%, rgba(74,222,194,0.10), transparent 60%),
+        radial-gradient(100% 70% at 50% 118%, rgba(245,201,123,0.06), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding: 0 20px calc(52px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 940px; margin: 0 auto; }
+
+    header.top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 18px 0 6px;
+    }
+    header.top .brand {
+      color: var(--text-2); text-decoration: none; font-size: 14px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    header.top .brand:hover { color: var(--text); }
+    header.top .brand img { width: 30px; height: 30px; border-radius: 8px; display: block; }
+    .lang {
+      appearance: none; cursor: pointer; font: inherit;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .04em;
+      color: var(--text-2); background: rgba(255,255,255,.03);
+      border: 1px solid var(--stroke); border-radius: var(--r-pill);
+      padding: 7px 13px; transition: color .15s, border-color .15s;
+    }
+    .lang:hover { color: var(--text); border-color: var(--stroke-hi); }
+
+    .hero { text-align: center; padding: 30px 0 8px; }
+    .eyebrow {
+      display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--mint);
+      border: 1px solid rgba(74,222,194,.32); border-radius: var(--r-pill);
+      padding: 6px 14px; background: rgba(74,222,194,.06);
+    }
+    h1 { font-size: clamp(30px, 6vw, 46px); line-height: 1.1; letter-spacing: -.02em; margin: 18px 0 14px; }
+    h1 .grad {
+      background: linear-gradient(100deg, var(--mint) 6%, var(--mint-bright) 52%, var(--gold) 96%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub { color: var(--text-2); font-size: 16.5px; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+
+    .grid {
+      margin-top: 34px;
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    @media (min-width: 560px) { .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+    .game {
+      display: flex; flex-direction: column; gap: 8px;
+      text-decoration: none; color: var(--text);
+      background:
+        linear-gradient(160deg, color-mix(in srgb, var(--accent) 12%, var(--surface-hi)), var(--surface));
+      border: 1px solid var(--stroke); border-radius: var(--r-card);
+      padding: 16px 15px 15px;
+      box-shadow: inset 0 1px 0 var(--stroke-hi), 0 16px 36px -26px rgba(0,0,0,.85);
+      transition: transform .12s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .game:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--stroke));
+      box-shadow: inset 0 1px 0 var(--stroke-hi), 0 22px 46px -24px rgba(0,0,0,.9),
+                  0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+    .game .ico {
+      width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center;
+      font-size: 25px; line-height: 1;
+      background: color-mix(in srgb, var(--accent) 20%, var(--bg-deep));
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      box-shadow: 0 0 24px -10px var(--accent);
+    }
+    .game .gname { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
+    .game .gdesc { font-size: 12.8px; line-height: 1.45; color: var(--text-2); }
+
+    .count-note { text-align: center; margin-top: 20px; color: var(--text-3); font-size: 13px; }
+
+    .cta {
+      margin-top: 34px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .stores { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .store {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none; font-weight: 800; font-size: 15.5px;
+      padding: 14px 22px; border-radius: 16px; border: 1px solid var(--stroke);
+      color: var(--text); background: var(--bg-deep); transition: transform .12s ease;
+    }
+    .store:active { transform: scale(.98); }
+    .store.primary { background: linear-gradient(135deg, var(--mint-bright), var(--mint)); color: #06231C; border-color: transparent; }
+    .store svg { width: 20px; height: 20px; flex: none; }
+    .cta p { color: var(--text-3); font-size: 12.5px; }
+
+    .footnote {
+      margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--stroke);
+      color: var(--text-3); font-size: 12px; line-height: 1.6; text-align: center;
+    }
+    .footnote a { color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/"><img src="../assets/app_icon_1024.png" alt="" /> Young by You</a>
+      <button class="lang" id="lang" aria-label="Switch language">EN</button>
+    </header>
+
+    <div class="hero">
+      <span class="eyebrow" data-de="Die Spiele" data-en="The games">Die Spiele</span>
+      <h1 data-de="32 Denk-Duelle&lt;br /&gt;&lt;span class=&quot;grad&quot;&gt;in deiner Tasche.&lt;/span&gt;" data-en="32 brain duels&lt;br /&gt;&lt;span class=&quot;grad&quot;&gt;in your pocket.&lt;/span&gt;">32 Denk-Duelle<br /><span class="grad">in deiner Tasche.</span></h1>
+      <p class="sub" data-de="Kurze, schnelle Spiele für Reaktion, Gedächtnis und Konzentration – spiel gegen dich, gegen die Zeit und gegen deine Freunde. Alle sind in der App enthalten." data-en="Short, fast games for reaction, memory and focus – play against yourself, the clock and your friends. Every one is included in the app.">Kurze, schnelle Spiele für Reaktion, Gedächtnis und Konzentration – spiel gegen dich, gegen die Zeit und gegen deine Freunde. Alle sind in der App enthalten.</p>
+    </div>
+
+    <div class="grid">
+      <a class="game" href="/g/ring/" style="--accent:#34D399">
+        <span class="ico" aria-hidden="true">⭕</span>
+        <span class="gname" data-de="Perfekter Kreis" data-en="Perfect circle">Perfekter Kreis</span>
+        <span class="gdesc" data-de="Zeichne den perfektesten Kreis, den du kannst." data-en="Draw the most perfect circle you can.">Zeichne den perfektesten Kreis, den du kannst.</span>
+      </a>
+      <a class="game" href="/g/reflex/" style="--accent:#F5C97B">
+        <span class="ico" aria-hidden="true">⚡</span>
+        <span class="gname" data-de="Reflex-Duell" data-en="Reflex duel">Reflex-Duell</span>
+        <span class="gdesc" data-de="Tippe in dem Moment, in dem es umschlägt." data-en="Tap the instant the screen flips.">Tippe in dem Moment, in dem es umschlägt.</span>
+      </a>
+      <a class="game" href="/g/mole/" style="--accent:#69C779">
+        <span class="ico" aria-hidden="true">🔨</span>
+        <span class="gname" data-de="Maulwurf-Duell" data-en="Whack duel">Maulwurf-Duell</span>
+        <span class="gdesc" data-de="Triff jeden Maulwurf, so schnell du kannst." data-en="Whack every mole as fast as you can.">Triff jeden Maulwurf, so schnell du kannst.</span>
+      </a>
+      <a class="game" href="/g/chimp/" style="--accent:#FDA43B">
+        <span class="ico" aria-hidden="true">🐵</span>
+        <span class="gname" data-de="Affen-Duell" data-en="Chimp duel">Affen-Duell</span>
+        <span class="gdesc" data-de="Merk dir die Zahlenfelder wie ein Schimpanse." data-en="Remember the number tiles like a chimp.">Merk dir die Zahlenfelder wie ein Schimpanse.</span>
+      </a>
+      <a class="game" href="/g/nerve/" style="--accent:#32E0D8">
+        <span class="ico" aria-hidden="true">😬</span>
+        <span class="gname" data-de="Nerven-Duell" data-en="Nerve duel">Nerven-Duell</span>
+        <span class="gdesc" data-de="Halt die Nerven – stopp im richtigen Moment." data-en="Hold your nerve – stop at the right moment.">Halt die Nerven – stopp im richtigen Moment.</span>
+      </a>
+      <a class="game" href="/g/outlier/" style="--accent:#FFB03A">
+        <span class="ico" aria-hidden="true">🔎</span>
+        <span class="gname" data-de="Nur 1%" data-en="Only 1%">Nur 1%</span>
+        <span class="gdesc" data-de="Finde den einen, der anders ist." data-en="Spot the one that’s different.">Finde den einen, der anders ist.</span>
+      </a>
+      <a class="game" href="/g/rhythm/" style="--accent:#FF5CA8">
+        <span class="ico" aria-hidden="true">🥁</span>
+        <span class="gname" data-de="Takt-Duell" data-en="Beat duel">Takt-Duell</span>
+        <span class="gdesc" data-de="Triff den Takt auf den Punkt." data-en="Keep the beat right on time.">Triff den Takt auf den Punkt.</span>
+      </a>
+      <a class="game" href="/g/hue/" style="--accent:#2FC7E8">
+        <span class="ico" aria-hidden="true">🎨</span>
+        <span class="gname" data-de="Farbton-Duell" data-en="Shade duel">Farbton-Duell</span>
+        <span class="gdesc" data-de="Finde den einen abweichenden Farbton." data-en="Find the one shade that stands out.">Finde den einen abweichenden Farbton.</span>
+      </a>
+      <a class="game" href="/g/aim/" style="--accent:#F0475E">
+        <span class="ico" aria-hidden="true">🎯</span>
+        <span class="gname" data-de="Ziel-Blitz" data-en="Aim blitz">Ziel-Blitz</span>
+        <span class="gdesc" data-de="Triff die Ziele im Blitztempo." data-en="Hit the targets at blitz speed.">Triff die Ziele im Blitztempo.</span>
+      </a>
+      <a class="game" href="/g/check/" style="--accent:#4FB0FF">
+        <span class="ico" aria-hidden="true">✅</span>
+        <span class="gname" data-de="Wahr-Blitz" data-en="True flash">Wahr-Blitz</span>
+        <span class="gdesc" data-de="Wahr oder falsch – blitzschnell entscheiden." data-en="True or false – decide in a flash.">Wahr oder falsch – blitzschnell entscheiden.</span>
+      </a>
+      <a class="game" href="/g/stroop/" style="--accent:#FF6FA5">
+        <span class="ico" aria-hidden="true">🌈</span>
+        <span class="gname" data-de="Farb-Duell" data-en="Colour duel">Farb-Duell</span>
+        <span class="gdesc" data-de="Die Farbe zählt, nicht das Wort." data-en="The colour counts, not the word.">Die Farbe zählt, nicht das Wort.</span>
+      </a>
+      <a class="game" href="/g/schulte/" style="--accent:#A9E34B">
+        <span class="ico" aria-hidden="true">🔢</span>
+        <span class="gname" data-de="Ordnungs-Duell" data-en="Order duel">Ordnungs-Duell</span>
+        <span class="gdesc" data-de="Finde die Zahlen 1 bis 25 der Reihe nach." data-en="Find the numbers 1 to 25 in order.">Finde die Zahlen 1 bis 25 der Reihe nach.</span>
+      </a>
+      <a class="game" href="/g/stack/" style="--accent:#46B7F5">
+        <span class="ico" aria-hidden="true">🧱</span>
+        <span class="gname" data-de="Stapel-Duell" data-en="Stack duel">Stapel-Duell</span>
+        <span class="gdesc" data-de="Stapel die Blöcke so hoch wie möglich." data-en="Stack the blocks as high as you can.">Stapel die Blöcke so hoch wie möglich.</span>
+      </a>
+      <a class="game" href="/g/finger/" style="--accent:#C24DFF">
+        <span class="ico" aria-hidden="true">🖐️</span>
+        <span class="gname" data-de="Fingerblitz" data-en="Finger blitz">Fingerblitz</span>
+        <span class="gdesc" data-de="Tippe so oft du kannst, bevor die Zeit abläuft." data-en="Tap as many times as you can before time’s up.">Tippe so oft du kannst, bevor die Zeit abläuft.</span>
+      </a>
+      <a class="game" href="/g/count/" style="--accent:#E86FD4">
+        <span class="ico" aria-hidden="true">🧮</span>
+        <span class="gname" data-de="Zähl-Blitz" data-en="Count blitz">Zähl-Blitz</span>
+        <span class="gdesc" data-de="Zähl auf einen Blick, wie viele es sind." data-en="Count how many there are, in a blink.">Zähl auf einen Blick, wie viele es sind.</span>
+      </a>
+      <a class="game" href="/g/pattern/" style="--accent:#5AA9FF">
+        <span class="ico" aria-hidden="true">🧩</span>
+        <span class="gname" data-de="Muster-Merken" data-en="Pattern recall">Muster-Merken</span>
+        <span class="gdesc" data-de="Merk dir das Muster und gib es wieder." data-en="Memorise the pattern and repeat it.">Merk dir das Muster und gib es wieder.</span>
+      </a>
+      <a class="game" href="/g/mem/" style="--accent:#9B8CFF">
+        <span class="ico" aria-hidden="true">🧠</span>
+        <span class="gname" data-de="Merk-Duell" data-en="Memory duel">Merk-Duell</span>
+        <span class="gdesc" data-de="Merk dir die Folge, Schritt für Schritt." data-en="Remember the sequence, step by step.">Merk dir die Folge, Schritt für Schritt.</span>
+      </a>
+      <a class="game" href="/g/landing/" style="--accent:#5B6CF5">
+        <span class="ico" aria-hidden="true">🛬</span>
+        <span class="gname" data-de="Punktlandung" data-en="Bullseye clock">Punktlandung</span>
+        <span class="gdesc" data-de="Stopp den Zeiger genau im Ziel." data-en="Stop the hand right on the target.">Stopp den Zeiger genau im Ziel.</span>
+      </a>
+      <a class="game" href="/g/balance/" style="--accent:#F2C230">
+        <span class="ico" aria-hidden="true">⚖️</span>
+        <span class="gname" data-de="Balance-Duell" data-en="Timing duel">Balance-Duell</span>
+        <span class="gdesc" data-de="Finde den perfekten Moment des Gleichgewichts." data-en="Find the perfect moment of balance.">Finde den perfekten Moment des Gleichgewichts.</span>
+      </a>
+      <a class="game" href="/g/rotation/" style="--accent:#B26CF5">
+        <span class="ico" aria-hidden="true">🔄</span>
+        <span class="gname" data-de="Dreh-Duell" data-en="Rotation duel">Dreh-Duell</span>
+        <span class="gdesc" data-de="Erkenne die Form, egal wie gedreht." data-en="Recognise the shape, however it’s turned.">Erkenne die Form, egal wie gedreht.</span>
+      </a>
+      <a class="game" href="/g/phantom/" style="--accent:#F34DA0">
+        <span class="ico" aria-hidden="true">👻</span>
+        <span class="gname" data-de="Phantom-Punkte" data-en="Ghost dots">Phantom-Punkte</span>
+        <span class="gdesc" data-de="Merk dir, wo die Punkte waren." data-en="Remember where the dots were.">Merk dir, wo die Punkte waren.</span>
+      </a>
+      <a class="game" href="/g/weitblick/" style="--accent:#20C997">
+        <span class="ico" aria-hidden="true">🔭</span>
+        <span class="gname" data-de="Weitblick" data-en="Edge vision">Weitblick</span>
+        <span class="gdesc" data-de="Erfasse, was am Rand aufblitzt." data-en="Catch what flashes at the edge.">Erfasse, was am Rand aufblitzt.</span>
+      </a>
+      <a class="game" href="/g/seq/" style="--accent:#7C6CFF">
+        <span class="ico" aria-hidden="true">🔗</span>
+        <span class="gname" data-de="Zahlen-IQ" data-en="Number IQ">Zahlen-IQ</span>
+        <span class="gdesc" data-de="Welche Zahl kommt als Nächstes?" data-en="Which number comes next?">Welche Zahl kommt als Nächstes?</span>
+      </a>
+      <a class="game" href="/g/guess/" style="--accent:#48D07A">
+        <span class="ico" aria-hidden="true">🎲</span>
+        <span class="gname" data-de="Schätz-Duell" data-en="Guess duel">Schätz-Duell</span>
+        <span class="gdesc" data-de="Schätz die Menge auf einen Blick." data-en="Estimate the amount at a glance.">Schätz die Menge auf einen Blick.</span>
+      </a>
+      <a class="game" href="/g/number/" style="--accent:#F2705E">
+        <span class="ico" aria-hidden="true">🔢</span>
+        <span class="gname" data-de="Zahlen-Duell" data-en="Number duel">Zahlen-Duell</span>
+        <span class="gdesc" data-de="Merk dir die Zahl, Ziffer für Ziffer." data-en="Remember the number, digit by digit.">Merk dir die Zahl, Ziffer für Ziffer.</span>
+      </a>
+      <a class="game" href="/g/pairs/" style="--accent:#FF9E64">
+        <span class="ico" aria-hidden="true">🃏</span>
+        <span class="gname" data-de="Paar-Duell" data-en="Pair duel">Paar-Duell</span>
+        <span class="gdesc" data-de="Finde alle Paare aus dem Gedächtnis." data-en="Find every pair from memory.">Finde alle Paare aus dem Gedächtnis.</span>
+      </a>
+      <a class="game" href="/g/math/" style="--accent:#37D2C4">
+        <span class="ico" aria-hidden="true">➗</span>
+        <span class="gname" data-de="Rechen-Sprint" data-en="Math sprint">Rechen-Sprint</span>
+        <span class="gdesc" data-de="Löse so viele Aufgaben wie möglich." data-en="Solve as many sums as you can.">Löse so viele Aufgaben wie möglich.</span>
+      </a>
+      <a class="game" href="/g/sort/" style="--accent:#33C9E0">
+        <span class="ico" aria-hidden="true">🗂️</span>
+        <span class="gname" data-de="Sortier-Duell" data-en="Sort duel">Sortier-Duell</span>
+        <span class="gdesc" data-de="Bring alles blitzschnell in die richtige Reihenfolge." data-en="Put everything in the right order, fast.">Bring alles blitzschnell in die richtige Reihenfolge.</span>
+      </a>
+      <a class="game" href="/g/group/" style="--accent:#EC6A9C">
+        <span class="ico" aria-hidden="true">🧺</span>
+        <span class="gname" data-de="Gruppen-Duell" data-en="Group duel">Gruppen-Duell</span>
+        <span class="gdesc" data-de="Sortier die Dinge in die richtige Gruppe." data-en="Sort the items into the right group.">Sortier die Dinge in die richtige Gruppe.</span>
+      </a>
+      <a class="game" href="/g/hilo/" style="--accent:#9BD64A">
+        <span class="ico" aria-hidden="true">📈</span>
+        <span class="gname" data-de="Höher oder Tiefer" data-en="Higher or lower">Höher oder Tiefer</span>
+        <span class="gdesc" data-de="Höher oder tiefer? Tippe richtig." data-en="Higher or lower? Call it right.">Höher oder tiefer? Tippe richtig.</span>
+      </a>
+      <a class="game" href="/g/word/" style="--accent:#5B9DFF">
+        <span class="ico" aria-hidden="true">📝</span>
+        <span class="gname" data-de="Wort-Duell" data-en="Word duel">Wort-Duell</span>
+        <span class="gdesc" data-de="Finde die versteckten Wörter." data-en="Find the hidden words.">Finde die versteckten Wörter.</span>
+      </a>
+      <a class="game" href="/g/typing/" style="--accent:#6E8BFF">
+        <span class="ico" aria-hidden="true">⌨️</span>
+        <span class="gname" data-de="Tipp-Duell" data-en="Typing duel">Tipp-Duell</span>
+        <span class="gdesc" data-de="Tippe die Wörter schnell und fehlerfrei." data-en="Type the words fast and clean.">Tippe die Wörter schnell und fehlerfrei.</span>
+      </a>
+    </div>
+
+    <p class="count-note" data-de="Und es werden immer mehr." data-en="And more keep arriving.">Und es werden immer mehr.</p>
+
+    <div class="cta">
+      <div class="stores">
+        <a class="store primary" id="appStore" href="/">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 1.6c0 1.1-.4 2.1-1.2 3-.9.9-1.9 1.5-3 1.4-.1-1.1.4-2.2 1.2-3 .8-.9 2-1.5 3-1.4zM20.4 17.1c-.5 1.2-.8 1.7-1.5 2.8-1 1.5-2.3 3.4-4 3.4-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2-2.7-4.2-3-9.1-1.3-11.7 1.2-1.9 3-2.9 4.8-2.9 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.6 0 3.2.9 4.4 2.4-3.8 2.1-3.2 7.5.6 9z"/></svg>
+          <span data-de="Im App Store laden" data-en="Download on the App Store">Im App Store laden</span>
+        </a>
+        <a class="store" id="playStore" href="/">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.7-.5 1.2v17c0 .5.2.9.5 1.2l.1.1L13 12.6v-.2L3.7 2.2l-.1.1zM17 15.9l-3.1-3.1v-.2l3.1-3.1 3.7 2.1c1 .6 1 1.6 0 2.2L17 15.9zm-.6.4l-3.2-3.2-9.3 9.3c.4.3 1 .4 1.6.1l10.9-6.2zM3.9 1.6l9.3 9.3 3.2-3.2L5.5 1.5c-.6-.3-1.2-.2-1.6.1z"/></svg>
+          <span data-de="Bei Google Play" data-en="Get it on Google Play">Bei Google Play</span>
+        </a>
+      </div>
+      <p data-de="Alle Spiele sind Teil der App – ohne Konto, ohne Werbung." data-en="Every game is part of the app – no account, no ads.">Alle Spiele sind Teil der App – ohne Konto, ohne Werbung.</p>
+    </div>
+
+    <p class="footnote">
+      <a href="/">youngbyyou.com</a> · <span data-de="Werde jünger, gemeinsam." data-en="Get younger, together.">Werde jünger, gemeinsam.</span>
+    </p>
+  </div>
+
+  <script src="/store.js"></script>
+  <script>
+    // Store links come from /store.js — one flip on launch day covers every page.
+    (function () {
+      var s = window.YBY_STORE || {};
+      if (s.appStore) document.getElementById('appStore').href = s.appStore;
+      if (s.playStore) document.getElementById('playStore').href = s.playStore;
+    })();
+
+    // ── DE/EN toggle: swap textContent from data-de / data-en (SEO-safe: German
+    //    is in the HTML; JS only swaps). h1 carries markup, so swap innerHTML there.
+    var btn = document.getElementById('lang');
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-' + lang + ']').forEach(function (el) {
+        var val = el.getAttribute('data-' + lang);
+        if (val == null) return;
+        if (el.tagName === 'H1') el.innerHTML = val; else el.textContent = val;
+      });
+      btn.textContent = lang === 'de' ? 'EN' : 'DE';
+      try { localStorage.setItem('yby-lang', lang); } catch (e) {}
+    }
+    var initial = 'de';
+    try { initial = localStorage.getItem('yby-lang') || initial; } catch (e) {}
+    if (!(function () { try { return localStorage.getItem('yby-lang'); } catch (e) { return null; } })()
+        && !navigator.language.startsWith('de')) { initial = 'en'; }
+    btn.addEventListener('click', function () {
+      apply(document.documentElement.lang === 'de' ? 'en' : 'de');
+    });
+    if (initial !== 'de') apply(initial);
+  </script>
+</body>
+</html>
