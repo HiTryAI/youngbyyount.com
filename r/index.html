@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Einladung · Young by You</title>
+  <meta name="description" content="Ein Freund hat dich zu Young by You eingeladen – gemeinsam jünger werden, mit Routinen, Spielen und echten Bäumen." />
+  <meta name="robots" content="noindex" />
+  <!-- Open Graph so the link shows a rich card in WhatsApp / iMessage / Telegram -->
+  <meta property="og:title" content="Du bist eingeladen 🌱" />
+  <meta property="og:description" content="Ein Freund lädt dich zu Young by You ein. Lade die App – dein Code ist schon dabei." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #0A0E1A; --bg-deep: #070A14; --surface: #131A2C; --surface-hi: #1B2440;
+      --stroke: #263150; --mint: #4ADEC2; --mint-bright: #6CF0D8; --gold: #F5C97B;
+      --text: #F2F5FA; --text-dim: #9AA6C0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(120% 80% at 50% -10%, rgba(74,222,194,0.14), transparent 60%),
+        radial-gradient(100% 70% at 50% 110%, rgba(245,201,123,0.10), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: 100%; max-width: 460px;
+      background: linear-gradient(180deg, var(--surface-hi), var(--surface));
+      border: 1px solid var(--stroke); border-radius: 28px;
+      padding: 32px 26px; text-align: center;
+      box-shadow: 0 30px 80px -30px rgba(0,0,0,0.8);
+    }
+    .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 26px; }
+    .mono {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--mint-bright), var(--mint));
+      color: #06231C; font-weight: 900; font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .word { font-weight: 800; font-size: 17px; letter-spacing: -0.2px; }
+    .emoji { font-size: 46px; line-height: 1; margin-bottom: 12px; }
+    h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 10px; }
+    .sub { font-size: 15px; color: var(--text-dim); line-height: 1.5; margin-bottom: 24px; }
+    .stores { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+    .store {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-decoration: none; font-weight: 800; font-size: 16px;
+      padding: 15px 18px; border-radius: 16px; border: 1px solid var(--stroke);
+      color: var(--text); background: var(--bg-deep); transition: transform .12s ease, border-color .12s ease;
+    }
+    .store:active { transform: scale(0.98); }
+    .store.primary { background: linear-gradient(135deg, var(--mint-bright), var(--mint)); color: #06231C; border-color: transparent; }
+    .store svg { width: 22px; height: 22px; flex: none; }
+    .steps { text-align: left; background: var(--bg-deep); border: 1px solid var(--stroke); border-radius: 16px; padding: 16px 18px; margin-bottom: 20px; }
+    .steps li { list-style: none; display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: 14px; color: var(--text-dim); }
+    .steps b { color: var(--text); font-weight: 700; }
+    .n { flex: none; width: 24px; height: 24px; border-radius: 50%; background: rgba(74,222,194,0.14); color: var(--mint); font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .codewrap { margin-bottom: 6px; }
+    .codelabel { font-size: 12px; color: var(--text-dim); font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px; }
+    .code {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--bg-deep); border: 1px dashed var(--stroke); border-radius: 14px;
+      padding: 12px 14px; cursor: pointer;
+    }
+    .code code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px; letter-spacing: 1px; color: var(--mint); word-break: break-all; text-align: left; }
+    .copy { flex: none; font-size: 12px; font-weight: 800; color: var(--gold); }
+    .foot { margin-top: 20px; font-size: 12px; color: var(--text-dim); }
+    .foot a { color: var(--text-dim); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo"><div class="mono">Y</div><div class="word">Young by You</div></div>
+    <div class="emoji">🌱</div>
+    <h1>Du bist eingeladen</h1>
+    <p class="sub">Ein Freund nutzt Young by You – tägliche Routinen, 33 Denkspiele
+      und für jeden Fortschritt echte Bäume – und möchte dich dabei haben.</p>
+
+    <div class="stores">
+      <a class="store primary" id="appStore" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 1.6c0 1.1-.4 2.1-1.2 3-.9.9-1.9 1.5-3 1.4-.1-1.1.4-2.2 1.2-3 .8-.9 2-1.5 3-1.4zM20.4 17.1c-.5 1.2-.8 1.7-1.5 2.8-1 1.5-2.3 3.4-4 3.4-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2-2.7-4.2-3-9.1-1.3-11.7 1.2-1.9 3-2.9 4.8-2.9 1.8 0 2.9 1 4.4 1 1.4 0 2.3-1 4.4-1 1.6 0 3.2.9 4.4 2.4-3.8 2.1-3.2 7.5.6 9z"/></svg>
+        Im App Store laden
+      </a>
+      <a class="store" id="playStore" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.7-.5 1.2v17c0 .5.2.9.5 1.2l.1.1L13 12.6v-.2L3.7 2.2l-.1.1zM17 15.9l-3.1-3.1v-.2l3.1-3.1 3.7 2.1c1 .6 1 1.6 0 2.2L17 15.9zm-.6.4l-3.2-3.2-9.3 9.3c.4.3 1 .4 1.6.1l10.9-6.2zM3.9 1.6l9.3 9.3 3.2-3.2L5.5 1.5c-.6-.3-1.2-.2-1.6.1z"/></svg>
+        Bei Google Play
+      </a>
+    </div>
+
+    <ol class="steps">
+      <li><span class="n">1</span><span><b>App laden</b> und öffnen</span></li>
+      <li><span class="n">2</span><span>Zu <b>Profil → Freunde einladen</b></span></li>
+      <li><span class="n">3</span><span><b>Code eingeben</b> – fertig</span></li>
+    </ol>
+
+    <div class="codewrap" id="codeBox" hidden>
+      <div class="codelabel">Der Code deines Freundes</div>
+      <div class="code" id="codeRow" title="Tippen zum Kopieren">
+        <code id="codeText"></code>
+        <span class="copy" id="copyLabel">Kopieren</span>
+      </div>
+    </div>
+
+    <p style="margin-top:14px"><a id="openApp" href="#" hidden
+      style="font-size:13.5px;font-weight:700;color:var(--mint);text-decoration:none">
+      App schon installiert? Hier öffnen →</a></p>
+
+    <p class="foot">Ehrlich gesagt: Am Preis ändert der Code für dich nichts.
+      Er zählt für <b>deinen Freund</b> – wirst du irgendwann Mitglied,
+      schenken wir ihm dafür Monate.</p>
+
+    <p class="foot"><a href="/">youngbyyou.com</a> · Werde jünger, gemeinsam.</p>
+  </main>
+
+  <script src="/store.js"></script>
+  <script>
+    // Store links live in /store.js — ONE flip on launch day covers every
+    // landing page. Until then the buttons fall back to the homepage.
+    const APP_STORE_URL = (window.YBY_STORE && YBY_STORE.appStore) || '';
+    const PLAY_STORE_URL = (window.YBY_STORE && YBY_STORE.playStore) || '';
+
+    document.getElementById('appStore').href = APP_STORE_URL || '/';
+    document.getElementById('playStore').href = PLAY_STORE_URL || '/';
+
+    // The invite code rides in ?c=… (a static host cannot serve /r/<CODE> as a
+    // path). Shown so a freshly-installed app can take it — with the app
+    // already installed this page is normally skipped, because iOS matches the
+    // universal link and opens the app instead.
+    const params = new URLSearchParams(location.search);
+    const raw = (params.get('c') || '').trim().toUpperCase();
+    // Same shape the app accepts: letters and digits, 6–24 of them. Anything
+    // else is not a code, and pretending otherwise only wastes a tap.
+    const code = /^[A-Z0-9]{6,24}$/.test(raw) ? raw : '';
+    if (code) {
+      document.getElementById('codeText').textContent = code;
+      document.getElementById('codeBox').hidden = false;
+      // From a same-site tap Safari stays in the browser, so offer the
+      // youngbyyou:// jump straight into the app with the code attached.
+      const openApp = document.getElementById('openApp');
+      openApp.href = 'youngbyyou://r?c=' + encodeURIComponent(code);
+      openApp.hidden = false;
+      const row = document.getElementById('codeRow');
+      row.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+          document.getElementById('copyLabel').textContent = 'Kopiert ✓';
+        } catch (e) {
+          const sel = window.getSelection(); const r = document.createRange();
+          r.selectNodeContents(document.getElementById('codeText'));
+          sel.removeAllRanges(); sel.addRange(r);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -6,7 +6,9 @@
         "components": [
           { "/": "/d", "comment": "Duel challenge landing without code" },
           { "/": "/d/*", "comment": "Duel challenge landing (code in ?c=)" },
-          { "/": "/g/*", "comment": "Per-game landing pages" }
+          { "/": "/g/*", "comment": "Per-game landing pages" },
+          { "/": "/r", "comment": "Invite landing without code" },
+          { "/": "/r/*", "comment": "Invite landing (code in ?c=)" }
         ]
       }
     ]
