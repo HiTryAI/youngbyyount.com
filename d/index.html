@@ -129,7 +129,20 @@
     // path (youngbyyou.com/d/AB2CD, the typable link off a video's end
     // card), resolved over the worker. Either way the SAME display logic
     // runs, so a freshly-installed app can paste the code in.
+    // Games that play RIGHT HERE in the browser (/d/play, Flutter Web).
+    // Everything else keeps the classic page: code + store buttons. The
+    // list grows as more games learn to run on the web.
+    var PLAYABLE = /^(RD1|PK1)\./;
+    function maybePlay(code) {
+      if (PLAYABLE.test(code)) {
+        location.replace('/d/play/?c=' + encodeURIComponent(code));
+        return true;
+      }
+      return false;
+    }
+
     function showCode(code) {
+      if (maybePlay(code)) return;
       document.getElementById('codeText').textContent = code;
       document.getElementById('codeBox').hidden = false;
       // With the app installed this page normally never shows (universal
