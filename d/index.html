@@ -125,11 +125,11 @@
     document.getElementById('appStore').href = APP_STORE_URL || '/';
     document.getElementById('playStore').href = PLAY_STORE_URL || '/';
 
-    // The challenge code rides in ?c=… — show it so a freshly-installed app can
-    // paste it in. (Later, a Universal Link opens an installed app right here.)
-    const params = new URLSearchParams(location.search);
-    const code = (params.get('c') || '').trim();
-    if (code) {
+    // The challenge code rides in ?c=… — or as a 5-char Kurzcode in the
+    // path (youngbyyou.com/d/AB2CD, the typable link off a video's end
+    // card), resolved over the worker. Either way the SAME display logic
+    // runs, so a freshly-installed app can paste the code in.
+    function showCode(code) {
       document.getElementById('codeText').textContent = code;
       document.getElementById('codeBox').hidden = false;
       // With the app installed this page normally never shows (universal
@@ -149,6 +149,23 @@
           sel.removeAllRanges(); sel.addRange(r);
         }
       });
+    }
+
+    const params = new URLSearchParams(location.search);
+    const code = (params.get('c') || '').trim();
+    if (code) {
+      showCode(code);
+    } else {
+      // Path form: last segment, uppercased (people type what they saw and
+      // the Kurzcode alphabet has no confusable letter pairs anyway).
+      const seg = location.pathname.replace(/\/+$/, '').split('/').pop();
+      const short = (seg || '').toUpperCase();
+      if (/^[0-9A-HJKMNP-TV-Z]{5}$/.test(short)) {
+        fetch('https://yby-circles.yby-circle-worker.workers.dev/v1/short/' + short)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((json) => { if (json && json.code) showCode(json.code); })
+          .catch(() => {});
+      }
     }
   </script>
 </body>
