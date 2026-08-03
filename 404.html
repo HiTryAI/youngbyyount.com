@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Young by You</title>
+  <script>
+    // GitHub Pages hat keine Server-Rewrites – diese 404-Seite IST der
+    // Router für die tippbaren Kurzlinks von Video-Endkarten:
+    //   youngbyyou.com/d/AB2CD  →  /d/?s=AB2CD  (die Landing-Seite löst das
+    // Kürzel dann über den Kreis-Worker auf). Alles andere geht zur Startseite.
+    (function () {
+      var m = location.pathname.match(/^\/d\/([0-9A-Za-z]{5})\/?$/);
+      if (m) {
+        location.replace('/d/?s=' + m[1].toUpperCase());
+      } else {
+        location.replace('/');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p style="font-family:system-ui;padding:24px">
+    Einen Moment … <a href="/">zur Startseite</a>
+  </p>
+</body>
+</html>

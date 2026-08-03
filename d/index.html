@@ -156,10 +156,10 @@
     if (code) {
       showCode(code);
     } else {
-      // Path form: last segment, uppercased (people type what they saw and
-      // the Kurzcode alphabet has no confusable letter pairs anyway).
-      const seg = location.pathname.replace(/\/+$/, '').split('/').pop();
-      const short = (seg || '').toUpperCase();
+      // Kurzcode form: ?s=AB2CD (the 404-page router rewrites the typed
+      // /d/AB2CD to this), uppercased – people type what they saw and the
+      // Kurzcode alphabet has no confusable letter pairs anyway.
+      const short = (params.get('s') || '').trim().toUpperCase();
       if (/^[0-9A-HJKMNP-TV-Z]{5}$/.test(short)) {
         fetch('https://yby-circles.yby-circle-worker.workers.dev/v1/short/' + short)
           .then((r) => (r.ok ? r.json() : null))

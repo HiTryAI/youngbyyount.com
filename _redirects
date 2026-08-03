@@ -1,3 +1,0 @@
-# Kurzlinks von Video-Endkarten: /d/AB2CD ist kein statisches File –
-# dieselbe Landing-Seite antwortet und löst das Kürzel per Worker auf.
-/d/* /d/index.html 200
