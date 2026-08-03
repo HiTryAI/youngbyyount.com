@@ -130,11 +130,15 @@
     // card), resolved over the worker. Either way the SAME display logic
     // runs, so a freshly-installed app can paste the code in.
     // Games that play RIGHT HERE in the browser (/d/play, Flutter Web).
-    // Everything else keeps the classic page: code + store buttons. The
-    // list grows as more games learn to run on the web.
-    // Reflex, Perfekter Kreis, Merk-, Ordnungs-, Affen-, Farb- und
-    // Farbton-Duell run right here; the rest still gets code + store.
-    var PLAYABLE = /^(RD1|PK1|MD1|OD1|AD1|FD1|HD1)\./;
+    // ALL 32 games now run right here – every prefix in
+    // lib/data/duel_codes.dart. A code that is malformed or from a newer
+    // app still lands on the honest app door inside /d/play.
+    var PLAYABLE = new RegExp('^(' + [
+      'RD1', 'PK1', 'MW1', 'AD1', 'NV1', 'AU1', 'RH1', 'HD1',
+      'ZB1', 'CK1', 'FD1', 'OD1', 'ST1', 'FB1', 'BD1', 'MU1',
+      'MD1', 'PL1', 'BL1', 'DD1', 'PP1', 'WB1', 'IQ1', 'SD1',
+      'ZD1', 'PD1', 'MS1', 'SO1', 'GD1', 'HT1', 'WD1', 'TD1'
+    ].join('|') + ')\\.');
     function maybePlay(code) {
       if (PLAYABLE.test(code)) {
         location.replace('/d/play/?c=' + encodeURIComponent(code));
