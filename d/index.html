@@ -132,7 +132,9 @@
     // Games that play RIGHT HERE in the browser (/d/play, Flutter Web).
     // Everything else keeps the classic page: code + store buttons. The
     // list grows as more games learn to run on the web.
-    var PLAYABLE = /^(RD1|PK1)\./;
+    // Reflex, Perfekter Kreis, Merk-, Ordnungs-, Affen-, Farb- und
+    // Farbton-Duell run right here; the rest still gets code + store.
+    var PLAYABLE = /^(RD1|PK1|MD1|OD1|AD1|FD1|HD1)\./;
     function maybePlay(code) {
       if (PLAYABLE.test(code)) {
         location.replace('/d/play/?c=' + encodeURIComponent(code));
