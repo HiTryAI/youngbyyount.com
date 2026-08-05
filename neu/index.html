@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Young by You – Ein gehaltener Tag. Ein Baum.</title>
+<meta name="description" content="Kleine tägliche Routinen, die dich jung halten – und für jede gehaltene Serie wird ein echter Baum gepflanzt. Die ersten 14 Tage gehören dir.">
+<meta property="og:title" content="Young by You – One day kept. One tree.">
+<meta property="og:description" content="Small daily routines that keep you young — and every kept streak plants a real tree.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://youngbyyou.com/neu/assets/og.jpg">
+<meta name="theme-color" content="#e9ecec">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/app_icon.png">
+<link rel="preload" as="image" href="frames/s/f_001.jpg">
+<style>
+:root{
+  --ink:#1d1a16;
+  --ink-soft:rgba(29,26,22,.62);
+  --paper:#e9ecec;
+  --vh:1vh;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,"Segoe UI",Roboto,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+/* ── Scroll driver ─────────────────────────────── */
+#driver{height:760vh}
+/* ── Fixed film stage ──────────────────────────── */
+#stage{position:fixed;inset:0;overflow:hidden}
+#film{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* ── Loader ────────────────────────────────────── */
+#loader{
+  position:fixed;inset:0;z-index:60;background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  transition:opacity .9s ease, visibility .9s;
+}
+#loader.gone{opacity:0;visibility:hidden}
+#loader .word{font-size:15px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+#loader .bar{width:120px;height:2px;background:rgba(29,26,22,.12);border-radius:2px;overflow:hidden}
+#loader .bar i{display:block;height:100%;width:0%;background:var(--ink);border-radius:2px;transition:width .3s ease}
+/* ── Language toggle ───────────────────────────── */
+#lang{
+  position:fixed;top:calc(env(safe-area-inset-top, 0px) + 16px);right:18px;z-index:50;
+  display:flex;gap:2px;padding:3px;border-radius:99px;
+  background:rgba(255,255,255,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 1px 8px rgba(0,0,0,.06);
+}
+#lang button{
+  border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:600;
+  color:var(--ink-soft);padding:5px 11px;border-radius:99px;cursor:pointer;letter-spacing:.04em;
+}
+#lang button.on{background:var(--ink);color:#fff}
+/* ── Text cues ─────────────────────────────────── */
+.cue{
+  position:fixed;z-index:20;pointer-events:none;opacity:0;
+  will-change:opacity,transform,filter;
+}
+.cue h1,.cue h2{font-weight:700;letter-spacing:-.028em;line-height:1.04}
+.cue .sub{font-weight:500;color:var(--ink-soft)}
+.cue.white,.cue.white .sub{color:#fff;text-shadow:0 1px 22px rgba(0,0,0,.45),0 0 2px rgba(0,0,0,.25)}
+/* intro — centered, top third */
+#c-intro{left:0;right:0;top:16vh;text-align:center;padding:0 24px}
+#c-intro .eyebrow{font-size:14px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:18px}
+#c-intro h1{font-size:clamp(44px,7.2vw,96px)}
+#c-intro .sub{font-size:clamp(18px,2.2vw,26px);margin-top:16px;letter-spacing:-.01em}
+/* scroll hint */
+#c-hint{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);text-align:center}
+#c-hint span{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.9);text-shadow:0 1px 12px rgba(0,0,0,.5)}
+#c-hint .chev{display:block;margin:10px auto 0;width:18px;height:18px;border-right:2px solid rgba(255,255,255,.9);border-bottom:2px solid rgba(255,255,255,.9);transform:rotate(45deg);animation:dip 1.8s ease-in-out infinite;filter:drop-shadow(0 1px 6px rgba(0,0,0,.4))}
+@keyframes dip{0%,100%{transform:translateY(0) rotate(45deg);opacity:.9}50%{transform:translateY(7px) rotate(45deg);opacity:.4}}
+/* routines — upper left over the sky */
+#c-routine{left:7vw;top:16vh;max-width:min(560px,80vw)}
+#c-routine h2{font-size:clamp(30px,4.4vw,58px)}
+#c-routine .sub{font-size:clamp(16px,1.8vw,21px);margin-top:12px}
+/* DE caption under the phone */
+#c-caption{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 9vh);text-align:center;padding:0 24px}
+#c-caption p{font-size:clamp(15px,1.7vw,19px);font-weight:500}
+/* one tree — top center over the sky */
+#c-tree{left:0;right:0;top:13vh;text-align:center;padding:0 24px}
+#c-tree h2{font-size:clamp(34px,5vw,68px)}
+/* forest grows */
+#c-forest{left:0;right:0;top:13vh;text-align:center;padding:0 24px}
+#c-forest h2{font-size:clamp(32px,4.6vw,62px)}
+#c-forest .sub{font-size:clamp(16px,1.9vw,22px);margin-top:14px}
+/* end card */
+#c-end{left:0;right:0;top:11vh;text-align:center;padding:0 24px;pointer-events:none}
+#c-end.live{pointer-events:auto}
+#c-end img{width:clamp(72px,8vw,104px);height:auto;border-radius:24%;box-shadow:0 12px 40px rgba(0,0,0,.18);margin-bottom:22px}
+#c-end h2{font-size:clamp(38px,5.6vw,76px);text-shadow:0 0 28px rgba(255,255,255,.8),0 0 10px rgba(255,255,255,.5)}
+#c-end .sub{font-size:clamp(17px,2.1vw,24px);margin-top:14px;text-shadow:0 0 22px rgba(255,255,255,.9),0 0 8px rgba(255,255,255,.7)}
+#c-end .badge{
+  display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+  background:var(--ink);color:#fff;border-radius:14px;padding:12px 22px;text-decoration:none;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);transition:transform .25s ease;
+}
+#c-end .badge:hover{transform:scale(1.03)}
+#c-end .badge svg{width:22px;height:26px;flex:none}
+#c-end .badge div{text-align:left;line-height:1.15}
+#c-end .badge small{display:block;font-size:11px;font-weight:500;opacity:.75;letter-spacing:.02em}
+#c-end .badge strong{font-size:17px;font-weight:600;letter-spacing:-.01em}
+#c-end .badge.soon{opacity:.92;cursor:default}
+/* footer strip at the very end */
+#foot{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;opacity:0;pointer-events:none;
+  padding:34px 20px calc(env(safe-area-inset-bottom,0px) + 14px);
+  display:flex;justify-content:center;gap:26px;
+  font-size:12.5px;color:rgba(255,255,255,.88);
+  text-shadow:0 1px 10px rgba(0,0,0,.5);
+  background:linear-gradient(to top, rgba(0,0,0,.38), transparent);
+  transition:opacity .5s ease;
+}
+#foot.on{opacity:1;pointer-events:auto}
+#foot a{color:inherit;text-decoration:none}
+#foot a:hover{color:#fff}
+@media (max-width:640px){
+  #c-routine{left:24px;right:24px;top:13vh;max-width:none;text-align:left}
+  #c-intro{top:13vh}
+}
+@media (prefers-reduced-motion:reduce){
+  #c-hint .chev{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="word">Young by You</div><div class="bar"><i id="lbar"></i></div></div>
+
+<div id="stage"><canvas id="film"></canvas></div>
+
+<nav id="lang" aria-label="Sprache / Language">
+  <button id="lang-de" onclick="setLang('de')">DE</button>
+  <button id="lang-en" onclick="setLang('en')">EN</button>
+</nav>
+
+<!-- text cues, driven by scroll -->
+<div class="cue" id="c-intro">
+  <div class="eyebrow" data-t="eyebrow"></div>
+  <h1>Young by You</h1>
+  <div class="sub" data-t="intro_sub"></div>
+</div>
+<div class="cue white" id="c-hint"><span data-t="hint"></span><i class="chev"></i></div>
+<div class="cue" id="c-routine">
+  <h2 data-t="routine_h"></h2>
+  <div class="sub" data-t="routine_s"></div>
+</div>
+<div class="cue white" id="c-caption"><p data-t="caption"></p></div>
+<div class="cue" id="c-tree"><h2 data-t="tree_h"></h2></div>
+<div class="cue" id="c-forest">
+  <h2 data-t="forest_h"></h2>
+  <div class="sub" data-t="forest_s"></div>
+</div>
+<div class="cue" id="c-end">
+  <img src="assets/app_icon.png" alt="Young by You App" width="104" height="104">
+  <h2>Young by You</h2>
+  <div class="sub" data-t="end_s"></div>
+  <a class="badge soon" id="store-badge" href="#" onclick="return false">
+    <svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+    <div><small data-t="badge_small"></small><strong data-t="badge_big"></strong></div>
+  </a>
+</div>
+
+<footer id="foot">
+  <span>© 2026 Young by You</span>
+  <a href="../privacy.html" data-t="foot_privacy"></a>
+  <a href="mailto:benyount90@icloud.com" data-t="foot_contact"></a>
+</footer>
+
+<div id="driver"></div>
+
+<noscript>
+  <div style="position:fixed;inset:0;z-index:100;background:#e9ecec;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px">
+    <div><h1 style="font-size:40px;letter-spacing:-.02em">Young by You</h1>
+    <p style="margin-top:12px;color:rgba(29,26,22,.62)">One day kept. One tree. — Kleine Routinen, echte Bäume. Die ersten 14 Tage gehören dir.</p></div>
+  </div>
+</noscript>
+
+<script src="../store.js"></script>
+<script>
+/* ══════════ i18n ══════════ */
+const T = {
+  de: {
+    title:"Young by You – Ein gehaltener Tag. Ein Baum.",
+    eyebrow:"Die Routinen-App, die pflanzt",
+    intro_sub:"Werde jeden Tag ein Stück jünger.",
+    hint:"Scrollen",
+    routine_h:"Kleine Routinen. Jeden Tag.",
+    routine_s:"Bewegung, Schlaf, Ernährung – du hakst ab, was dir guttut.",
+    caption:"Nach 30 gehaltenen Tagen wird hier ein echter Baum gepflanzt.",
+    tree_h:"Ein gehaltener Monat. Ein echter Baum.",
+    forest_h:"Bleib dran – und ein Wald entsteht.",
+    forest_s:"Bis zu 12 echte Bäume im Jahr, gepflanzt durch deine Routinen.",
+    end_s:"Die ersten 14 Tage gehören dir.",
+    badge_small:"Bald im",badge_big:"App Store",
+    badge_small_live:"Laden im",
+    foot_privacy:"Datenschutz",foot_contact:"Kontakt",
+  },
+  en: {
+    title:"Young by You – One day kept. One tree.",
+    eyebrow:"The routine app that plants",
+    intro_sub:"Grow a little younger every day.",
+    hint:"Scroll",
+    routine_h:"Small routines. Every day.",
+    routine_s:"Movement, sleep, nutrition — check off what's good for you.",
+    caption:"",
+    tree_h:"One month kept. One real tree.",
+    forest_h:"Keep going — and a forest appears.",
+    forest_s:"Up to 12 real trees a year, planted by your routines.",
+    end_s:"Your first 14 days are on us.",
+    badge_small:"Soon on the",badge_big:"App Store",
+    badge_small_live:"Download on the",
+    foot_privacy:"Privacy",foot_contact:"Contact",
+  }
+};
+let lang = localStorage.getItem("yby_lang") ||
+  ((navigator.language||"en").toLowerCase().startsWith("de") ? "de" : "en");
+function setLang(l){
+  lang = l; localStorage.setItem("yby_lang", l);
+  document.documentElement.lang = l;
+  document.title = T[l].title;
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    const k = el.dataset.t;
+    el.textContent = T[l][k] ?? "";
+  });
+  document.getElementById("lang-de").classList.toggle("on", l==="de");
+  document.getElementById("lang-en").classList.toggle("on", l==="en");
+  wireStore();
+}
+function wireStore(){
+  const b = document.getElementById("store-badge");
+  const url = (window.YBY_STORE && window.YBY_STORE.appStore) || "";
+  if(url){
+    b.href = url; b.onclick = null; b.classList.remove("soon");
+    b.querySelector("small").textContent = T[lang].badge_small_live;
+  }
+}
+setLang(lang);
+
+/* ══════════ film ══════════ */
+const N = 291;                      // frames f_001 … f_291
+const canvas = document.getElementById("film");
+const ctx = canvas.getContext("2d");
+const dpr = Math.min(window.devicePixelRatio||1, 2);
+const big = window.innerWidth >= 1024;
+const DIR = big ? "frames/l/" : "frames/s/";
+const imgs = new Array(N+1);
+let loadedCount = 0, loaderGone = false;
+
+function src(i){ return DIR + "f_" + String(i).padStart(3,"0") + ".jpg"; }
+function load(i, cb){
+  const have = imgs[i];
+  if(have){
+    if(have.complete && have.naturalWidth){ if(cb) cb(); }
+    else if(cb) have.addEventListener("load", cb, {once:true});
+    return;
+  }
+  const im = new Image();
+  im.addEventListener("load", ()=>{ loadedCount++; tickLoader(); repaintIfCurrent(i); });
+  if(cb) im.addEventListener("load", cb, {once:true});
+  im.src = src(i);
+  imgs[i] = im;
+}
+function tier(step, then){
+  let pending = 0, done = false;
+  for(let i=1;i<=N;i+=step){
+    if(!imgs[i] || !imgs[i].complete){ pending++;
+      load(i, ()=>{ if(--pending===0 && !done){ done=true; then&&then(); } });
+    }
+  }
+  if(pending===0 && !done){ done=true; then&&then(); }
+}
+function tickLoader(){
+  const bar = document.getElementById("lbar");
+  if(bar) bar.style.width = Math.min(100, loadedCount/25*100) + "%";
+}
+/* coarse → medium → full */
+load(1, ()=> paint(true));
+tier(12, ()=>{
+  hideLoader();
+  tier(3, ()=> tier(1));
+});
+setTimeout(hideLoader, 6000);       /* never trap the visitor */
+function hideLoader(){
+  if(loaderGone) return; loaderGone = true;
+  document.getElementById("loader").classList.add("gone");
+}
+function nearest(i){
+  if(imgs[i] && imgs[i].complete && imgs[i].naturalWidth) return imgs[i];
+  for(let d=1; d<N; d++){
+    const a=i-d, b=i+d;
+    if(a>=1 && imgs[a] && imgs[a].complete && imgs[a].naturalWidth) return imgs[a];
+    if(b<=N && imgs[b] && imgs[b].complete && imgs[b].naturalWidth) return imgs[b];
+  }
+  return null;
+}
+
+/* focal point keeps the phone in frame on narrow screens */
+const FOCUS = [[1,.58],[42,.5],[58,.45],[110,.46],[140,.48],[170,.5],[291,.5]];
+function focusX(f){
+  for(let k=0;k<FOCUS.length-1;k++){
+    const [f0,x0]=FOCUS[k], [f1,x1]=FOCUS[k+1];
+    if(f>=f0 && f<=f1) return x0 + (x1-x0)*(f-f0)/(f1-f0);
+  }
+  return .5;
+}
+
+let cw=0, ch=0;
+function resize(){
+  cw = window.innerWidth; ch = window.innerHeight;
+  canvas.width = cw*dpr; canvas.height = ch*dpr;
+  canvas.style.width = cw+"px"; canvas.style.height = ch+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  paint(true);
+}
+window.addEventListener("resize", resize);
+
+let shownFrame = 1, targetFrame = 1, painted = -1;
+function paint(force){
+  const f = Math.round(shownFrame);
+  if(!force && f===painted) return;
+  const im = nearest(f);
+  if(!im) return;
+  const s = Math.max(cw/im.naturalWidth, ch/im.naturalHeight);
+  const dw = im.naturalWidth*s, dh = im.naturalHeight*s;
+  let ox = cw/2 - focusX(f)*dw;
+  ox = Math.min(0, Math.max(cw-dw, ox));
+  const oy = (ch-dh)/2;
+  ctx.drawImage(im, ox, oy, dw, dh);
+  painted = f;
+}
+function repaintIfCurrent(i){ if(Math.abs(i-Math.round(shownFrame))<6) paint(true); }
+
+/* ══════════ scroll → frame + cues ══════════ */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function progress(){
+  const max = document.body.scrollHeight - window.innerHeight;
+  return max>0 ? Math.min(1, Math.max(0, window.scrollY/max)) : 0;
+}
+/* film runs over the first 93% of the scroll, then rests on the last frame */
+function frameFor(p){ return 1 + Math.min(1, p/0.93)*(N-1); }
+
+const cues = [
+  {el:"c-intro",   a:-9,  b:-6,  c:16,  d:30},
+  {el:"c-hint",    a:-9,  b:-6,  c:5,   d:12},
+  {el:"c-routine", a:33,  b:41,  c:52,  d:61},
+  {el:"c-caption", a:70,  b:78,  c:96,  d:106},
+  {el:"c-tree",    a:120, b:129, c:152, d:163},
+  {el:"c-forest",  a:176, b:186, c:218, d:230},
+  {el:"c-end",     a:243, b:258, c:9999,d:9999},
+];
+const cueEls = {}; cues.forEach(c=> cueEls[c.el]=document.getElementById(c.el));
+function smooth(t){ return t<=0?0 : t>=1?1 : t*t*(3-2*t); }
+function styleCues(f){
+  for(const c of cues){
+    const el = cueEls[c.el];
+    if(el.dataset.t !== undefined && el.textContent==="") { el.style.opacity=0; continue; }
+    const rise = smooth((f-c.a)/Math.max(1,c.b-c.a));
+    const fall = 1 - smooth((f-c.c)/Math.max(1,c.d-c.c));
+    const o = Math.min(rise, fall);
+    el.style.opacity = o.toFixed(3);
+    el.style.transform = "translateY(" + ((1-rise)*26 - (1-fall)*14).toFixed(1) + "px)";
+    el.style.filter = o<0.999 ? "blur(" + ((1-o)*6).toFixed(1) + "px)" : "none";
+    if(c.el==="c-end") el.classList.toggle("live", o>0.5);
+  }
+  /* the German caption only exists in German */
+  if(!T[lang].caption) cueEls["c-caption"].style.opacity = 0;
+  document.getElementById("foot").classList.toggle("on", progress()>0.965);
+}
+function loop(){
+  targetFrame = frameFor(progress());
+  shownFrame = reduce ? targetFrame
+             : shownFrame + (targetFrame-shownFrame)*0.16;
+  if(Math.abs(targetFrame-shownFrame)<0.05) shownFrame = targetFrame;
+  paint();
+  styleCues(shownFrame);
+  requestAnimationFrame(loop);
+}
+resize();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
