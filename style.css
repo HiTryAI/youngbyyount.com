@@ -1071,3 +1071,116 @@ main, .nav, .footer { position: relative; z-index: 1; }
   .shot figcaption span { display: none; }
   .f-ghost { font-size: 72px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   The Ascent · scroll-scrubbed film
+   240 frames of one unbroken rise, painted to a canvas from a single
+   scroll-progress value — the same grammar as the Calibration below.
+   Three floors, so the section can never be a hole in the page:
+   frames → poster → the stage's own gradient.
+   ═══════════════════════════════════════════════════════════ */
+.ascent { position: relative; background: var(--bg-deep); }
+.asc-track { position: relative; height: 320vh; }
+.asc-stage {
+  position: sticky; top: 0;
+  height: 100vh;
+  height: 100dvh;                 /* match the visual viewport on iOS, like .cal-stage */
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: calc(var(--nav-h) + env(safe-area-inset-top)) clamp(16px, 5vw, 40px)
+           calc(env(safe-area-inset-bottom) + clamp(58px, 16vh, 150px));
+  overflow: hidden; isolation: isolate;
+  /* the floor under everything: if both the frames and the poster fail, this still
+     reads as the scene's night rather than as a missing image */
+  background: linear-gradient(180deg, #0D1626 0%, var(--bg-deep) 54%, #0B1220 100%);
+}
+
+.asc-poster {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: 50% 50%;
+}
+/* The canvas sits on top and is opaque once painted, so the poster simply disappears
+   behind it — no cross-fade, no moment where two half-transparent images overlap. */
+.asc-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; display: block;
+  opacity: 0; transition: opacity .6s var(--ease-out);
+}
+.ascent.is-live .asc-canvas { opacity: 1; }
+
+.asc-scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7,10,20,.60) 0%, rgba(7,10,20,.12) 22%, rgba(7,10,20,0) 42%),
+    linear-gradient(0deg,   rgba(7,10,20,.90) 0%, rgba(7,10,20,.55) 24%, rgba(7,10,20,0) 64%);
+  opacity: .72;                   /* JS lifts this as the film brightens toward the canopy */
+  transition: opacity .2s linear;
+}
+
+/* All four lines share ONE grid cell, so they cross-fade in place and the box never
+   reflows between them — the tallest (the last, with its link) sets the height once. */
+.asc-copy {
+  position: relative; z-index: 2;
+  display: grid; place-items: center;
+  width: 100%; max-width: min(92vw, 980px); text-align: center;
+}
+.asc-line {
+  grid-area: 1 / 1;
+  font-size: clamp(26px, 4.6vw, 54px);
+  /* The measure has to be set HERE, not on .asc-copy: a ch/em there resolves against
+     the parent's 16px, which quietly squeezed the longest line onto three rows. */
+  max-width: 13em; margin-inline: auto;
+  font-weight: 800; letter-spacing: -1.2px; line-height: 1.08;
+  color: var(--text); text-wrap: balance;
+  text-shadow: 0 2px 34px rgba(7,10,20,.8);
+  opacity: 0; transform: translateY(14px);
+  will-change: opacity, transform;
+}
+.asc-line-last { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2.4vh, 22px); }
+.asc-line-last > span { color: var(--gold); }
+.asc-more {
+  font-size: 14px; font-weight: 700; letter-spacing: .2px;
+  color: var(--mint); text-decoration: none;
+  padding: 10px 20px; border-radius: var(--r-pill);
+  border: 1px solid var(--stroke-hi);
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
+              transform var(--dur) var(--spring);
+}
+.asc-more:hover { border-color: var(--mint-dark); box-shadow: var(--glow-focus); transform: translateY(-1px); }
+
+.asc-cue {
+  position: absolute; z-index: 2; left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 14px);
+  width: 1px; height: clamp(30px, 5vh, 46px); margin-left: -.5px;
+  background: linear-gradient(180deg, rgba(74,222,194,0), var(--mint));
+  transform-origin: 50% 0;
+  animation: ascCue 2.6s var(--ease-out) infinite;
+}
+@keyframes ascCue {
+  0%   { transform: scaleY(.15); opacity: 0; }
+  38%  { transform: scaleY(1);   opacity: .85; }
+  100% { transform: scaleY(1);   opacity: 0; }
+}
+
+/* Un-pin where a pinned scene can't fit or isn't wanted: landscape phones and anyone
+   who asked for less motion. JS then simply paints the finished state — the payoff
+   line — and never fetches a single frame. */
+@media (prefers-reduced-motion: reduce), (max-height: 560px) {
+  .asc-track { height: auto; }
+  .asc-stage {
+    position: relative;
+    height: min(78vh, 600px);
+    padding-top: clamp(40px, 10vh, 80px);
+  }
+  .asc-cue { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .asc-canvas, .asc-scrim, .asc-line, .asc-more { transition: none; }
+}
+@media (max-width: 560px) {
+  /* measure again on the line, where the big font-size actually lives */
+  .asc-line { max-width: 11em; letter-spacing: -.7px; }
+}

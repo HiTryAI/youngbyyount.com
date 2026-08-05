@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -133,6 +133,34 @@
       </div>
     </div>
     <div class="phone-glow"></div>
+  </div>
+</section>
+
+<!-- ════════ The Ascent · scroll-scrubbed film ════════ -->
+<!-- One unbroken rise: seed → canopy. The page's overture, right after the hero has
+     done its job. Decorative by construction — the four lines are real text, the
+     picture is not required for any of them to be read. -->
+<section class="ascent" id="ascent">
+  <div class="asc-track">
+    <div class="asc-stage">
+      <img class="asc-poster" src="assets/ascent/poster.webp" alt="" aria-hidden="true"
+           decoding="async" fetchpriority="low">
+      <canvas class="asc-canvas" aria-hidden="true"
+              data-frames="assets/ascent/f_%.webp" data-count="240"></canvas>
+      <div class="asc-scrim" aria-hidden="true"></div>
+
+      <div class="asc-copy">
+        <p class="asc-line" data-i18n="asc_1">Alles fängt klein an.</p>
+        <p class="asc-line" data-i18n="asc_2">Was du wiederholst, wächst.</p>
+        <p class="asc-line" data-i18n="asc_3">Nicht in Tagen. In Jahren.</p>
+        <p class="asc-line asc-line-last">
+          <span data-i18n="asc_4">Zwölf Bäume im Jahr. Echte.</span>
+          <a class="asc-more" href="/hain/" data-i18n="asc_more">Den Hain ansehen</a>
+        </p>
+      </div>
+
+      <span class="asc-cue" aria-hidden="true"></span>
+    </div>
   </div>
 </section>
 
@@ -538,6 +566,6 @@
   <p class="footer-copy">© 2026 Young by You</p>
 </footer>
 
-<script src="script.js?v=7"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>

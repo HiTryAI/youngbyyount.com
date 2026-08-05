@@ -281,6 +281,178 @@ if (calSection) {
   refreshCalMode();
 }
 
+// ───────────── 2d. The Ascent · scroll-scrubbed film ─────────────
+// One unbroken rise (seed → canopy) as a numbered frame sequence, painted to a canvas
+// from the same single scroll-progress value the Calibration uses.
+//
+// A <video> is the obvious choice and the wrong one: seeking snaps to keyframes, so
+// scrubbing stutters and stepping backwards is worse; an all-keyframe encode fixes
+// that at roughly five times the bytes. Frames cost one request each but seek exactly,
+// in both directions, on every browser including older iOS.
+//
+// Nothing here is load-bearing. No frames → the poster. No poster → the stage's own
+// gradient. Reduced motion or Save-Data → not a single image is fetched.
+const ascSection = document.querySelector('.ascent');
+if (ascSection) {
+  const ascTrack  = ascSection.querySelector('.asc-track');
+  const ascCanvas = ascSection.querySelector('.asc-canvas');
+  const ascScrim  = ascSection.querySelector('.asc-scrim');
+  const ascCue    = ascSection.querySelector('.asc-cue');
+  const ascLines  = Array.from(ascSection.querySelectorAll('.asc-line'));
+  const ascCtx    = ascCanvas && ascCanvas.getContext ? ascCanvas.getContext('2d', { alpha: false }) : null;
+
+  const ASC_COUNT   = Math.max(0, Number(ascCanvas && ascCanvas.dataset.count) || 0);
+  const ASC_PATTERN = (ascCanvas && ascCanvas.dataset.frames) || '';
+  const ascSaveData = !!(navigator.connection && navigator.connection.saveData);
+
+  const ascStaticMQ = window.matchMedia('(max-height: 560px)');
+  const ascIsStatic = () => RM || ascStaticMQ.matches;
+  const ascWantsFilm = () => !!ascCtx && ASC_COUNT > 0 && !!ASC_PATTERN && !ascIsStatic() && !ascSaveData;
+
+  // Each line owns a quarter of the rise and cross-fades in place with its neighbours.
+  // The last span runs past 1 so the payoff is still standing when the scroll hands over.
+  const ASC_SPANS = [[0.02, 0.25], [0.28, 0.51], [0.54, 0.77], [0.80, 1.02]];
+  const ASC_FADE  = 0.06;
+  function ascAlpha(p, span) {
+    const a = span[0], b = span[1];
+    if (p <= a - ASC_FADE || p >= b + ASC_FADE) return 0;
+    if (p < a) return (p - (a - ASC_FADE)) / ASC_FADE;
+    if (p > b) return 1 - (p - b) / ASC_FADE;
+    return 1;
+  }
+
+  const ascFrames = new Array(ASC_COUNT);
+  let ascFit = null, ascWant = -1, ascDrawn = -1, ascLive = false;
+
+  // Cover-fit, computed once per size change. Setting width/height CLEARS the canvas,
+  // so every caller that re-measures must also repaint.
+  function ascMeasure(img) {
+    const w = ascCanvas.clientWidth, h = ascCanvas.clientHeight;
+    if (!w || !h || !img.naturalWidth) return false;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    ascCanvas.width  = Math.round(w * dpr);
+    ascCanvas.height = Math.round(h * dpr);
+    const s  = Math.max(ascCanvas.width / img.naturalWidth, ascCanvas.height / img.naturalHeight);
+    const dw = img.naturalWidth * s, dh = img.naturalHeight * s;
+    ascFit = { dx: (ascCanvas.width - dw) / 2, dy: (ascCanvas.height - dh) / 2, dw, dh };
+    return true;
+  }
+
+  function ascPaint(img) {
+    if (!ascCtx || !img || !img.naturalWidth) return false;
+    if (!ascFit && !ascMeasure(img)) return false;
+    ascCtx.drawImage(img, ascFit.dx, ascFit.dy, ascFit.dw, ascFit.dh);
+    if (!ascLive) { ascLive = true; ascSection.classList.add('is-live'); }
+    return true;
+  }
+
+  const ascHave = (i) => { const f = ascFrames[i]; return f && f.naturalWidth ? f : null; };
+
+  // While the sequence is still arriving, show the closest neighbour we already have
+  // rather than a hole. Bounded, so this stays cheap during the loading window.
+  function ascNearest(i) {
+    const hit = ascHave(i);
+    if (hit) return hit;
+    for (let d = 1; d <= 14; d++) {
+      const a = i - d >= 0 ? ascHave(i - d) : null; if (a) return a;
+      const b = ascHave(i + d);                     if (b) return b;
+    }
+    return null;
+  }
+
+  // Sequential fetch with a small window — a film is watched in order, so fetch order is
+  // simply frame order. A missing frame drops out silently instead of stalling the chain.
+  let ascNext = 0, ascInflight = 0, ascPumping = false;
+  function ascPump() {
+    while (ascInflight < 6 && ascNext < ASC_COUNT) {
+      const i = ascNext++;
+      const img = new Image();
+      img.decoding = 'async';
+      ascFrames[i] = img;
+      img.onload = () => {
+        ascInflight--;
+        // If the scroll is sitting exactly here, upgrade from the neighbour to the real one.
+        if ((i === ascWant || (!ascLive && i === 0)) && ascPaint(img)) ascDrawn = i;
+        ascPump();
+      };
+      img.onerror = () => { ascInflight--; ascFrames[i] = null; ascPump(); };
+      img.src = ASC_PATTERN.replace('%', String(i + 1).padStart(3, '0'));
+    }
+  }
+  function ascStartFilm() {
+    if (ascPumping || !ascWantsFilm()) return;
+    ascPumping = true;
+    ascPump();
+  }
+
+  function ascSetProgress(p) {
+    p = Math.min(1, Math.max(0, p));
+    if (ascPumping && ASC_COUNT) {
+      const want = Math.min(ASC_COUNT - 1, Math.floor(p * ASC_COUNT));
+      if (want !== ascWant) {
+        ascWant = want;
+        const img = ascNearest(want);
+        if (img && ascPaint(img)) ascDrawn = want;
+      }
+    }
+    for (let i = 0; i < ascLines.length; i++) {
+      const a  = ascAlpha(p, ASC_SPANS[i] || ASC_SPANS[ASC_SPANS.length - 1]);
+      const el = ascLines[i];
+      el.style.opacity = a.toFixed(3);
+      el.style.transform = 'translateY(' + ((1 - a) * 14).toFixed(2) + 'px)';
+      el.style.pointerEvents = a > 0.9 ? 'auto' : 'none';   // the link is only reachable while its line is up
+    }
+    if (ascScrim) ascScrim.style.opacity = (0.66 + p * 0.3).toFixed(3);
+    if (ascCue) ascCue.style.opacity = String(Math.max(0, 1 - p * 16));
+  }
+
+  // rAF-throttled scroll handler — work happens only while actually scrolling.
+  let ascTicking = false;
+  const ascUpdate = () => {
+    ascTicking = false;
+    const rect = ascTrack.getBoundingClientRect();            // single read, before writes
+    const travel = ascTrack.offsetHeight - window.innerHeight;
+    ascSetProgress(travel > 0 ? -rect.top / travel : 0);
+  };
+  const onAscScroll = () => { if (!ascTicking) { ascTicking = true; requestAnimationFrame(ascUpdate); } };
+
+  let ascBound = false;
+  const bindAsc = (on) => {
+    if (on === ascBound) return;
+    ascBound = on;
+    if (on) { window.addEventListener('scroll', onAscScroll, { passive: true }); onAscScroll(); }
+    else { window.removeEventListener('scroll', onAscScroll); }
+  };
+
+  // One place decides the mode: finished-and-static, live scrub, or armed-and-waiting.
+  let ascVisible = false;
+  const refreshAscMode = () => {
+    if (ascIsStatic()) { bindAsc(false); ascSetProgress(1); }        // CSS un-pins; paint the payoff
+    else if (ascVisible) { ascStartFilm(); bindAsc(true); }          // live scrub while on screen
+    else { bindAsc(false); ascSetProgress(0); }                      // armed at the start, off screen
+  };
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { ascVisible = es[0].isIntersecting; refreshAscMode(); },
+      { threshold: 0 }).observe(ascSection);
+    // Begin fetching a screen and a bit early, so the opening frames are here before the scene is.
+    new IntersectionObserver((es) => { if (es[0].isIntersecting) ascStartFilm(); },
+      { rootMargin: '120% 0px' }).observe(ascSection);
+  } else {
+    ascVisible = true;
+  }
+
+  window.addEventListener('resize', () => {
+    ascFit = null;                                       // re-fit to the new box…
+    const shown = ascDrawn >= 0 ? ascHave(ascDrawn) : null;
+    if (shown) ascPaint(shown);                          // …and repaint: resizing cleared it
+    refreshAscMode();
+    if (ascBound) onAscScroll();
+  });
+  if (ascStaticMQ.addEventListener) ascStaticMQ.addEventListener('change', refreshAscMode);
+  refreshAscMode();
+}
+
 // ───────────────── 3. Language toggle ─────────────────
 const i18n = {
   en: {
@@ -337,6 +509,11 @@ const i18n = {
     eyebrow_faq: 'Good to know',
     eyebrow_cta: 'Launching soon',
     spark_cap: 'Example · projection',
+    asc_1: 'Everything starts small.',
+    asc_2: 'What you repeat, grows.',
+    asc_3: 'Not in days. In years.',
+    asc_4: 'Twelve trees a year. Real ones.',
+    asc_more: 'See the grove',
     cal_line1: 'Your chronological age.',
     cal_line2: 'Becomes your biological one.',
     cal_unit: 'years',
