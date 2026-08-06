@@ -12,8 +12,7 @@
 <meta name="theme-color" content="#e9ecec">
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="apple-touch-icon" href="assets/app_icon.png">
-<link rel="preload" as="image" href="frames/s/f_001.jpg" media="(orientation: landscape)">
-<link rel="preload" as="image" href="frames/p/f_001.jpg" media="(orientation: portrait)">
+<link rel="preconnect" href="https://yby-film.yby-circle-worker.workers.dev" crossorigin>
 <style>
 :root{
   --ink:#1d1a16;
@@ -299,28 +298,45 @@ function wireStore(){
 setLang(lang);
 
 /* ══════════ film ══════════ */
-/* one film for every screen. Portrait phones get it pre-cut for their shape
-   (frames/p/, straight out of the 4K master) instead of upscaling the wide
-   frames — same picture, same pan, just sharp.                            */
-/* Two chapters, one unbroken camera flight: the cliff (frames/) runs into
-   the house on the same clifftop (frames/2/). Both at 12 fps, so the scroll
-   moves the camera at one steady speed the whole way down.                */
+/* One film for every screen, and one continuous camera flight: the cliff runs
+   into the house on the same clifftop, 450 stills at 12 per second, so the
+   scroll moves the camera at one steady speed the whole way down. Portrait
+   phones get the film pre-cut for their shape (tier "p", straight out of the
+   4K master) instead of upscaling the wide frames — same picture, same pan,
+   just sharp.
+
+   The stills do not live in this repository. Two thousand files were more
+   than GitHub Pages could publish — builds went from six minutes to failing —
+   so they sit in R2 and a small worker hands them out. AVIF where the browser
+   can read it (about half the bytes of the old JPEGs), and the small tier
+   keeps a JPEG twin for the few that cannot.                               */
+const FILM = "https://yby-film.yby-circle-worker.workers.dev";
 const PORTRAIT = window.innerHeight/window.innerWidth >= 1.6 && window.innerWidth < 700;
-const N1 = 291;                     // chapter 1 — the cliff
-const N2 = 159;                     // chapter 2 — the house
-const N  = N1 + N2;
+const N     = 450;                  // the whole flight
+const N_CH1 = 291;                  // where the cliff ends — load that part first
 const canvas = document.getElementById("film");
 const ctx = canvas.getContext("2d");
 const dpr = Math.min(window.devicePixelRatio||1, 2);
 const big = window.innerWidth >= 1024;
-const TIER = PORTRAIT ? "p" : (big ? "l" : "s");
+let TIER = PORTRAIT ? "p" : (big ? "l" : "s");
+let EXT  = "avif";                  /* settled by the probe before anything loads */
 const imgs = new Array(N+1);
 let loadedCount = 0, loaderGone = false;
 
-function src(i){
-  return i <= N1
-    ? "frames/"   + TIER + "/f_" + String(i).padStart(3,"0")    + ".jpg"
-    : "frames/2/" + TIER + "/f_" + String(i-N1).padStart(3,"0") + ".jpg";
+function pad(i){ return String(i).padStart(3,"0"); }
+function src(i){ return FILM + "/f/" + TIER + "/f_" + pad(i) + "." + EXT; }
+
+/* Can this browser read AVIF? Everything since Safari 16 can; the ones that
+   cannot get the JPEG twin, which only exists for the small tier — a slightly
+   softer film beats no film. Decided once, before the first request, so no
+   frame is ever fetched twice.                                             */
+function avifReady(){
+  return new Promise(done=>{
+    const im = new Image();
+    im.onload  = ()=> done(im.width > 0);
+    im.onerror = ()=> done(false);
+    im.src = "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAAD5bWV0YQAAAAAAAAAvaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAFBpY3R1cmVIYW5kbGVyAAAAAA5waXRtAAAAAAABAAAAHmlsb2MAAAAARAAAAQABAAAAAQAAASEAAAAbAAAAKGlpbmYAAAAAAAEAAAAaaW5mZQIAAAAAAQAAYXYwMUNvbG9yAAAAAGppcHJwAAAAS2lwY28AAAAUaXNwZQAAAAAAAAACAAAAAgAAABBwaXhpAAAAAAMICAgAAAAMYXYxQ4EADAAAAAATY29scm5jbHgAAgACAAIAAAAAF2lwbWEAAAAAAAAAAQABBAECgwQAAAAjbWRhdAoJAgAABUAxq+QBMg4QANwA88eeEAAQAbl2TQ==";
+  });
 }
 function load(i, cb){
   const have = imgs[i];
@@ -330,6 +346,7 @@ function load(i, cb){
     return;
   }
   const im = new Image();
+  im.crossOrigin = "anonymous";          /* keeps the canvas readable */
   im.addEventListener("load", ()=>{ loadedCount++; tickLoader(); repaintIfCurrent(i); });
   if(cb) im.addEventListener("load", cb, {once:true});
   im.src = src(i);
@@ -348,18 +365,20 @@ function tickLoader(){
   const bar = document.getElementById("lbar");
   if(bar) bar.style.width = Math.min(100, loadedCount/25*100) + "%";
 }
-/* coarse → medium → full, chapter 1 first so the curtain lifts as fast as
-   before; chapter 2 follows one density behind, long before anyone scrolls
-   that far */
-load(1, ()=> paint(true));
-tier(12, 1, N1, ()=>{
-  hideLoader();
-  tier(12, N1+1, N, ()=>{
-    tier(3, 1, N1, ()=>{
-      pipCliff.start();
-      tier(3, N1+1, N, ()=>{
-        pipGames.start();
-        tier(1, 1, N1, ()=> tier(1, N1+1, N));
+/* coarse → medium → full, the cliff first so the curtain lifts fast; the
+   house follows one density behind, long before anyone scrolls that far */
+avifReady().then(ok=>{
+  if(!ok){ TIER = "s"; EXT = "jpg"; }   /* the twin tier, the only one in JPEG */
+  load(1, ()=> paint(true));
+  tier(12, 1, N_CH1, ()=>{
+    hideLoader();
+    tier(12, N_CH1+1, N, ()=>{
+      tier(3, 1, N_CH1, ()=>{
+        pipCliff.start();
+        tier(3, N_CH1+1, N, ()=>{
+          pipGames.start();
+          tier(1, 1, N_CH1, ()=> tier(1, N_CH1+1, N));
+        });
       });
     });
   });
@@ -439,7 +458,8 @@ function phoneWindow(elId, canvasId, dir, marks){
     if(imgs[i]) return;
     const im = new Image();
     im.addEventListener("load", ()=>{ if(i===painted) draw(i, true); });
-    im.src = dir + "p_" + String(i).padStart(3,"0") + ".jpg";
+    im.crossOrigin = "anonymous";
+    im.src = FILM + "/w/" + dir + "/p_" + pad(i) + "." + EXT;
     imgs[i] = im;
   }
   function start(){
@@ -503,9 +523,9 @@ function phoneWindow(elId, canvasId, dir, marks){
    Window 2 — the Spiele tab, over the open sea: the camera has nothing to
    show there for a few seconds, so that is where the app gets to talk. It is
    gone again before the house comes into view.                              */
-const pipCliff = phoneWindow("pip",  "pipfilm",  "frames/app/",
+const pipCliff = phoneWindow("pip",  "pipfilm",  "home",
                              {a:165, b:175, pa:171, pb:199, c:201, d:211});
-const pipGames = phoneWindow("pip2", "pipfilm2", "frames/app2/",
+const pipGames = phoneWindow("pip2", "pipfilm2", "games",
                              {a:304, b:316, pa:312, pb:368, c:368, d:378});
 
 /* ══════════ scroll → frame + cues ══════════ */
