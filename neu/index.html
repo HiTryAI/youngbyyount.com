@@ -12,7 +12,8 @@
 <meta name="theme-color" content="#e9ecec">
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="apple-touch-icon" href="assets/app_icon.png">
-<link rel="preload" as="image" href="frames/s/f_001.jpg">
+<link rel="preload" as="image" href="frames/s/f_001.jpg" media="(orientation: landscape)">
+<link rel="preload" as="image" href="frames/m/f_001.jpg" media="(orientation: portrait)">
 <style>
 :root{
   --ink:#1d1a16;
@@ -243,12 +244,14 @@ function wireStore(){
 setLang(lang);
 
 /* ══════════ film ══════════ */
-const N = 291;                      // frames f_001 … f_291
+/* portrait phones get their own vertical film (frames/m/), everyone else the wide one */
+const MOBILE = window.innerHeight > window.innerWidth && window.innerWidth < 900;
+const N = MOBILE ? 337 : 291;       // frames f_001 … f_NNN
 const canvas = document.getElementById("film");
 const ctx = canvas.getContext("2d");
 const dpr = Math.min(window.devicePixelRatio||1, 2);
 const big = window.innerWidth >= 1024;
-const DIR = big ? "frames/l/" : "frames/s/";
+const DIR = MOBILE ? "frames/m/" : (big ? "frames/l/" : "frames/s/");
 const imgs = new Array(N+1);
 let loadedCount = 0, loaderGone = false;
 
@@ -300,9 +303,10 @@ function nearest(i){
   return null;
 }
 
-/* focal point keeps the phone in frame on narrow screens */
+/* focal point keeps the phone in frame on narrow screens (wide film only) */
 const FOCUS = [[1,.58],[42,.5],[58,.45],[110,.46],[140,.48],[170,.5],[291,.5]];
 function focusX(f){
+  if(MOBILE) return .5;
   for(let k=0;k<FOCUS.length-1;k++){
     const [f0,x0]=FOCUS[k], [f1,x1]=FOCUS[k+1];
     if(f>=f0 && f<=f1) return x0 + (x1-x0)*(f-f0)/(f1-f0);
@@ -345,7 +349,16 @@ function progress(){
 /* film runs over the first 93% of the scroll, then rests on the last frame */
 function frameFor(p){ return 1 + Math.min(1, p/0.93)*(N-1); }
 
-const cues = [
+const cues = MOBILE ? [
+  /* vertical film: drone 1–120 · app 121–192 · sapling→forest 193–337 */
+  {el:"c-intro",   a:-9,  b:-6,  c:40,  d:54},
+  {el:"c-hint",    a:-9,  b:-6,  c:5,   d:12},
+  {el:"c-routine", a:62,  b:72,  c:100, d:110},
+  {el:"c-caption", a:198, b:208, c:232, d:242},
+  {el:"c-tree",    a:226, b:236, c:256, d:266},
+  {el:"c-forest",  a:272, b:282, c:302, d:312},
+  {el:"c-end",     a:312, b:326, c:9999,d:9999},
+] : [
   {el:"c-intro",   a:-9,  b:-6,  c:16,  d:30},
   {el:"c-hint",    a:-9,  b:-6,  c:5,   d:12},
   {el:"c-routine", a:33,  b:41,  c:52,  d:61},
@@ -355,6 +368,7 @@ const cues = [
   {el:"c-end",     a:243, b:258, c:9999,d:9999},
 ];
 const cueEls = {}; cues.forEach(c=> cueEls[c.el]=document.getElementById(c.el));
+if(MOBILE) cueEls["c-routine"].classList.add("white");   /* dark cliffs behind it there */
 function smooth(t){ return t<=0?0 : t>=1?1 : t*t*(3-2*t); }
 function styleCues(f){
   for(const c of cues){
