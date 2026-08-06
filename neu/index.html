@@ -127,8 +127,8 @@ body{
 #c-forest{left:0;right:0;top:13vh;text-align:center;padding:0 24px}
 #c-forest h2{font-size:clamp(32px,4.6vw,62px)}
 #c-forest .sub{font-size:clamp(16px,1.9vw,22px);margin-top:14px}
-/* store waypoint — a single badge over the film, no card around it */
-#c-end{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 13vh);text-align:center;padding:0 24px;pointer-events:none}
+/* store button — a single badge at the very end of the page, no card */
+#c-end{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 16vh);text-align:center;padding:0 24px;pointer-events:none}
 #c-end.live{pointer-events:auto}
 #c-end .badge{
   display:inline-flex;align-items:center;gap:10px;
@@ -485,9 +485,6 @@ const cues = [
   {el:"c-caption", a:70,  b:78,  c:96,  d:106},
   {el:"c-tree",    a:120, b:129, c:152, d:163},
   {el:"c-forest",  a:176, b:186, c:218, d:230},
-  /* the store badge is a waypoint, not an end card: it comes up while the
-     camera rests over the cliff and is gone before it moves on */
-  {el:"c-end",     a:243, b:256, c:274, d:288},
 ];
 const cueEls = {}; cues.forEach(c=> cueEls[c.el]=document.getElementById(c.el));
 function smooth(t){ return t<=0?0 : t>=1?1 : t*t*(3-2*t); }
@@ -501,11 +498,21 @@ function styleCues(f){
     el.style.opacity = o.toFixed(3);
     el.style.transform = "translateY(" + ((1-rise)*26 - (1-fall)*14).toFixed(1) + "px)";
     el.style.filter = o<0.999 ? "blur(" + ((1-o)*6).toFixed(1) + "px)" : "none";
-    if(c.el==="c-end") el.classList.toggle("live", o>0.5);
   }
   /* the German caption only exists in German */
   if(!T[lang].caption) cueEls["c-caption"].style.opacity = 0;
-  document.getElementById("foot").classList.toggle("on", progress()>0.965);
+  styleEnd();
+}
+/* The store button belongs at the very end of the page, not inside the film.
+   The film rests on its last frame over the final stretch of scroll, so this
+   one is driven by the scroll itself, not by a frame number.               */
+const endEl = document.getElementById("c-end");
+function styleEnd(){
+  const o = smooth((progress()-0.958)/0.030);
+  endEl.style.opacity = o.toFixed(3);
+  endEl.style.transform = "translateY(" + ((1-o)*22).toFixed(1) + "px)";
+  endEl.classList.toggle("live", o>0.5);
+  document.getElementById("foot").classList.toggle("on", progress()>0.972);
 }
 function loop(){
   targetFrame = frameFor(progress());
