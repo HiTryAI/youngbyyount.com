@@ -32,7 +32,8 @@ body{
   overflow-x:hidden;
 }
 /* ── Scroll driver ─────────────────────────────── */
-#driver{height:760vh}
+/* two chapters, one film: 291 + 159 frames at the same scroll-per-frame */
+#driver{height:1148vh}
 /* ── Fixed film stage ──────────────────────────── */
 #stage{position:fixed;inset:0;overflow:hidden}
 #film{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -126,14 +127,11 @@ body{
 #c-forest{left:0;right:0;top:13vh;text-align:center;padding:0 24px}
 #c-forest h2{font-size:clamp(32px,4.6vw,62px)}
 #c-forest .sub{font-size:clamp(16px,1.9vw,22px);margin-top:14px}
-/* end card */
-#c-end{left:0;right:0;top:11vh;text-align:center;padding:0 24px;pointer-events:none}
+/* store waypoint — a single badge over the film, no card around it */
+#c-end{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 13vh);text-align:center;padding:0 24px;pointer-events:none}
 #c-end.live{pointer-events:auto}
-#c-end img{width:clamp(72px,8vw,104px);height:auto;border-radius:24%;box-shadow:0 12px 40px rgba(0,0,0,.18);margin-bottom:22px}
-#c-end h2{font-size:clamp(38px,5.6vw,76px);text-shadow:0 0 28px rgba(255,255,255,.8),0 0 10px rgba(255,255,255,.5)}
-#c-end .sub{font-size:clamp(17px,2.1vw,24px);margin-top:14px;text-shadow:0 0 22px rgba(255,255,255,.9),0 0 8px rgba(255,255,255,.7)}
 #c-end .badge{
-  display:inline-flex;align-items:center;gap:10px;margin-top:30px;
+  display:inline-flex;align-items:center;gap:10px;
   background:var(--ink);color:#fff;border-radius:14px;padding:12px 22px;text-decoration:none;
   box-shadow:0 10px 30px rgba(0,0,0,.22);transition:transform .25s ease;
 }
@@ -197,9 +195,6 @@ body{
   <div class="sub" data-t="forest_s"></div>
 </div>
 <div class="cue" id="c-end">
-  <img src="assets/app_icon.png" alt="Young by You App" width="104" height="104">
-  <h2>Young by You</h2>
-  <div class="sub" data-t="end_s"></div>
   <a class="badge soon" id="store-badge" href="#" onclick="return false">
     <svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
     <div><small data-t="badge_small"></small><strong data-t="badge_big"></strong></div>
@@ -286,17 +281,26 @@ setLang(lang);
 /* one film for every screen. Portrait phones get it pre-cut for their shape
    (frames/p/, straight out of the 4K master) instead of upscaling the wide
    frames — same picture, same pan, just sharp.                            */
+/* Two chapters, one unbroken camera flight: the cliff (frames/) runs into
+   the house on the same clifftop (frames/2/). Both at 12 fps, so the scroll
+   moves the camera at one steady speed the whole way down.                */
 const PORTRAIT = window.innerHeight/window.innerWidth >= 1.6 && window.innerWidth < 700;
-const N = 291;                      // frames f_001 … f_NNN
+const N1 = 291;                     // chapter 1 — the cliff
+const N2 = 159;                     // chapter 2 — the house
+const N  = N1 + N2;
 const canvas = document.getElementById("film");
 const ctx = canvas.getContext("2d");
 const dpr = Math.min(window.devicePixelRatio||1, 2);
 const big = window.innerWidth >= 1024;
-const DIR = PORTRAIT ? "frames/p/" : (big ? "frames/l/" : "frames/s/");
+const TIER = PORTRAIT ? "p" : (big ? "l" : "s");
 const imgs = new Array(N+1);
 let loadedCount = 0, loaderGone = false;
 
-function src(i){ return DIR + "f_" + String(i).padStart(3,"0") + ".jpg"; }
+function src(i){
+  return i <= N1
+    ? "frames/"   + TIER + "/f_" + String(i).padStart(3,"0")    + ".jpg"
+    : "frames/2/" + TIER + "/f_" + String(i-N1).padStart(3,"0") + ".jpg";
+}
 function load(i, cb){
   const have = imgs[i];
   if(have){
@@ -310,9 +314,9 @@ function load(i, cb){
   im.src = src(i);
   imgs[i] = im;
 }
-function tier(step, then){
+function tier(step, from, to, then){
   let pending = 0, done = false;
-  for(let i=1;i<=N;i+=step){
+  for(let i=from;i<=to;i+=step){
     if(!imgs[i] || !imgs[i].complete){ pending++;
       load(i, ()=>{ if(--pending===0 && !done){ done=true; then&&then(); } });
     }
@@ -323,11 +327,20 @@ function tickLoader(){
   const bar = document.getElementById("lbar");
   if(bar) bar.style.width = Math.min(100, loadedCount/25*100) + "%";
 }
-/* coarse → medium → full */
+/* coarse → medium → full, chapter 1 first so the curtain lifts as fast as
+   before; chapter 2 follows one density behind, long before anyone scrolls
+   that far */
 load(1, ()=> paint(true));
-tier(12, ()=>{
+tier(12, 1, N1, ()=>{
   hideLoader();
-  tier(3, ()=>{ pipStart(); tier(1); });
+  tier(12, N1+1, N, ()=>{
+    tier(3, 1, N1, ()=>{
+      pipStart();
+      tier(3, N1+1, N, ()=>{
+        tier(1, 1, N1, ()=> tier(1, N1+1, N));
+      });
+    });
+  });
 });
 setTimeout(hideLoader, 6000);       /* never trap the visitor */
 function hideLoader(){
@@ -346,7 +359,7 @@ function nearest(i){
 
 /* focal point keeps the phone in frame on narrow screens; the portrait
    frames already have this pan baked in, so they stay centred */
-const FOCUS = [[1,.58],[42,.5],[58,.45],[110,.46],[140,.48],[170,.5],[291,.5]];
+const FOCUS = [[1,.58],[42,.5],[58,.45],[110,.46],[140,.48],[170,.5],[291,.5],[450,.5]];
 function focusX(f){
   if(PORTRAIT) return .5;
   for(let k=0;k<FOCUS.length-1;k++){
@@ -462,8 +475,8 @@ function progress(){
   const max = document.body.scrollHeight - window.innerHeight;
   return max>0 ? Math.min(1, Math.max(0, window.scrollY/max)) : 0;
 }
-/* film runs over the first 93% of the scroll, then rests on the last frame */
-function frameFor(p){ return 1 + Math.min(1, p/0.93)*(N-1); }
+/* film runs over the first 95.3% of the scroll, then rests on the last frame */
+function frameFor(p){ return 1 + Math.min(1, p/0.953)*(N-1); }
 
 const cues = [
   {el:"c-intro",   a:-9,  b:-6,  c:16,  d:30},
@@ -472,7 +485,9 @@ const cues = [
   {el:"c-caption", a:70,  b:78,  c:96,  d:106},
   {el:"c-tree",    a:120, b:129, c:152, d:163},
   {el:"c-forest",  a:176, b:186, c:218, d:230},
-  {el:"c-end",     a:243, b:258, c:9999,d:9999},
+  /* the store badge is a waypoint, not an end card: it comes up while the
+     camera rests over the cliff and is gone before it moves on */
+  {el:"c-end",     a:243, b:256, c:274, d:288},
 ];
 const cueEls = {}; cues.forEach(c=> cueEls[c.el]=document.getElementById(c.el));
 function smooth(t){ return t<=0?0 : t>=1?1 : t*t*(3-2*t); }
