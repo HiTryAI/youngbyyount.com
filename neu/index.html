@@ -38,13 +38,17 @@ body{
 #stage{position:fixed;inset:0;overflow:hidden}
 #film{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* ── Picture in picture: the app, running inside the film ── */
-#pip{
+/* Two windows share this look: the routines on the cliff (right), the Spiele
+   tab out over the sea (left, so the second one is not a repeat of the first) */
+.pipwin{
   position:fixed;z-index:15;opacity:0;visibility:hidden;pointer-events:none;
   height:36vh;width:20.25vh;                /* 9:16 → w = h * .5625 */
-  right:6vw;top:34vh;
+  top:34vh;
   will-change:transform,opacity,filter;
 }
-#pip .shell{
+#pip{right:6vw}
+#pip2{left:6vw}
+.pipwin .shell{
   position:relative;width:100%;height:100%;
   background:linear-gradient(160deg,#2c3134,#0a0c0d 42%,#000 100%);
   border-radius:15%/7.6%;
@@ -55,24 +59,26 @@ body{
     0 26px 44px rgba(0,0,0,.34),
     0 60px 90px rgba(0,0,0,.26);
 }
-#pip canvas{
+.pipwin canvas{
   display:block;width:100%;height:100%;
   border-radius:13.6%/6.6%;
   background:#0b0e10;
 }
 /* glass sheen over the screen */
-#pip .shell::after{
+.pipwin .shell::after{
   content:"";position:absolute;inset:0;border-radius:15%/7.6%;pointer-events:none;
   background:linear-gradient(118deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.05) 22%,rgba(255,255,255,0) 42%);
   mix-blend-mode:screen;
 }
 /* soft ground shadow so it floats instead of sticking on */
-#pip .cast{
+.pipwin .cast{
   position:absolute;left:8%;right:8%;bottom:-6%;height:12%;
   background:radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.42), rgba(0,0,0,0) 72%);
   filter:blur(6px);
 }
-#pip.wide{height:min(52vh,520px);width:min(29.25vh,292.5px);right:7vw;top:30vh}
+.pipwin.wide{height:min(52vh,520px);width:min(29.25vh,292.5px);top:30vh}
+#pip.wide{right:7vw}
+#pip2.wide{left:7vw}
 /* ── Loader ────────────────────────────────────── */
 #loader{
   position:fixed;inset:0;z-index:60;background:var(--paper);
@@ -120,6 +126,10 @@ body{
 /* DE caption under the phone */
 #c-caption{left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 9vh);text-align:center;padding:0 24px}
 #c-caption p{font-size:clamp(15px,1.7vw,19px);font-weight:500}
+/* the games chapter — mirrored: copy right, phone left, both over the sea */
+#c-games{right:7vw;top:15vh;max-width:min(540px,44vw)}
+#c-games h2{font-size:clamp(30px,4.2vw,56px)}
+#c-games .sub{font-size:clamp(15px,1.7vw,20px);margin-top:14px;line-height:1.5}
 /* one tree — top center over the sky */
 #c-tree{left:0;right:0;top:13vh;text-align:center;padding:0 24px}
 #c-tree h2{font-size:clamp(34px,5vw,68px)}
@@ -156,6 +166,7 @@ body{
 #foot a:hover{color:#fff}
 @media (max-width:640px){
   #c-routine{left:24px;right:24px;top:13vh;max-width:none;text-align:left}
+  #c-games{left:24px;right:24px;top:11vh;max-width:none;text-align:left}
   #c-intro{top:13vh}
 }
 @media (prefers-reduced-motion:reduce){
@@ -170,7 +181,9 @@ body{
 <div id="stage"><canvas id="film"></canvas></div>
 
 <!-- the app itself, playing in a window on top of the film -->
-<div id="pip" aria-hidden="true"><div class="shell"><canvas id="pipfilm"></canvas><i class="cast"></i></div></div>
+<div id="pip" class="pipwin" aria-hidden="true"><div class="shell"><canvas id="pipfilm"></canvas><i class="cast"></i></div></div>
+<!-- the second window: the Spiele tab, scrolled while the camera crosses the sea -->
+<div id="pip2" class="pipwin" aria-hidden="true"><div class="shell"><canvas id="pipfilm2"></canvas><i class="cast"></i></div></div>
 
 <nav id="lang" aria-label="Sprache / Language">
   <button id="lang-de" onclick="setLang('de')">DE</button>
@@ -189,6 +202,10 @@ body{
   <div class="sub" data-t="routine_s"></div>
 </div>
 <div class="cue white" id="c-caption"><p data-t="caption"></p></div>
+<div class="cue" id="c-games">
+  <h2 data-t="games_h"></h2>
+  <div class="sub" data-t="games_s"></div>
+</div>
 <div class="cue" id="c-tree"><h2 data-t="tree_h"></h2></div>
 <div class="cue" id="c-forest">
   <h2 data-t="forest_h"></h2>
@@ -228,6 +245,8 @@ const T = {
     routine_h:"Kleine Routinen. Jeden Tag.",
     routine_s:"Bewegung, Schlaf, Ernährung – du hakst ab, was dir guttut.",
     caption:"Nach 30 gehaltenen Tagen wird hier ein echter Baum gepflanzt.",
+    games_h:"Spielen, das dich wach hält.",
+    games_s:"33 kurze Duelle für Reaktion, Gedächtnis und Konzentration. Schick einem Freund deinen Code – er spielt dieselbe Runde. Und jede Runde gewinnt Teile für deine Weltkarte.",
     tree_h:"Ein gehaltener Monat. Ein echter Baum.",
     forest_h:"Bleib dran – und ein Wald entsteht.",
     forest_s:"Bis zu 12 echte Bäume im Jahr, gepflanzt durch deine Routinen.",
@@ -244,6 +263,8 @@ const T = {
     routine_h:"Small routines. Every day.",
     routine_s:"Movement, sleep, nutrition — check off what's good for you.",
     caption:"",
+    games_h:"Play that keeps you sharp.",
+    games_s:"33 short duels for reaction, memory and focus. Send a friend your code — they play the very same round. And every round wins pieces for your world map.",
     tree_h:"One month kept. One real tree.",
     forest_h:"Keep going — and a forest appears.",
     forest_s:"Up to 12 real trees a year, planted by your routines.",
@@ -335,8 +356,9 @@ tier(12, 1, N1, ()=>{
   hideLoader();
   tier(12, N1+1, N, ()=>{
     tier(3, 1, N1, ()=>{
-      pipStart();
+      pipCliff.start();
       tier(3, N1+1, N, ()=>{
+        pipGames.start();
         tier(1, 1, N1, ()=> tier(1, N1+1, N));
       });
     });
@@ -376,7 +398,7 @@ function resize(){
   canvas.style.width = cw+"px"; canvas.style.height = ch+"px";
   ctx.setTransform(dpr,0,0,dpr,0,0);
   paint(true);
-  if(typeof pipVisible !== "undefined" && pipVisible){ pipSize(); pipDraw(pipPainted>0?pipPainted:1, true); }
+  if(typeof pipCliff !== "undefined"){ pipCliff.refit(); pipGames.refit(); }
 }
 window.addEventListener("resize", resize);
 
@@ -397,77 +419,94 @@ function paint(force){
 function repaintIfCurrent(i){ if(Math.abs(i-Math.round(shownFrame))<6) paint(true); }
 
 /* ══════════ picture in picture: the app film ══════════ */
-/* second scroll animation, driven by the same scroll, running on top of the
-   first one — it joins once the ground starts turning green.               */
+/* Scroll animations riding on top of the first one, driven by the same
+   scroll. Two windows, one factory: the routines on the cliff, and the Spiele
+   tab while the camera crosses the sea. Each window owns its own images,
+   canvas and marks — nothing is shared but the code.                        */
 const PIP_N = 60;
-/* a,b = fade in · pa,pb = clip runs · c,d = fade out   (main-film frames)  */
-const PIP = {a:165, b:175, pa:171, pb:199, c:201, d:211};
-const pipEl   = document.getElementById("pip");
-const pipCv   = document.getElementById("pipfilm");
-const pipCtx  = pipCv.getContext("2d");
-const pimgs   = new Array(PIP_N+1);
-let pipStarted = false, pipPainted = -1, pipVisible = false;
-if(!PORTRAIT) pipEl.classList.add("wide");
 
-function pipSrc(i){ return "frames/app/p_" + String(i).padStart(3,"0") + ".jpg"; }
-function pipLoad(i){
-  if(pimgs[i]) return;
-  const im = new Image();
-  im.addEventListener("load", ()=>{ if(i===pipPainted) pipDraw(i, true); });
-  im.src = pipSrc(i);
-  pimgs[i] = im;
-}
-function pipStart(){
-  if(pipStarted) return; pipStarted = true;
-  for(let i=1;i<=PIP_N;i+=5) pipLoad(i);                 /* coarse first */
-  setTimeout(()=>{ for(let i=1;i<=PIP_N;i++) pipLoad(i); }, 700);
-}
-function pipSize(){
-  const w = pipCv.offsetWidth, h = pipCv.offsetHeight;
-  if(!w || !h) return;
-  pipCv.width = Math.round(w*dpr); pipCv.height = Math.round(h*dpr);
-  pipCtx.setTransform(dpr,0,0,dpr,0,0);
-  pipPainted = -1;
-}
-function pipNearest(i){
-  if(pimgs[i] && pimgs[i].complete && pimgs[i].naturalWidth) return i;
-  for(let d=1; d<PIP_N; d++){
-    const a=i-d, b=i+d;
-    if(a>=1 && pimgs[a] && pimgs[a].complete && pimgs[a].naturalWidth) return a;
-    if(b<=PIP_N && pimgs[b] && pimgs[b].complete && pimgs[b].naturalWidth) return b;
+/* marks are main-film frames:
+   a,b = fade in · pa,pb = the little clip runs · c,d = fade out             */
+function phoneWindow(elId, canvasId, dir, marks){
+  const el   = document.getElementById(elId);
+  const cv   = document.getElementById(canvasId);
+  const cx   = cv.getContext("2d");
+  const imgs = new Array(PIP_N+1);
+  let started = false, painted = -1, visible = false;
+  if(!PORTRAIT) el.classList.add("wide");
+
+  function load(i){
+    if(imgs[i]) return;
+    const im = new Image();
+    im.addEventListener("load", ()=>{ if(i===painted) draw(i, true); });
+    im.src = dir + "p_" + String(i).padStart(3,"0") + ".jpg";
+    imgs[i] = im;
   }
-  return 0;
-}
-function pipDraw(i, force){
-  const j = pipNearest(i);
-  if(!j) return false;
-  if(!force && j===pipPainted) return true;
-  const im = pimgs[j], w = pipCv.offsetWidth, h = pipCv.offsetHeight;
-  const s = Math.max(w/im.naturalWidth, h/im.naturalHeight);
-  pipCtx.drawImage(im, (w-im.naturalWidth*s)/2, 0, im.naturalWidth*s, im.naturalHeight*s);
-  pipPainted = j;
-  return true;
-}
-function pipStyle(f){
-  if(!pipStarted && f > PIP.a - 55) pipStart();
-  const rise = smooth((f-PIP.a)/(PIP.b-PIP.a));
-  const fall = 1 - smooth((f-PIP.c)/(PIP.d-PIP.c));
-  const o = Math.min(rise, fall);
-  if(o <= 0.002){
-    if(pipVisible){ pipEl.style.opacity = 0; pipEl.style.visibility = "hidden"; pipVisible = false; }
-    return;
+  function start(){
+    if(started) return; started = true;
+    for(let i=1;i<=PIP_N;i+=5) load(i);                  /* coarse first */
+    setTimeout(()=>{ for(let i=1;i<=PIP_N;i++) load(i); }, 700);
   }
-  /* the clip position — same scroll, its own little timeline */
-  const t = Math.min(1, Math.max(0, (f-PIP.pa)/(PIP.pb-PIP.pa)));
-  if(!pipNearest(1)) return;                             /* nothing loaded yet */
-  if(!pipVisible){ pipEl.style.visibility = "visible"; pipVisible = true; pipSize(); }
-  pipDraw(Math.round(1 + t*(PIP_N-1)));
-  const sc  = 0.88 + 0.12*rise - 0.04*(1-fall);
-  const par = -18 * Math.min(1, Math.max(0, (f-PIP.a)/(PIP.d-PIP.a)));   /* slow drift */
-  const y   = (1-rise)*54 - (1-fall)*30 + par;
-  pipEl.style.opacity = o.toFixed(3);
-  pipEl.style.transform = "translate3d(0," + y.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
+  function size(){
+    const w = cv.offsetWidth, h = cv.offsetHeight;
+    if(!w || !h) return;
+    cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+    cx.setTransform(dpr,0,0,dpr,0,0);
+    painted = -1;
+  }
+  function nearest(i){
+    if(imgs[i] && imgs[i].complete && imgs[i].naturalWidth) return i;
+    for(let d=1; d<PIP_N; d++){
+      const a=i-d, b=i+d;
+      if(a>=1 && imgs[a] && imgs[a].complete && imgs[a].naturalWidth) return a;
+      if(b<=PIP_N && imgs[b] && imgs[b].complete && imgs[b].naturalWidth) return b;
+    }
+    return 0;
+  }
+  function draw(i, force){
+    const j = nearest(i);
+    if(!j) return false;
+    if(!force && j===painted) return true;
+    const im = imgs[j], w = cv.offsetWidth, h = cv.offsetHeight;
+    const s = Math.max(w/im.naturalWidth, h/im.naturalHeight);
+    cx.drawImage(im, (w-im.naturalWidth*s)/2, 0, im.naturalWidth*s, im.naturalHeight*s);
+    painted = j;
+    return true;
+  }
+  function style(f){
+    if(!started && f > marks.a - 55) start();
+    const rise = smooth((f-marks.a)/(marks.b-marks.a));
+    const fall = 1 - smooth((f-marks.c)/(marks.d-marks.c));
+    const o = Math.min(rise, fall);
+    if(o <= 0.002){
+      if(visible){ el.style.opacity = 0; el.style.visibility = "hidden"; visible = false; }
+      return;
+    }
+    /* the clip position — same scroll, its own little timeline */
+    const t = Math.min(1, Math.max(0, (f-marks.pa)/(marks.pb-marks.pa)));
+    if(!nearest(1)) return;                              /* nothing loaded yet */
+    if(!visible){ el.style.visibility = "visible"; visible = true; size(); }
+    draw(Math.round(1 + t*(PIP_N-1)));
+    const sc  = 0.88 + 0.12*rise - 0.04*(1-fall);
+    const par = -18 * Math.min(1, Math.max(0, (f-marks.a)/(marks.d-marks.a)));  /* slow drift */
+    const y   = (1-rise)*54 - (1-fall)*30 + par;
+    el.style.opacity = o.toFixed(3);
+    el.style.transform = "translate3d(0," + y.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
+  }
+  /* a resize changes the canvas' pixel size — redraw whatever is on screen */
+  function refit(){ if(visible){ size(); draw(painted>0?painted:1, true); } }
+
+  return {start, style, refit};
 }
+
+/* Window 1 — the routines, once the ground starts turning green.
+   Window 2 — the Spiele tab, over the open sea: the camera has nothing to
+   show there for a few seconds, so that is where the app gets to talk. It is
+   gone again before the house comes into view.                              */
+const pipCliff = phoneWindow("pip",  "pipfilm",  "frames/app/",
+                             {a:165, b:175, pa:171, pb:199, c:201, d:211});
+const pipGames = phoneWindow("pip2", "pipfilm2", "frames/app2/",
+                             {a:304, b:316, pa:312, pb:368, c:368, d:378});
 
 /* ══════════ scroll → frame + cues ══════════ */
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -485,6 +524,8 @@ const cues = [
   {el:"c-caption", a:70,  b:78,  c:96,  d:106},
   {el:"c-tree",    a:120, b:129, c:152, d:163},
   {el:"c-forest",  a:176, b:186, c:218, d:230},
+  /* chapter 2: the copy leads the phone window in and leaves with it */
+  {el:"c-games",   a:298, b:310, c:362, d:374},
 ];
 const cueEls = {}; cues.forEach(c=> cueEls[c.el]=document.getElementById(c.el));
 function smooth(t){ return t<=0?0 : t>=1?1 : t*t*(3-2*t); }
@@ -521,7 +562,8 @@ function loop(){
   if(Math.abs(targetFrame-shownFrame)<0.05) shownFrame = targetFrame;
   paint();
   styleCues(shownFrame);
-  pipStyle(shownFrame);
+  pipCliff.style(shownFrame);
+  pipGames.style(shownFrame);
   requestAnimationFrame(loop);
 }
 resize();
