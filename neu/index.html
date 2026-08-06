@@ -39,8 +39,8 @@ body{
 /* ── Picture in picture: the app, running inside the film ── */
 #pip{
   position:fixed;z-index:15;opacity:0;visibility:hidden;pointer-events:none;
-  height:40vh;width:22.5vh;                 /* 9:19.5 → w = h * .5625 */
-  right:6vw;top:30vh;
+  height:36vh;width:20.25vh;                /* 9:16 → w = h * .5625 */
+  right:6vw;top:34vh;
   will-change:transform,opacity,filter;
 }
 #pip .shell{
@@ -385,8 +385,8 @@ function repaintIfCurrent(i){ if(Math.abs(i-Math.round(shownFrame))<6) paint(tru
    first one — it joins once the ground starts turning green.               */
 const PIP_N = 60;
 /* a,b = fade in · pa,pb = clip runs · c,d = fade out   (main-film frames)  */
-const PIP = MOBILE ? {a:200,b:218,pa:212,pb:258,c:262,d:276}
-                   : {a:149,b:167,pa:161,pb:222,c:226,d:240};
+const PIP = MOBILE ? {a:250,b:261,pa:257,pb:283,c:285,d:295}
+                   : {a:165,b:175,pa:171,pb:199,c:201,d:211};
 const pipEl   = document.getElementById("pip");
 const pipCv   = document.getElementById("pipfilm");
 const pipCtx  = pipCv.getContext("2d");
