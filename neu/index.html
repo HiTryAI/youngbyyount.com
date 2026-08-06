@@ -36,6 +36,42 @@ body{
 /* ── Fixed film stage ──────────────────────────── */
 #stage{position:fixed;inset:0;overflow:hidden}
 #film{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* ── Picture in picture: the app, running inside the film ── */
+#pip{
+  position:fixed;z-index:15;opacity:0;visibility:hidden;pointer-events:none;
+  height:40vh;width:22.5vh;                 /* 9:19.5 → w = h * .5625 */
+  right:6vw;top:30vh;
+  will-change:transform,opacity,filter;
+}
+#pip .shell{
+  position:relative;width:100%;height:100%;
+  background:linear-gradient(160deg,#2c3134,#0a0c0d 42%,#000 100%);
+  border-radius:15%/7.6%;
+  padding:1.6%;
+  box-shadow:
+    0 0 0 .5px rgba(255,255,255,.30),
+    0 1px 2px rgba(255,255,255,.16) inset,
+    0 26px 44px rgba(0,0,0,.34),
+    0 60px 90px rgba(0,0,0,.26);
+}
+#pip canvas{
+  display:block;width:100%;height:100%;
+  border-radius:13.6%/6.6%;
+  background:#0b0e10;
+}
+/* glass sheen over the screen */
+#pip .shell::after{
+  content:"";position:absolute;inset:0;border-radius:15%/7.6%;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.05) 22%,rgba(255,255,255,0) 42%);
+  mix-blend-mode:screen;
+}
+/* soft ground shadow so it floats instead of sticking on */
+#pip .cast{
+  position:absolute;left:8%;right:8%;bottom:-6%;height:12%;
+  background:radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.42), rgba(0,0,0,0) 72%);
+  filter:blur(6px);
+}
+#pip.wide{height:min(52vh,520px);width:min(29.25vh,292.5px);right:7vw;top:30vh}
 /* ── Loader ────────────────────────────────────── */
 #loader{
   position:fixed;inset:0;z-index:60;background:var(--paper);
@@ -134,6 +170,9 @@ body{
 <div id="loader"><div class="word">Young by You</div><div class="bar"><i id="lbar"></i></div></div>
 
 <div id="stage"><canvas id="film"></canvas></div>
+
+<!-- the app itself, playing in a window on top of the film -->
+<div id="pip" aria-hidden="true"><div class="shell"><canvas id="pipfilm"></canvas><i class="cast"></i></div></div>
 
 <nav id="lang" aria-label="Sprache / Language">
   <button id="lang-de" onclick="setLang('de')">DE</button>
@@ -286,7 +325,7 @@ function tickLoader(){
 load(1, ()=> paint(true));
 tier(12, ()=>{
   hideLoader();
-  tier(3, ()=> tier(1));
+  tier(3, ()=>{ pipStart(); tier(1); });
 });
 setTimeout(hideLoader, 6000);       /* never trap the visitor */
 function hideLoader(){
@@ -321,6 +360,7 @@ function resize(){
   canvas.style.width = cw+"px"; canvas.style.height = ch+"px";
   ctx.setTransform(dpr,0,0,dpr,0,0);
   paint(true);
+  if(typeof pipVisible !== "undefined" && pipVisible){ pipSize(); pipDraw(pipPainted>0?pipPainted:1, true); }
 }
 window.addEventListener("resize", resize);
 
@@ -339,6 +379,80 @@ function paint(force){
   painted = f;
 }
 function repaintIfCurrent(i){ if(Math.abs(i-Math.round(shownFrame))<6) paint(true); }
+
+/* ══════════ picture in picture: the app film ══════════ */
+/* second scroll animation, driven by the same scroll, running on top of the
+   first one — it joins once the ground starts turning green.               */
+const PIP_N = 60;
+/* a,b = fade in · pa,pb = clip runs · c,d = fade out   (main-film frames)  */
+const PIP = MOBILE ? {a:200,b:218,pa:212,pb:258,c:262,d:276}
+                   : {a:149,b:167,pa:161,pb:222,c:226,d:240};
+const pipEl   = document.getElementById("pip");
+const pipCv   = document.getElementById("pipfilm");
+const pipCtx  = pipCv.getContext("2d");
+const pimgs   = new Array(PIP_N+1);
+let pipStarted = false, pipPainted = -1, pipVisible = false;
+if(!MOBILE) pipEl.classList.add("wide");
+
+function pipSrc(i){ return "frames/app/p_" + String(i).padStart(3,"0") + ".jpg"; }
+function pipLoad(i){
+  if(pimgs[i]) return;
+  const im = new Image();
+  im.addEventListener("load", ()=>{ if(i===pipPainted) pipDraw(i, true); });
+  im.src = pipSrc(i);
+  pimgs[i] = im;
+}
+function pipStart(){
+  if(pipStarted) return; pipStarted = true;
+  for(let i=1;i<=PIP_N;i+=5) pipLoad(i);                 /* coarse first */
+  setTimeout(()=>{ for(let i=1;i<=PIP_N;i++) pipLoad(i); }, 700);
+}
+function pipSize(){
+  const w = pipCv.offsetWidth, h = pipCv.offsetHeight;
+  if(!w || !h) return;
+  pipCv.width = Math.round(w*dpr); pipCv.height = Math.round(h*dpr);
+  pipCtx.setTransform(dpr,0,0,dpr,0,0);
+  pipPainted = -1;
+}
+function pipNearest(i){
+  if(pimgs[i] && pimgs[i].complete && pimgs[i].naturalWidth) return i;
+  for(let d=1; d<PIP_N; d++){
+    const a=i-d, b=i+d;
+    if(a>=1 && pimgs[a] && pimgs[a].complete && pimgs[a].naturalWidth) return a;
+    if(b<=PIP_N && pimgs[b] && pimgs[b].complete && pimgs[b].naturalWidth) return b;
+  }
+  return 0;
+}
+function pipDraw(i, force){
+  const j = pipNearest(i);
+  if(!j) return false;
+  if(!force && j===pipPainted) return true;
+  const im = pimgs[j], w = pipCv.offsetWidth, h = pipCv.offsetHeight;
+  const s = Math.max(w/im.naturalWidth, h/im.naturalHeight);
+  pipCtx.drawImage(im, (w-im.naturalWidth*s)/2, 0, im.naturalWidth*s, im.naturalHeight*s);
+  pipPainted = j;
+  return true;
+}
+function pipStyle(f){
+  if(!pipStarted && f > PIP.a - 55) pipStart();
+  const rise = smooth((f-PIP.a)/(PIP.b-PIP.a));
+  const fall = 1 - smooth((f-PIP.c)/(PIP.d-PIP.c));
+  const o = Math.min(rise, fall);
+  if(o <= 0.002){
+    if(pipVisible){ pipEl.style.opacity = 0; pipEl.style.visibility = "hidden"; pipVisible = false; }
+    return;
+  }
+  /* the clip position — same scroll, its own little timeline */
+  const t = Math.min(1, Math.max(0, (f-PIP.pa)/(PIP.pb-PIP.pa)));
+  if(!pipNearest(1)) return;                             /* nothing loaded yet */
+  if(!pipVisible){ pipEl.style.visibility = "visible"; pipVisible = true; pipSize(); }
+  pipDraw(Math.round(1 + t*(PIP_N-1)));
+  const sc  = 0.88 + 0.12*rise - 0.04*(1-fall);
+  const par = -18 * Math.min(1, Math.max(0, (f-PIP.a)/(PIP.d-PIP.a)));   /* slow drift */
+  const y   = (1-rise)*54 - (1-fall)*30 + par;
+  pipEl.style.opacity = o.toFixed(3);
+  pipEl.style.transform = "translate3d(0," + y.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
+}
 
 /* ══════════ scroll → frame + cues ══════════ */
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -393,6 +507,7 @@ function loop(){
   if(Math.abs(targetFrame-shownFrame)<0.05) shownFrame = targetFrame;
   paint();
   styleCues(shownFrame);
+  pipStyle(shownFrame);
   requestAnimationFrame(loop);
 }
 resize();
