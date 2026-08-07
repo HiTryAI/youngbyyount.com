@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Young by You – Wie alt bist du wirklich?</title>
+<meta name="description" content="Young by You schätzt dein biologisches Alter – und hilft dir mit täglichen Routinen aus der Langlebigkeitsforschung, deine Schätzung zu senken. 100% privat – alle Daten bleiben auf deinem Gerät.">
+<meta property="og:title" content="Young by You – Wie alt bist du wirklich?">
+<meta property="og:description" content="Tägliche Routinen, die deine Bio-Alter-Schätzung senken – mit Young Points, Serien und deiner 90-Tage-Projektion.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://youngbyyou.com/assets/app_icon_1024.png">
+<meta name="theme-color" content="#0A0E1A">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="apple-touch-icon" href="../assets/app_icon_1024.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css?v=7">
+</head>
+<body>
+
+<!-- ════════ Icon sprite (monoline, currentColor) ════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-movement" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-nutrition" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></symbol>
+    <symbol id="i-sleep" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-mind" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><path d="M6.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M4 19c2 0 3.6-1 4.7-2.2M20 19c-2 0-3.6-1-4.7-2.2"/></symbol>
+    <symbol id="i-social" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-living" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 17 22 17 22 11"/></symbol>
+    <symbol id="i-science" viewBox="0 0 24 24"><path d="M14 2v6l5.5 9.5a1 1 0 0 1-.9 1.5H5.4a1 1 0 0 1-.9-1.5L10 8V2"/><path d="M8.5 2h7"/><path d="M7.5 16h9"/></symbol>
+    <symbol id="i-streak" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/></symbol>
+    <symbol id="i-rank" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+    <symbol id="i-projection" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-points" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-freeze" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M3.5 7 20.5 17"/><path d="M20.5 7 3.5 17"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l3.4-4.6"/></symbol>
+    <symbol id="i-nosmoke" viewBox="0 0 24 24"><rect x="3" y="13.5" width="13" height="3.5" rx="1"/><path d="M18.5 13.5v3.5M21 13.5v3.5"/><path d="M14 9c0-2 2-2 2-4"/></symbol>
+    <symbol id="i-water" viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7 6 10a6 6 0 0 1-12 0c0-3 2.5-5.8 6-10Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4"/></symbol>
+    <symbol id="i-breath" viewBox="0 0 24 24"><path d="M2 8h12a3 3 0 1 0-3-3"/><path d="M2 12h16a3 3 0 1 1-3 3"/><path d="M2 16h8a2.5 2.5 0 1 1-2.5 2.5"/></symbol>
+    <symbol id="i-no" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6 18.4 18.4"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M7 16c-2.5 0-4-1.7-4-3.6 0-1.5 1-2.8 2.4-3.3C5.7 6.3 8.5 4 12 4s6.3 2.3 6.6 5.1c1.4.5 2.4 1.8 2.4 3.3 0 1.9-1.5 3.6-4 3.6Z"/><path d="M12 22v-6"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 22v-9"/><path d="M12 13C12 8.5 8.5 6 4.5 6c0 4.5 3.5 7 7.5 7Z"/><path d="M12 13c0-4.5 3.5-7 7.5-7 0 4.5-3.5 7-7.5 7Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ════════ Navigation ════════ -->
+<header class="nav">
+  <a class="nav-logo" href="#top" aria-label="Young by You">
+    <svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#2AB59A"/><stop offset="100%" stop-color="#8FF0DC"/>
+        </linearGradient>
+      </defs>
+      <path d="M14 8 L34 8 C36 8 37 9.5 36 11.3 C33.8 15.3 30 19.8 27.3 22.7 C26.2 23.9 26.2 24.1 27.3 25.3 C30 28.2 33.8 32.7 36 36.7 C37 38.5 36 40 34 40 L14 40 C12 40 11 38.5 12 36.7 C14.2 32.7 18 28.2 20.7 25.3 C21.8 24.1 21.8 23.9 20.7 22.7 C18 19.8 14.2 15.3 12 11.3 C11 9.5 12 8 14 8 Z"
+        fill="none" stroke="url(#lg)" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M17 11.5 L31 11.5 C29.5 14.8 26.8 17.8 25.2 19.4 C24.5 20.1 23.5 20.1 22.8 19.4 C21.2 17.8 18.5 14.8 17 11.5 Z" fill="#F5C97B"/>
+      <circle cx="24" cy="29" r="1.4" fill="#F5C97B" opacity=".8"/>
+      <circle cx="24" cy="25" r="1.1" fill="#F5C97B" opacity=".6"/>
+    </svg>
+    <span>Young <em>by You</em></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#how" data-i18n="nav_how">So funktioniert’s</a>
+    <a href="#screens" data-i18n="nav_screens">App</a>
+    <a href="#spiele" data-i18n="nav_games">Spiele</a>
+    <a href="#pillars" data-i18n="nav_pillars">5 Säulen</a>
+    <a href="#trees" data-i18n="nav_trees">Bäume</a>
+    <a href="#features" data-i18n="nav_features">Features</a>
+    <a href="#pricing" data-i18n="nav_pricing">Preise</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+    <a class="btn btn-small" href="#download" data-i18n="nav_cta">App laden</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ════════ Hero ════════ -->
+<section class="hero">
+  <div class="hero-copy">
+    <h1 data-i18n="hero_title">Wie alt bist du<br><span class="grad">wirklich</span>?</h1>
+
+    <p class="hero-sub" data-i18n="hero_sub">
+      Finde in unter 2 Minuten heraus, wie alt dein Körper wirklich ist – und sieh die Zahl
+      mit jeder gesunden Gewohnheit sinken. Kostenlos, kein Konto.
+    </p>
+    <div class="store-badges" id="download">
+      <a class="store-badge" href="#" aria-disabled="true" aria-label="App Store">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.94-.19 1.84-.86 2.95-.84 1.59.13 2.78.76 3.56 1.91-3.27 1.96-2.5 6.27.45 7.45-.62 1.4-1.42 2.79-2.04 3.65zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        <span><small data-i18n="badge_soon">Laden im</small><strong>App Store</strong></span>
+      </a>
+      <a class="store-badge" href="#" aria-disabled="true" aria-label="Google Play">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1zM17 15.4l-3.3-3.3v-.2L17 8.6l.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2H17zM16.1 16.3 12.7 13 3.6 22.1c.4.4 1 .4 1.7 0l10.8-5.8M16.1 7.7 5.3 1.9c-.7-.4-1.3-.3-1.7 0L12.7 11l3.4-3.3z"/></svg>
+        <span><small data-i18n="badge_soon2">Jetzt bei</small><strong>Google Play</strong></span>
+      </a>
+    </div>
+    <ul class="hero-trust">
+      <li data-i18n="trust_1">✓ Kostenlose Bio-Alter-Schätzung</li>
+      <li data-i18n="trust_2">✓ Kein Konto nötig</li>
+      <li data-i18n="trust_3">✓ 100 % lokale Daten</li>
+    </ul>
+  </div>
+
+  <!-- ── Animated phone mockup ── -->
+  <div class="hero-phone" aria-hidden="true">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="ps-label" data-i18n="ps_label">DEIN BIO-ALTER</div>
+        <div class="ps-age"><span id="psAge" class="num">34,76</span></div>
+        <div class="ps-unit" data-i18n="ps_unit">Jahre · Schätzung</div>
+        <div class="ps-delta" id="psDelta"><span>▼</span>&nbsp;<span id="deltaVal">0,04</span>&nbsp;<span data-i18n="ps_today">J. heute</span></div>
+        <div class="ps-chips">
+          <div class="ps-chip" data-kind="streak"><svg class="ic"><use href="#i-streak"/></svg><b class="num">12</b><small data-i18n="chip_streak">Serie</small></div>
+          <div class="ps-chip" data-kind="points"><svg class="ic"><use href="#i-points"/></svg><b id="chipPoints" class="num">580</b><small>Points</small></div>
+          <div class="ps-chip" data-kind="freeze"><svg class="ic"><use href="#i-freeze"/></svg><b class="num">2</b><small>Freezes</small></div>
+        </div>
+        <div class="ps-routines" id="psRoutines">
+          <div class="ps-routine" data-pillar="movement"><span class="pr-ic"><svg class="ic"><use href="#i-movement"/></svg></span><span class="pr-t" data-i18n="r1">30 Min. Bewegung</span><span class="pr-check"></span></div>
+          <div class="ps-routine" data-pillar="sleep"><span class="pr-ic"><svg class="ic"><use href="#i-sleep"/></svg></span><span class="pr-t" data-i18n="r2">7+ Stunden Schlaf</span><span class="pr-check"></span></div>
+          <div class="ps-routine" data-pillar="mind"><span class="pr-ic"><svg class="ic"><use href="#i-mind"/></svg></span><span class="pr-t" data-i18n="r3">10 Min. Meditation</span><span class="pr-check"></span></div>
+          <div class="ps-routine" data-pillar="nutrition"><span class="pr-ic"><svg class="ic"><use href="#i-nutrition"/></svg></span><span class="pr-t" data-i18n="r4">1 Portion Obst & Gemüse</span><span class="pr-check"></span></div>
+        </div>
+        <div class="ps-float" id="psFloat">−0,01 J.</div>
+      </div>
+    </div>
+    <div class="phone-glow"></div>
+  </div>
+</section>
+
+<!-- ════════ Credibility / evidence strip ════════ -->
+<section class="cred reveal">
+  <p class="cred-label" data-i18n="cred_label">7 evidenzbasierte Faktoren aus der Langlebigkeitsforschung</p>
+  <ul class="cred-chips">
+    <li><svg class="ic"><use href="#i-sleep"/></svg><span data-i18n="cred_1">Schlaf</span></li>
+    <li><svg class="ic"><use href="#i-movement"/></svg><span data-i18n="cred_2">Bewegung</span></li>
+    <li><svg class="ic"><use href="#i-nutrition"/></svg><span data-i18n="cred_3">Ernährung</span></li>
+    <li><svg class="ic"><use href="#i-gauge"/></svg><span data-i18n="cred_4">BMI</span></li>
+    <li><svg class="ic"><use href="#i-mind"/></svg><span data-i18n="cred_5">Stress</span></li>
+    <li><svg class="ic"><use href="#i-nosmoke"/></svg><span data-i18n="cred_6">Rauchen</span></li>
+    <li><svg class="ic"><use href="#i-social"/></svg><span data-i18n="cred_7">Soziale Kontakte</span></li>
+  </ul>
+  <p class="cred-cites" data-i18n="cred_cites">Basierend auf anerkannter Langlebigkeitsforschung – u.&nbsp;a. Telomere, kardiorespiratorische Fitness und Studien zu sozialer Verbundenheit.</p>
+</section>
+
+<!-- ════════ Mission ════════ -->
+<section class="mission reveal" id="mission">
+  <span class="eyebrow" data-i18n="eyebrow_mission">Unsere Mission</span>
+  <h2 data-i18n="mission_title">Millionen Menschen helfen, länger <em>jung</em>, gesund und voller Energie zu leben.</h2>
+  <p class="mission-story" data-i18n="mission_p1">Young by You wird unabhängig entwickelt – ohne Werbung, ohne Datenverkauf, ohne Konto. Dahinter steht eine einfache Überzeugung: Die kleinen Dinge, die du jeden Tag tust, entscheiden mit, wie jung du dich fühlst.</p>
+</section>
+
+<!-- ════════ How it works ════════ -->
+<section class="section" id="how">
+  <span class="eyebrow reveal" data-i18n="eyebrow_how">Schritt für Schritt</span>
+  <h2 class="reveal" data-i18n="how_title">So funktioniert’s</h2>
+  <p class="section-sub reveal" data-i18n="how_sub">Von der ersten Schätzung zu besseren Gewohnheiten – in drei Schritten.</p>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num num">1</div>
+      <h3 data-i18n="how_1_t">Schätzung erhalten</h3>
+      <p data-i18n="how_1_b">Beantworte ein paar Fragen zu Schlaf, Bewegung, Ernährung &amp; Co. – und erhalte kostenlos dein geschätztes biologisches Alter.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num num">2</div>
+      <h3 data-i18n="how_2_t">Routinen abhaken</h3>
+      <p data-i18n="how_2_b">Wähle aus 30 wissenschaftlich begründeten Routinen. Jeder Haken bringt Young Points – und senkt deine Zahl sichtbar.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num num">3</div>
+      <h3 data-i18n="how_3_t">Deine Zahl sinken sehen</h3>
+      <p data-i18n="how_3_b">Verfolge deinen Verlauf, halte deine Serie mit Freeze-Tagen am Leben und sieh in der Projektion, wohin deine Schätzung in 90 Tagen gehen kann.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Screenshots ════════ -->
+<section class="section" id="screens">
+  <span class="eyebrow reveal" data-i18n="eyebrow_screens">Die App</span>
+  <h2 class="reveal" data-i18n="screens_title">Sieh dir die App an</h2>
+  <p class="section-sub reveal" data-i18n="screens_sub">Von der ersten Schätzung bis zur täglichen Routine – so fühlt sich Young by You an.</p>
+  <div class="shots">
+    <figure class="shot reveal">
+      <div class="shot-frame"><img data-shot="reveal" src="../assets/screens/de/reveal.png" alt="Bio-Alter-Schätzung" loading="lazy" decoding="async" width="660" height="1434"></div>
+      <figcaption><b data-i18n="shot_1_t">Deine kostenlose Schätzung</b><span data-i18n="shot_1_b">Dein biologisches Alter – mit ehrlicher Spannweite.</span></figcaption>
+    </figure>
+    <figure class="shot reveal">
+      <div class="shot-frame"><img data-shot="home" src="../assets/screens/de/home.png" alt="Tagesübersicht" loading="lazy" decoding="async" width="660" height="1434"></div>
+      <figcaption><b data-i18n="shot_2_t">Dein Tag auf einen Blick</b><span data-i18n="shot_2_b">Bio-Alter, Serie, Punkte und deine 5 Säulen.</span></figcaption>
+    </figure>
+    <figure class="shot reveal">
+      <div class="shot-frame"><img data-shot="routines" src="../assets/screens/de/routines.png" alt="Routinen" loading="lazy" decoding="async" width="660" height="1434"></div>
+      <figcaption><b data-i18n="shot_3_t">30 Routinen aus der Forschung</b><span data-i18n="shot_3_b">Aktiviere, was zu dir passt – jede bringt Punkte.</span></figcaption>
+    </figure>
+    <figure class="shot reveal">
+      <div class="shot-frame"><img data-shot="insight" src="../assets/screens/de/insight.png" alt="Fortschritt &amp; Erkenntnis" loading="lazy" decoding="async" width="660" height="1434"></div>
+      <figcaption><b data-i18n="shot_4_t">Sieh deine Zahl sinken</b><span data-i18n="shot_4_b">Jeder Haken zählt – plus tägliche Erkenntnisse.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ════════ Spiele ════════ -->
+<section class="section" id="spiele">
+  <span class="eyebrow reveal" data-i18n="eyebrow_games">Spielerisch jung</span>
+  <h2 class="reveal" data-i18n="games_title">32 Denk-Duelle in der App</h2>
+  <p class="section-sub reveal" data-i18n="games_sub">Kurze, schnelle Spiele für Reaktion, Gedächtnis und Konzentration – spiel gegen dich, gegen die Zeit und gegen deine Freunde.</p>
+  <div class="game-emojis reveal" aria-hidden="true">
+    <span class="game-emoji">⚡</span>
+    <span class="game-emoji">🐵</span>
+    <span class="game-emoji">🎯</span>
+    <span class="game-emoji">🧠</span>
+    <span class="game-emoji">🌈</span>
+    <span class="game-emoji">🔢</span>
+    <span class="game-emoji">🥁</span>
+    <span class="game-emoji">🎨</span>
+    <span class="game-emoji">🧩</span>
+    <span class="game-emoji">⌨️</span>
+    <span class="game-emoji">➗</span>
+    <span class="game-emoji">🃏</span>
+  </div>
+  <div class="reveal" style="text-align:center;margin-top:30px">
+    <a class="btn" href="/spiele/" data-i18n="games_cta">Alle 32 Spiele ansehen</a>
+  </div>
+</section>
+
+<!-- ════════ 5 Pillars ════════ -->
+<section class="section" id="pillars">
+  <span class="eyebrow reveal" data-i18n="eyebrow_pillars">Ganzheitlich</span>
+  <h2 class="reveal" data-i18n="pillars_title">Die 5 Säulen der Langlebigkeit</h2>
+  <p class="section-sub reveal" data-i18n="pillars_sub">Ganzheitlich statt einseitig – deine Routinen decken alles ab, was dein biologisches Alter beeinflusst.</p>
+  <div class="pillars">
+    <div class="pillar reveal">
+      <div class="pillar-ic"><svg class="ic"><use href="#i-movement"/></svg></div>
+      <h3 data-i18n="pil_1_t">Bewegung</h3>
+      <p data-i18n="pil_1_b">Spazieren, Kraft &amp; Zone-2-Cardio – das Training deiner Zellkraftwerke.</p>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-ic"><svg class="ic"><use href="#i-nutrition"/></svg></div>
+      <h3 data-i18n="pil_2_t">Ernährung</h3>
+      <p data-i18n="pil_2_b">Gemüse, Protein, Essenspausen – weniger Entzündung, mehr Reparatur.</p>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-ic"><svg class="ic"><use href="#i-sleep"/></svg></div>
+      <h3 data-i18n="pil_3_t">Schlaf</h3>
+      <p data-i18n="pil_3_b">Im Tiefschlaf erholt und repariert sich dein Körper. Wir helfen dir, ihn zu schützen.</p>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-ic"><svg class="ic"><use href="#i-mind"/></svg></div>
+      <h3 data-i18n="pil_4_t">Geist</h3>
+      <p data-i18n="pil_4_b">Meditation, Lesen, Atemübungen – weniger Cortisol, längere Telomere.</p>
+    </div>
+    <div class="pillar reveal">
+      <div class="pillar-ic"><svg class="ic"><use href="#i-social"/></svg></div>
+      <h3 data-i18n="pil_5_t">Soziales</h3>
+      <p data-i18n="pil_5_b">Gute Beziehungen sind der stärkste Prädiktor für ein langes Leben.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ The Calibration · signature scroll moment ════════ -->
+<section class="calibration">
+  <div class="cal-track">
+    <div class="cal-stage">
+      <p class="cal-line cal-line-1" data-i18n="cal_line1">Dein chronologisches Alter.</p>
+
+      <div class="cal-phone" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen cal-screen">
+            <div class="cal-dial-wrap">
+              <svg class="cal-dial" viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="calArcGrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0" stop-color="#2BB39A"/>
+                    <stop offset=".5" stop-color="#4ADEC2"/>
+                    <stop offset=".8" stop-color="#6CF0D8"/>
+                    <stop offset="1" stop-color="#F5C97B"/>
+                  </linearGradient>
+                </defs>
+                <circle class="cal-dial-track" cx="60" cy="60" r="52"/>
+                <path class="cal-dial-arc" d="M60 8 A52 52 0 0 1 60 112 A52 52 0 0 1 60 8 Z" pathLength="1"/>
+              </svg>
+              <div class="cal-dial-center">
+                <span class="cal-label" data-i18n="ps_label">DEIN BIO-ALTER</span>
+                <span class="cal-age num"><span id="calAge">38,00</span></span>
+                <span class="cal-unit" data-i18n="cal_unit">Jahre</span>
+              </div>
+            </div>
+            <div class="cal-streak">
+              <div class="cal-streak-row">
+                <span class="cal-streak-label"><svg class="ic"><use href="#i-streak"/></svg><span data-i18n="cal_day">Tag</span>&nbsp;<b class="num" id="calDay">0</b></span>
+                <span class="cal-streak-max num">90</span>
+              </div>
+              <div class="cal-streak-track"><span class="cal-streak-fill" id="calStreakFill"></span></div>
+            </div>
+            <div class="cal-routines">
+              <div class="ps-routine" data-pillar="movement"><span class="pr-ic"><svg class="ic"><use href="#i-movement"/></svg></span><span class="pr-t">30 Min. Bewegung</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="sleep"><span class="pr-ic"><svg class="ic"><use href="#i-sleep"/></svg></span><span class="pr-t">7+ Stunden Schlaf</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="mind"><span class="pr-ic"><svg class="ic"><use href="#i-mind"/></svg></span><span class="pr-t">10 Min. Meditation</span><span class="pr-check"></span></div>
+              <div class="ps-routine" data-pillar="nutrition"><span class="pr-ic"><svg class="ic"><use href="#i-nutrition"/></svg></span><span class="pr-t">1 Portion Obst & Gemüse</span><span class="pr-check"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="cal-line cal-line-2" data-i18n="cal_line2">Wird zu deinem biologischen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Features ════════ -->
+<section class="section" id="features">
+  <span class="eyebrow reveal" data-i18n="eyebrow_features">Features</span>
+  <h2 class="reveal" data-i18n="feat_title">Mehr als ein Habit-Tracker</h2>
+  <p class="section-sub reveal" data-i18n="feat_sub">Jede Funktion ist darauf ausgelegt, dass du dranbleibst.</p>
+  <div class="features">
+    <div class="feature span-2 reveal">
+      <span class="f-ghost num" aria-hidden="true">34,76</span>
+      <div class="feat-ic"><svg class="ic"><use href="#i-living"/></svg></div>
+      <h3 data-i18n="f1_t">Lebendige Zahl</h3>
+      <p data-i18n="f1_b">Dein Bio-Alter ist keine starre Testzahl – es reagiert auf jeden einzelnen Haken. Sofort.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-ic"><svg class="ic"><use href="#i-science"/></svg></div>
+      <h3 data-i18n="f2_t">Warum es wirkt</h3>
+      <p data-i18n="f2_b">Jede Routine erklärt verständlich, was sie in deinem Körper bewirkt – kein blindes Abhaken.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-ic"><svg class="ic"><use href="#i-streak"/></svg></div>
+      <h3 data-i18n="f3_t">Serien mit Herz</h3>
+      <p data-i18n="f3_b">Freeze-Tage schützen deine Serie, wenn das Leben dazwischenkommt. Motivation statt Bestrafung.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-ic"><svg class="ic"><use href="#i-rank"/></svg></div>
+      <h3 data-i18n="f4_t">Young Ranks</h3>
+      <p data-i18n="f4_b">Von Bronze bis „Ageless“ – deine Young Points erzählen deine Fortschrittsgeschichte.</p>
+    </div>
+    <div class="feature span-2 reveal">
+      <div class="feat-ic"><svg class="ic"><use href="#i-projection"/></svg></div>
+      <h3 data-i18n="f5_t">90-Tage-Projektion</h3>
+      <p data-i18n="f5_b">Sieh heute, wo deine Schätzung in drei Monaten stehen kann, wenn du dein Tempo hältst.</p>
+      <svg class="spark" viewBox="0 0 200 56" role="img" aria-label="Beispielhafte 90-Tage-Projektion">
+        <defs><linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(74,222,194,.28)"/><stop offset="1" stop-color="transparent"/></linearGradient></defs>
+        <path class="area" d="M4 14 L70 22 L130 34 L196 44 L196 56 L4 56 Z"/>
+        <path class="line" d="M4 14 L70 22 L130 34 L196 44"/>
+        <circle class="tip" cx="196" cy="44" r="3.5"/>
+      </svg>
+      <span class="spark-cap" data-i18n="spark_cap">Beispiel · Projektion</span>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-ic"><svg class="ic"><use href="#i-lock"/></svg></div>
+      <h3 data-i18n="f6_t">100 % privat</h3>
+      <p data-i18n="f6_b">Alle Daten bleiben auf deinem Gerät. Kein Konto, keine Cloud, keine Weitergabe. Punkt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Two trees ════════ -->
+<section class="section" id="trees">
+  <span class="eyebrow reveal" data-i18n="eyebrow_trees">Wachstum, das bleibt</span>
+  <h2 class="reveal" data-i18n="trees_title">Ein Baum, der mit dir wächst</h2>
+  <p class="section-sub reveal" data-i18n="trees_sub">Er lebt in der App und wächst durch das, was du tust – nie durch das, was du zahlst.</p>
+  <div class="trees">
+    <div class="tree-card reveal">
+      <span class="tree-badge" data-i18n="tree1_badge">In der App</span>
+      <div class="tree-ic"><svg class="ic"><use href="#i-tree"/></svg></div>
+      <h3 data-i18n="tree1_t">Dein Lebensbaum</h3>
+      <p data-i18n="tree1_b">Jede Routine nährt ihn: Seine fünf Äste sind deine fünf Säulen – sie werden voller, je ausgewogener du lebst. Deine Serie lässt ihn blühen. Und wenn das Leben dazwischenkommt, ruht er nur.</p>
+    </div>
+  </div>
+  <div class="reveal" style="text-align:center;margin-top:30px">
+    <a class="btn btn-ghost" href="/hain/" data-i18n="trees_cta">Der Hain: 12 echte Bäume →</a>
+  </div>
+</section>
+
+<!-- ════════ Apple Health / Health Connect ════════ -->
+<section class="section" id="health">
+  <span class="eyebrow reveal" data-i18n="eyebrow_health">Neu · Apple Health &amp; Health Connect</span>
+  <h2 class="reveal" data-i18n="health_title">Echte Werte. <span class="grad">Persönlichere</span> Schätzung.</h2>
+  <p class="section-sub reveal" data-i18n="health_sub">Verbinde Apple Health auf dem iPhone oder Health Connect auf Android – und deine Bio-Alter-Schätzung nutzt echte Messwerte statt nur deiner Angaben. Freiwillig, nur lesend, und alles bleibt auf deinem Gerät.</p>
+
+  <div class="health-grid">
+    <!-- Visual: real values flow into the estimate -->
+    <div class="health-visual reveal" aria-hidden="true">
+      <div class="hv-chips">
+        <div class="hv-chip" style="--c:#7B9CFF"><svg class="ic"><use href="#i-sleep"/></svg><span><b class="num" data-i18n="hv_sleep_v">7,4 h</b><small data-i18n="hv_sleep">Schlaf</small></span></div>
+        <div class="hv-chip" style="--c:#FF8BA7"><svg class="ic"><use href="#i-social"/></svg><span><b class="num">58</b><small data-i18n="hv_hr">Ruhepuls</small></span></div>
+        <div class="hv-chip" style="--c:#4ADEC2"><svg class="ic"><use href="#i-movement"/></svg><span><b class="num">4/7</b><small data-i18n="hv_active">Aktive Tage</small></span></div>
+        <div class="hv-chip" style="--c:#F5C97B"><svg class="ic"><use href="#i-gauge"/></svg><span><b class="num">71 kg</b><small data-i18n="hv_weight">Gewicht</small></span></div>
+        <div class="hv-chip" style="--c:#C78BFF"><svg class="ic"><use href="#i-breath"/></svg><span><b class="num">42</b><small>VO₂max</small></span></div>
+      </div>
+      <div class="hv-arrow"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 4v14m0 0-5-5m5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="hv-result">
+        <span class="hv-label" data-i18n="ps_label">DEIN BIO-ALTER</span>
+        <span class="hv-age num" data-i18n="hv_age_v">34,76</span>
+        <span class="hv-note" data-i18n="hv_note">wird persönlicher – nie strenger</span>
+      </div>
+    </div>
+
+    <!-- The four honest promises -->
+    <div class="health-points">
+      <div class="hp reveal">
+        <div class="hp-ic"><svg class="ic"><use href="#i-lock"/></svg></div>
+        <div><h3 data-i18n="hp1_t">Nur lesen – nie schreiben</h3>
+        <p data-i18n="hp1_b">Die App fragt einmal um Erlaubnis und liest dann Schlaf, Ruhepuls, Aktivität, Gewicht und VO₂max. Zurückgeschrieben wird nie etwas.</p></div>
+      </div>
+      <div class="hp reveal">
+        <div class="hp-ic"><svg class="ic"><use href="#i-shield"/></svg></div>
+        <div><h3 data-i18n="hp2_t">Verlässt dein Handy nie</h3>
+        <p data-i18n="hp2_b">Die Werte werden nur auf deinem Gerät verarbeitet – wie alles in Young by You. Kein Konto, kein Server, keine Cloud.</p></div>
+      </div>
+      <div class="hp reveal">
+        <div class="hp-ic"><svg class="ic"><use href="#i-sun"/></svg></div>
+        <div><h3 data-i18n="hp3_t">Fehlt ein Wert? Kein Nachteil.</h3>
+        <p data-i18n="hp3_b">Nur vorhandene Messwerte fließen ein. Was deine Uhr oder dein Handy nicht misst, zählt niemals gegen dich.</p></div>
+      </div>
+      <div class="hp reveal">
+        <div class="hp-ic"><svg class="ic"><use href="#i-clock"/></svg></div>
+        <div><h3 data-i18n="hp4_t">Freiwillig – jederzeit trennbar</h3>
+        <p data-i18n="hp4_b">Ein Schalter im Profil. Verbinden, trennen, fertig – die App funktioniert auch ganz ohne.</p></div>
+      </div>
+    </div>
+  </div>
+  <p class="health-foot reveal" data-i18n="health_foot">Apple Health auf iPhone &amp; Apple Watch · Health Connect auf Android. Die Schätzung bleibt ein motivierender Kompass – kein Laborwert, kein medizinisches Gutachten.</p>
+</section>
+
+<!-- ════════ Privacy banner ════════ -->
+<section class="privacy-banner reveal">
+  <div class="pb-inner">
+    <div class="pb-lock"><svg class="ic"><use href="#i-shield"/></svg></div>
+    <div>
+      <h3 data-i18n="priv_t">Deine Gesundheitsdaten gehören dir.</h3>
+      <p data-i18n="priv_b">Young by You funktioniert komplett ohne Server. Was du eingibst, verlässt dein Handy nie – das ist keine Einstellung, das ist Architektur.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Pricing ════════ -->
+<section class="section" id="pricing">
+  <span class="eyebrow reveal" data-i18n="eyebrow_pricing">Preise</span>
+  <h2 class="reveal" data-i18n="price_title">Fair &amp; transparent</h2>
+  <p class="section-sub reveal" data-i18n="price_sub">Der Kern ist kostenlos. Premium schaltet alles frei.</p>
+  <div class="plans">
+    <div class="plan reveal">
+      <h3 data-i18n="plan_free_t">Kostenlos</h3>
+      <div class="plan-price num"><span data-count>0</span>&nbsp;€</div>
+      <ul>
+        <li data-i18n="plan_free_1">Bio-Alter-Schätzung</li>
+        <li data-i18n="plan_free_2">Bis zu 5 aktive Routinen</li>
+        <li data-i18n="plan_free_3">Young Points, Serien &amp; Ränge</li>
+        <li data-i18n="plan_free_4">Wöchentlicher Check-in</li>
+      </ul>
+      <a class="btn btn-ghost" href="#download" data-i18n="plan_cta_free">Kostenlos starten</a>
+    </div>
+    <div class="plan plan-pro reveal">
+      <div class="plan-flag" data-i18n="plan_flag">Beliebt</div>
+      <h3>Premium</h3>
+      <div class="plan-price num"><span data-count data-i18n="price_num_pro">39,99</span>&nbsp;€<small data-i18n="per_year">/ Jahr</small></div>
+      <div class="plan-alt" data-i18n="plan_alt">oder 4,99 € / Monat · 79,99 € Lifetime</div>
+      <ul>
+        <li data-i18n="plan_pro_1">Unbegrenzt viele Routinen</li>
+        <li data-i18n="plan_pro_2">Kompletter Katalog (30 Routinen)</li>
+        <li data-i18n="plan_pro_3">Eigene Routinen erstellen</li>
+        <li data-i18n="plan_pro_4">90-Tage-Projektion</li>
+        <li data-i18n="plan_pro_5">Detaillierte Statistiken</li>
+      </ul>
+      <a class="btn" href="#download" data-i18n="plan_cta_pro">Premium holen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FAQ ════════ -->
+<section class="section section-narrow" id="faq">
+  <span class="eyebrow reveal" data-i18n="eyebrow_faq">Gut zu wissen</span>
+  <h2 class="reveal">FAQ</h2>
+  <div class="faq reveal">
+    <details>
+      <summary data-i18n="faq_1_q">Wie wird mein biologisches Alter berechnet?</summary>
+      <p data-i18n="faq_1_a">Aus deinen Angaben zu Körper und Lebensstil (u.&nbsp;a. BMI, Schlaf, Bewegung, Rauchen, Stress, Ernährung, soziale Kontakte) – basierend auf allgemein anerkannten Zusammenhängen aus der Langlebigkeitsforschung. Es ist eine motivierende Schätzung, kein Laborwert und kein medizinisches Gutachten.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq_2_q">Sinkt meine Zahl wirklich durch Abhaken?</summary>
+      <p data-i18n="faq_2_a">Ja – deine Young Points senken die angezeigte Schätzung mit abnehmendem Grenznutzen, gedeckelt bei mehreren Jahren. Das bildet ab, was Studien nahelegen: Konsequente Gewohnheiten gehen mit jüngeren biologischen Markern einher – aber niemand wird wieder 18.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq_3_q">Was passiert mit meinen Daten?</summary>
+      <p data-i18n="faq_3_a">Nichts. Sie bleiben auf deinem Gerät. Es gibt kein Konto, keinen Server und keine Analyse-Tracker. Löschst du die App, sind die Daten weg.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq_4_q">Was kostet die App?</summary>
+      <p data-i18n="faq_4_a">Die Kern-App ist kostenlos – inklusive Schätzung, 5 Routinen, Punkten und Serien. Premium (4,99 €/Monat, 39,99 €/Jahr oder 79,99 € einmalig) schaltet den vollen Katalog, eigene Routinen und die Projektion frei.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq_6_q">Muss ich Apple Health oder Health Connect verbinden?</summary>
+      <p data-i18n="faq_6_a">Nein. Die Verbindung ist freiwillig und nur lesend: Sie macht deine Schätzung persönlicher, weil echte Messwerte (z.&nbsp;B. Schlaf und Ruhepuls) einfließen. Alles wird nur auf deinem Gerät verarbeitet – und du kannst die Verbindung jederzeit im Profil trennen.</p>
+    </details>
+    <details>
+      <summary data-i18n="faq_5_q">Ersetzt die App einen Arzt?</summary>
+      <p data-i18n="faq_5_a">Nein. Young by You ist ein Motivations-Werkzeug für einen gesünderen Alltag. Bei gesundheitlichen Fragen oder vor größeren Lebensstil-Änderungen sprich bitte mit einer Ärztin oder einem Arzt.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ════════ Final CTA ════════ -->
+<section class="final-cta reveal">
+  <span class="eyebrow" data-i18n="eyebrow_cta">Start in Kürze</span>
+  <h2 data-i18n="cta_title">Dein zukünftiges Ich fängt heute an.</h2>
+  <p data-i18n="cta_sub">Hol dir deine kostenlose Bio-Alter-Schätzung – in unter 2 Minuten.</p>
+  <a class="btn btn-big" href="#download" data-i18n="cta_btn">Jetzt kostenlos starten</a>
+</section>
+
+</main>
+
+<!-- ════════ Footer ════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>Young <em>by You</em></strong>
+      <p data-i18n="foot_tag">Tägliche Routinen, die deine Bio-Alter-Schätzung senken.</p>
+    </div>
+    <div class="footer-links">
+      <a href="../privacy.html" data-i18n="foot_privacy">Datenschutz</a>
+      <a href="mailto:benyount90@icloud.com" data-i18n="foot_contact">Kontakt</a>
+    </div>
+  </div>
+  <p class="footer-note" data-i18n="foot_note">
+    Die Bio-Alter-Schätzung basiert auf deinen Angaben und allgemeinen wissenschaftlichen
+    Zusammenhängen. Sie ist kein medizinisches Gutachten und ersetzt keine ärztliche Beratung.
+  </p>
+  <p class="footer-copy">© 2026 Young by You</p>
+</footer>
+
+<script src="../script.js?v=7"></script>
+</body>
+</html>
