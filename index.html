@@ -34,8 +34,14 @@ body{
 /* 450 stills, one continuous camera flight */
 #driver{height:1148vh}
 /* ── Fixed film stage ──────────────────────────── */
+/* Not `inset:0`. On a phone that is only the space between the toolbars, so
+   the moment Safari shrinks its bottom bar the film is short and paper shows
+   through. `100vh` on iOS already means the screen with the toolbars hidden —
+   the film then sits behind them and there is never a gap. */
 #stage{
-  position:fixed;inset:0;overflow:hidden;
+  position:fixed;top:0;left:0;right:0;
+  height:100vh;height:100lvh;
+  overflow:hidden;
   transition:transform .7s cubic-bezier(.2,.7,.2,1);
   will-change:transform;
 }
@@ -778,16 +784,28 @@ function focusX(f){
   return .5;
 }
 
+/* The canvas takes its size from the stage's own box, never from
+   window.innerHeight — those two are not the same number on a phone, and an
+   inline height beats the stylesheet, which is how a gap gets in. */
+const stage = document.getElementById("stage");
 let cw=0, ch=0;
 function resize(){
-  cw = window.innerWidth; ch = window.innerHeight;
-  canvas.width = cw*dpr; canvas.height = ch*dpr;
-  canvas.style.width = cw+"px"; canvas.style.height = ch+"px";
+  const r = stage.getBoundingClientRect();
+  const w = Math.round(r.width), h = Math.round(r.height);
+  if(!w || !h) return;
+  if(w === cw && h === ch) return;
+  cw = w; ch = h;
+  canvas.width = Math.round(cw*dpr); canvas.height = Math.round(ch*dpr);
   ctx.setTransform(dpr,0,0,dpr,0,0);
   paint(true);
   windows.forEach(w=> w.refit());
 }
 window.addEventListener("resize", resize);
+window.addEventListener("orientationchange", ()=> setTimeout(resize, 320));
+/* Safari grows the page when it collapses its toolbars and does not always
+   fire `resize` for it — the observer catches every one of those. */
+if(window.ResizeObserver) new ResizeObserver(()=> resize()).observe(stage);
+if(window.visualViewport) window.visualViewport.addEventListener("resize", resize);
 
 let shownFrame = 1, targetFrame = 1, painted = -1;
 function paint(force){
@@ -804,6 +822,59 @@ function paint(force){
   painted = f;
 }
 function repaintIfCurrent(i){ if(Math.abs(i-Math.round(shownFrame))<6) paint(true); }
+
+/* ── the strips the page can never paint on ─────────────────────────────
+   No web page may draw into the iOS status bar, so the film cannot reach it,
+   and a pale strip above and below a dark film reads as two white bars.
+
+   Measured in Safari 26 rather than assumed: `theme-color` is ignored there,
+   the `html` background is ignored, and the strips take the **body's**
+   background — a solid colour only (a gradient falls back to white) — and
+   they follow it live. So the body colour is repainted from the film itself:
+   samples along the film's top edge and along the edge the visitor can
+   actually see at the bottom, quantised so it only changes when the picture
+   does. theme-color is kept in step for the browsers that do read it.
+   A tainted canvas just keeps the colour it started with.                   */
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+let themeLast = "";
+function syncTheme(){
+  if(!loaderGone || !cw || !ch) return;
+  /* Safari tints both strips with the same colour, so it has to be chosen.
+     The top strip sits directly against the picture with nothing in between —
+     a seam there is glaring. The bottom strip is a toolbar with its own shape
+     and controls, and reads as furniture whatever colour it is. So the top
+     edge counts double. */
+  const yTop = Math.round(3*dpr);
+  const yBot = Math.round((Math.min(ch, window.innerHeight) - 4) * dpr);
+  let r=0, g=0, b=0, n=0;
+  try{
+    for(const [y, weight] of [[yTop, 2], [yBot, 1]]){
+      if(y < 0 || y >= canvas.height) continue;
+      for(const fx of [0.2, 0.5, 0.8]){
+        const d = ctx.getImageData(Math.round(cw*fx*dpr), y, 1, 1).data;
+        if(d[3] < 200) return;               /* nothing painted there yet */
+        r += d[0]*weight; g += d[1]*weight; b += d[2]*weight; n += weight;
+      }
+    }
+  }catch(e){ return; }                       /* tainted canvas — leave it be */
+  if(!n) return;
+  /* Safari does not use the colour raw — it tones it down by roughly a third
+     before painting its chrome (measured: #e00000 came back as rgb 167,0,0).
+     Handing it a correspondingly brighter colour lands the strip on the film
+     instead of a shade under it. */
+  const k = (parked ? 0.55 : 1) * 1.32;
+  /* clamp AFTER the rounding, not before: 255 quantised up to 256 is "100",
+     which turns the whole string into an eight-digit hex — over the brightest
+     frame of the film that painted the strips near-black. */
+  const hex = "#" + [r/n, g/n, b/n]
+    .map(v => Math.min(255, Math.round(Math.min(255, v*k)/4)*4).toString(16).padStart(2,"0"))
+    .join("");
+  if(hex === themeLast) return;
+  themeLast = hex;
+  document.body.style.backgroundColor = hex;
+  if(themeMeta) themeMeta.setAttribute("content", hex);
+}
+setInterval(syncTheme, 250);
 
 /* ══════════ the phone windows ══════════ */
 /* Scroll animations riding on top of the film, driven by the same scroll.
