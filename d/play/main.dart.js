@@ -28632,9 +28632,9 @@ $.l=$.U()}s=$.l
 if(s!=null)s.Y(B.Cj)},
 aj6:function aj6(){},
 azy:function azy(a){var _=this
-_.b=_.a=null
-_.c=a
-_.d=!1},
+_.c=_.b=_.a=null
+_.d=a
+_.e=!1},
 azz:function azz(a,b){this.a=a
 this.b=b},
 vH:function vH(a,b){this.a=a
@@ -93731,15 +93731,15 @@ if(!s.a||s.c!=null||s.Q)return
 s.Q=!0
 s.as=!1
 s.wO()},
-wO(){var s=0,r=A.Q(t.H),q,p=2,o=[],n=[],m=this,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4
-var $async$wO=A.R(function(a6,a7){if(a6===1){o.push(a7)
+wO(){var s=0,r=A.Q(t.H),q,p=2,o=[],n=[],m=this,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5
+var $async$wO=A.R(function(a7,a8){if(a7===1){o.push(a8)
 s=p}for(;;)switch(s){case 0:p=4
 l=m.b
 if(l==null||!m.gL3()){n=[1]
 s=5
 break}s=7
 return A.S(l.$0(),$async$wO)
-case 7:k=a7
+case 7:k=a8
 if(k==null||m.as){n=[1]
 s=5
 break}a0=v.G
@@ -93754,10 +93754,13 @@ m.d=i
 m.PD(k)
 h=j.captureStream(10)
 g="video/mp4;codecs=avc1"
-a1=$.U().b
-f=a1==null?null:a1.stream
-if(f!=null&&a0.MediaRecorder.isTypeSupported("video/mp4;codecs=avc1,mp4a.40.2")){a2=f.getAudioTracks()
-e=t.Lc.b(a2)?a2:new A.dZ(a2,A.a1(a2).i("dZ<1,aN>"))
+a1=$.U()
+a2=a1.a
+if(J.d(a2==null?null:a2.state,"running")){a1=a1.b
+a1=a1==null?null:a1.stream}else a1=null
+f=a1
+if(f!=null&&a0.MediaRecorder.isTypeSupported("video/mp4;codecs=avc1,mp4a.40.2")){a3=f.getAudioTracks()
+e=t.Lc.b(a3)?a3:new A.dZ(a3,A.a1(a3).i("dZ<1,aN>"))
 if(J.IB(e)){for(a1=J.bV(e);a1.B();){d=a1.gT()
 h.addTrack(d)}g="video/mp4;codecs=avc1,mp4a.40.2"}}if(!a0.MediaRecorder.isTypeSupported(g)){n=[1]
 s=5
@@ -93769,7 +93772,7 @@ c.ondataavailable=A.hR(new A.aj0(m,b))
 a=new A.ct(new A.aZ($.aF,t.c),t.Q)
 c.onstop=A.hR(new A.aj1(a))
 c.start(1000)
-if(m.as){try{c.stop()}catch(a5){}n=[1]
+if(m.as){try{c.stop()}catch(a6){}n=[1]
 s=5
 break}m.c=c
 m.cx=a
@@ -93781,7 +93784,7 @@ n.push(6)
 s=5
 break
 case 4:p=3
-a4=o.pop()
+a5=o.pop()
 m.r8()
 n.push(6)
 s=5
@@ -93974,27 +93977,33 @@ A.aj6.prototype={
 $1(a){},
 $S:61}
 A.azy.prototype={
-uJ(){var s=0,r=A.Q(t.H),q,p=2,o=[],n=this,m,l,k,j,i,h,g
+uJ(){var s=0,r=A.Q(t.H),q,p=2,o=[],n=this,m,l,k,j,i,h,g,f
 var $async$uJ=A.R(function(a,b){if(a===1){o.push(b)
-s=p}for(;;)switch(s){case 0:if(n.d){s=1
-break}n.d=!0
+s=p}for(;;)switch(s){case 0:if(n.e){s=1
+break}n.e=!0
 p=4
-j=n.a
-m=j==null?n.a=new v.G.AudioContext():j
+i=n.a
+m=i==null?n.a=new v.G.AudioContext():i
 if(n.b==null)n.b=m.createMediaStreamDestination()
-s=!J.d(m.state,"running")?7:8
+if(n.c==null){l=m.createConstantSource()
+l.offset.value=0
+h=n.b
+h.toString
+l.connect(h)
+l.start()
+n.c=l}s=!J.d(m.state,"running")?7:8
 break
 case 7:s=9
 return A.S(A.fb(m.resume(),t.X),$async$uJ)
-case 9:case 8:l=A.b([],t.mo)
-for(i=B.wx.ghf(),i=i.ga8(i);i.B();){k=i.gT()
-J.fu(l,n.t_(m,k.a,k.b.a))}s=10
-return A.S(A.kD(l,t.H),$async$uJ)
+case 9:case 8:k=A.b([],t.mo)
+for(h=B.wx.ghf(),h=h.ga8(h);h.B();){j=h.gT()
+J.fu(k,n.t_(m,j.a,j.b.a))}s=10
+return A.S(A.kD(k,t.H),$async$uJ)
 case 10:p=2
 s=6
 break
 case 4:p=3
-g=o.pop()
+f=o.pop()
 s=6
 break
 case 3:s=2
@@ -94005,7 +94014,7 @@ return A.P($async$uJ,r)},
 t_(a,b,c){return this.acx(a,b,c)},
 acx(a,b,c){var s=0,r=A.Q(t.H),q,p=2,o=[],n=this,m,l,k,j,i,h
 var $async$t_=A.R(function(d,e){if(d===1){o.push(e)
-s=p}for(;;)switch(s){case 0:i=n.c
+s=p}for(;;)switch(s){case 0:i=n.d
 if(i.aC(b)){s=1
 break}p=4
 s=7
@@ -94028,7 +94037,7 @@ break
 case 6:case 1:return A.O(q,r)
 case 2:return A.N(o.at(-1),r)}})
 return A.P($async$t_,r)},
-Y(a){var s,r,q,p,o=this.a,n=this.c.h(0,a)
+Y(a){var s,r,q,p,o=this.a,n=this.d.h(0,a)
 if(o==null||n==null)return
 try{s=o.createGain()
 s.gain.value=B.wx.h(0,a).b
