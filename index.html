@@ -357,7 +357,7 @@ html.parked #rail{opacity:0;pointer-events:none}
 <div id="dim"></div>
 
 <!-- The app, playing in windows on top of the film — in the app's own tab
-     order: Start, Spiele, Kreis, Kanal. -->
+     order: Start, Spiele, Freunde, Kanal. -->
 <div id="pip-home"  class="pipwin right" aria-hidden="true"><div class="shell"><canvas id="cv-home"></canvas><i class="cast"></i></div></div>
 <div id="pip-games" class="pipwin left"  aria-hidden="true"><div class="shell"><canvas id="cv-games"></canvas><i class="cast"></i></div></div>
 <div id="pip-kreis" class="pipwin right" aria-hidden="true"><div class="shell"><canvas id="cv-kreis"></canvas><i class="cast"></i></div></div>
@@ -501,26 +501,26 @@ html.parked #rail{opacity:0;pointer-events:none}
 const T = {
   de: {
     title:"Young by You – Ein gehaltener Tag. Ein Baum.",
-    eyebrow:"Die Routinen-App, die pflanzt",
-    intro_sub:"Jeden Tag ein Stück jünger – und draußen wächst ein Baum mit.",
+    eyebrow:"Kleine Routinen, echte Bäume",
+    intro_sub:"Ein paar kleine Sachen am Tag. Und draußen wächst ein Baum mit.",
     hint:"Scrollen",
     more:"Mehr dazu",
     close_label:"Schließen",
 
-    routine_h:"Fünf Dinge. Jeden Tag.",
-    routine_s:"Bewegung, Ernährung, Schlaf, Kopf, Menschen. Du hakst ab, was du wirklich getan hast – und dein biologisches Alter bewegt sich mit.",
+    routine_h:"Fünf Säulen. Jeden Tag ein paar Minuten.",
+    routine_s:"Bewegung, Ernährung, Schlaf, Kopf und Menschen. Du hakst ab, was du wirklich getan hast – mehr will die App nicht von dir.",
     tree_h:"30 Tage gehalten. Ein echter Baum.",
     tree_s:"Kein Abzeichen, kein Punktestand. Ein Baum mit Standort und Zertifikat – bis zu %12% im Jahr.",
-    games_h:"Spielen, das dich wach hält.",
-    games_s:"%58% Duelle, keins länger als eine Minute. Schick deinen Code weiter – der andere spielt genau dieselbe Runde, auch ohne App.",
+    games_h:"Spiele, die dich wach halten.",
+    games_s:"%58% kurze Duelle, keines länger als eine Minute. Du schickst deine Runde weiter, und wer sie öffnet, spielt genau dieselbe – im Browser, ohne etwas zu installieren.",
     kreis_h:"Allein hält man Wochen durch. Zu zweit Jahre.",
-    kreis_s:"Bis zu %10% Menschen, die du wirklich kennst. Sichtbar ist nur, was du freigibst – und euer gemeinsamer Garten wächst, solange ihr dranbleibt.",
+    kreis_s:"Deine Kontakte trägst du selbst ein – über deinen Code, den du inzwischen auch benennen darfst. Daraus baust du Gruppen, bis zu %10% Menschen. Jeder Faden bleibt zwischen euch.",
     kanal_h:"Was rausgeht – und was zurückkommt.",
-    kanal_s:"Dein Kanal zählt ehrlich mit: verschickte Herausforderungen, Antworten, Mitspieler. Und drei zahlende Eingeladene sind drei Monate geschenkt.",
+    kanal_s:"Der Kanal zählt mit, was deine Runden draußen auslösen: verschickte Herausforderungen, Antworten, Mitspieler. Drei Eingeladene, die bleiben, sind drei Monate geschenkt.",
     close_h:"Und irgendwann schaust du zurück.",
-    close_s:"Deine ersten %14% Tage gehören dir. Danach wird pausiert, nicht gelöscht.",
+    close_s:"Die ersten %14% Tage gehören dir, die ganze App. Danach wird pausiert – gelöscht wird nichts.",
 
-    rail:["Routinen","Baum","Spiele","Kreis","Kanal"],
+    rail:["Routinen","Baum","Spiele","Freunde","Kanal"],
     panels:{
       routine:{h:"Warum fünf Säulen",p:[
         "Länger jung zu bleiben ist keine einzelne Sache, die man kauft. Es ist die Summe von Kleinigkeiten, die man oft genug tut. Young by You bündelt sie in fünf Säulen: Bewegung, Ernährung, Schlaf, Kopf und Menschen.",
@@ -534,22 +534,23 @@ const T = {
         "Nach etwa einem Jahr steht deine Welt vollständig – und im Register liegen zwölf Bäume mit deinem Namen daran.",
         "Das ist der ganze Grund, warum es diese App gibt: Was du für dich tust, soll auch draußen etwas hinterlassen.",
       ]},
-      games:{h:"Vierundfünfzig Duelle",p:[
+      games:{h:"Achtundfünfzig Duelle",p:[
         "Jedes Spiel ist in unter einer Minute gespielt: Reflexe, Farben, Zahlenfolgen, Muster – und der perfekte Kreis aus freier Hand.",
-        "Jede Runde erzeugt einen Code. Wer ihn öffnet, spielt exakt dieselbe Runde – in der App oder direkt im Browser, ohne irgendetwas zu installieren. Die Antwort landet wieder bei dir, im selben Faden.",
-        "Gespielte Runden gewinnen Puzzleteile. Die gibst du auf der Weltkarte aus und deckst Land für Land ein Bild auf.",
+        "Jede Runde erzeugt einen Code. Wer ihn öffnet, spielt genau dieselbe Runde – in der App oder direkt im Browser, ohne irgendetwas zu installieren. Die Antwort kommt in denselben Faden zurück.",
+        "Nebenher nimmt die App deine Runde auf. Daraus wird ein kurzes Video, das du verschicken kannst – es kostet nichts und trägt nur deinen Code.",
+        "Gespielte Runden bringen Puzzleteile. Die gibst du auf der Weltkarte aus und deckst Land für Land ein Bild auf.",
         "Und eine Grenze, die bewusst gezogen ist: Die Spiele fassen deine Gesundheitswerte nie an. Spiel bleibt Spiel.",
       ]},
       kreis:{h:"Klein, privat, ohne Scham",p:[
-        "Ein Kreis ist bis zu zehn Menschen groß, die man wirklich kennt. Hinein kommt man nur über einen Code – es gibt keine öffentlichen Kreise und keine Vorschläge.",
-        "Was der Kreis von dir sieht, entscheidest du pro Routine. Was er nie sieht: dein biologisches Alter, deine Körperdaten, deine Antworten aus dem Quiz.",
+        "Es gibt keine Suche, keine Vorschläge, kein Verzeichnis. Du hast einen eigenen Code, und wer ihn einträgt, steht in deiner Kontaktliste – und du in seiner. Wenn dir „7KQ3M2XD“ zu sperrig ist, gibst du ihm einen Namen; der alte gilt trotzdem weiter.",
+        "Aus deinen Kontakten baust du Gruppen, bis zu zehn Menschen groß. Mit jedem Einzelnen hast du außerdem einen Faden, den sonst niemand sieht.",
+        "Was die anderen von dir sehen, entscheidest du pro Routine. Was sie nie sehen: dein biologisches Alter und deine Körperdaten.",
         "Sichtbar ist nur, was gut tut: wer heute aktiv war, wer eine Serie hält, wer nach einer Pause zurückkommt. Wer still ist, wird leiser dargestellt – nie markiert, nie erinnert, nie angezählt.",
-        "Aus den gehaltenen Tagen aller wächst ein gemeinsamer Garten. Er ist der einzige Punktestand, den es hier gibt.",
       ]},
       kanal:{h:"Zahlen, die stimmen",p:[
         "Jede Herausforderung, die du verschickst, und jede Antwort, die zurückkommt, wird hier gezählt – auf deinem Gerät, ohne Umweg.",
         "iOS verrät nie, in welcher App etwas gelandet ist. Deshalb steht hier keine erfundene Aufschlüsselung nach Netzwerken, sondern nur das, was das Telefon wirklich weiß. Lieber vier ehrliche Zahlen als zwanzig geratene.",
-        "Und es lohnt sich, Leute mitzubringen: drei zahlende Eingeladene sind drei Monate geschenkt, zehn ein ganzes Jahr, fünfundzwanzig für immer.",
+        "Und es lohnt sich, Leute mitzubringen: drei Eingeladene, die die Mitgliedschaft wirklich kaufen, sind drei Monate geschenkt, zehn ein ganzes Jahr, fünfundzwanzig für immer. Nachgezählt wird beim App Store – erfundene Konten bringen dort nichts.",
       ]},
     },
 
@@ -559,26 +560,26 @@ const T = {
   },
   en: {
     title:"Young by You – One day kept. One tree.",
-    eyebrow:"The routine app that plants",
-    intro_sub:"A little younger every day — and outside, a real tree grows with you.",
+    eyebrow:"Small routines, real trees",
+    intro_sub:"A few small things a day. And outside, a real tree grows with you.",
     hint:"Scroll",
     more:"Read more",
     close_label:"Close",
 
-    routine_h:"Five things. Every day.",
-    routine_s:"Movement, food, sleep, mind, people. You tick off what you really did — and your biological age moves with it.",
+    routine_h:"Five pillars. A few minutes a day.",
+    routine_s:"Movement, food, sleep, mind and people. You tick off what you really did — the app asks nothing more of you.",
     tree_h:"30 days kept. One real tree.",
     tree_s:"No badge, no points. A tree with a location and a certificate — up to %12% a year.",
-    games_h:"Play that keeps you sharp.",
-    games_s:"%58% duels, none longer than a minute. Pass on your code — the other side plays the very same round, even without the app.",
+    games_h:"Games that keep you sharp.",
+    games_s:"%58% short duels, none longer than a minute. You pass your round on, and whoever opens it plays exactly the same one — in the browser, with nothing to install.",
     kreis_h:"Alone you last weeks. Together, years.",
-    kreis_s:"Up to %10% people you actually know. Only what you allow is visible — and your shared garden grows as long as you all keep going.",
+    kreis_s:"You add your own contacts — with your code, which you may now give a name of your own. Out of them you build groups, up to %10% people. Every thread stays between you.",
     kanal_h:"What goes out — and what comes back.",
-    kanal_s:"Your channel keeps an honest count: challenges sent, answers back, people played with. And three paying invitees are three months on us.",
+    kanal_s:"The channel counts what your rounds set off out there: challenges sent, answers back, people played with. Three invitees who stay are three months on us.",
     close_h:"And one day you look back.",
-    close_s:"Your first %14% days are on us. After that it pauses — nothing is deleted.",
+    close_s:"The first %14% days are yours, the whole app. After that it pauses — nothing is deleted.",
 
-    rail:["Routines","Tree","Games","Circle","Channel"],
+    rail:["Routines","Tree","Games","Friends","Channel"],
     panels:{
       routine:{h:"Why five pillars",p:[
         "Staying young longer is not one thing you can buy. It is the sum of small things done often enough. Young by You gathers them into five pillars: movement, food, sleep, mind and people.",
@@ -592,22 +593,23 @@ const T = {
         "After about a year your world stands complete — and the register holds twelve trees with your name on them.",
         "That is the whole reason this app exists: what you do for yourself should leave something behind out there too.",
       ]},
-      games:{h:"Fifty-four duels",p:[
+      games:{h:"Fifty-eight duels",p:[
         "Every game is over in under a minute: reflexes, colours, number sequences, patterns — and the perfect circle, drawn freehand.",
-        "Every round produces a code. Whoever opens it plays exactly the same round — in the app or straight in the browser, with nothing to install. Their answer comes back to you, in the same thread.",
+        "Every round produces a code. Whoever opens it plays exactly the same round — in the app or straight in the browser, with nothing to install. Their answer comes back into the same thread.",
+        "The app records your round while you play. Out of it comes a short video you can pass on — it costs nothing and carries only your code.",
         "Rounds played win puzzle pieces. You spend those on the world map and uncover a picture, country by country.",
         "And one line drawn on purpose: the games never touch your health figures. Play stays play.",
       ]},
       kreis:{h:"Small, private, no shame",p:[
-        "A circle holds up to ten people you actually know. The only way in is a code — there are no public circles and no suggestions.",
-        "What the circle sees of you is your decision, routine by routine. What it never sees: your biological age, your body data, your quiz answers.",
+        "There is no search, no suggestions, no directory. You have a code of your own, and whoever enters it lands in your contact list — and you in theirs. If “7KQ3M2XD” feels clumsy, give it a name; the old one keeps working all the same.",
+        "Out of your contacts you build groups, up to ten people. With each single person you also have a thread nobody else sees.",
+        "What the others see of you is your decision, routine by routine. What they never see: your biological age and your body data.",
         "Only what helps is visible: who was active today, who is holding a streak, who came back after a break. Anyone quiet is drawn more faintly — never flagged, never reminded, never counted out.",
-        "Out of everybody's kept days a shared garden grows. It is the only score here.",
       ]},
       kanal:{h:"Numbers that are true",p:[
         "Every challenge you send and every answer that comes back is counted here — on your device, with no detour.",
         "iOS never reveals which app something landed in. So there is no invented breakdown by network here, only what the phone genuinely knows. Four honest numbers beat twenty guessed ones.",
-        "And bringing people along pays: three paying invitees are three months on us, ten make a year, twenty-five make it forever.",
+        "And bringing people along pays: three invitees who really buy the membership are three months on us, ten make a year, twenty-five make it forever. The count is checked with the App Store — invented accounts are worth nothing there.",
       ]},
     },
 
@@ -660,6 +662,10 @@ function setLang(l){
   buildRail();
   if(openKey) renderPanel(openKey);
   wireStore();
+  /* Die Telefone sprechen mit. Beim allerersten Aufruf gibt es sie noch
+     nicht – dann ist auch nichts zu tun, sie laden ohnehin in der neuen
+     Sprache. */
+  if(pipWindows) for(const w of pipWindows) w.relang();
 }
 function wireStore(){
   const b = document.getElementById("store-badge");
@@ -904,7 +910,7 @@ function phoneWindow(elId, canvasId, dir, marks){
     const im = new Image();
     im.crossOrigin = "anonymous";
     im.addEventListener("load", ()=>{ if(i===drawn) draw(i, true); });
-    im.src = FILM + "/w/" + dir + "/p_" + pad(i) + "." + EXT;
+    im.src = FILM + "/w/" + lang + "/" + dir + "/p_" + pad(i) + "." + EXT;
     pics[i] = im;
   }
   function start(){
@@ -966,14 +972,23 @@ function phoneWindow(elId, canvasId, dir, marks){
   /* a resize changes the canvas' pixel size — redraw whatever is on screen */
   function refit(){ if(visible){ size(); draw(drawn>0?drawn:PIP_1, true); } }
 
-  return {start, style, refit};
+  /* Sprachwechsel: die Bilder SIND der Text. Also alles wegwerfen und beim
+     nächsten Scrollschritt in der neuen Sprache neu holen. */
+  function relang(){
+    for(let i=0;i<pics.length;i++) pics[i] = undefined;
+    started = false; drawn = -1;
+    if(visible) start();
+  }
+
+  return {start, style, refit, relang};
 }
 
 /* The Start window rides with the tree chapter: that screen carries both the
    routines and the growing tree, so it is the picture that chapter argues
    for. Between frame 40 and 110 the film already holds a real phone in a real
    hand, which is why the routines chapter itself stays clean.               */
-const windows = [
+var pipWindows = null;
+const windows = pipWindows = [
   phoneWindow("pip-home",  "cv-home",  "home",  {a:126, b:138, pa:134, pb:170, c:170, d:182}),
   phoneWindow("pip-games", "cv-games", "games", {a:196, b:208, pa:204, pb:244, c:244, d:256}),
   phoneWindow("pip-kreis", "cv-kreis", "kreis", {a:274, b:286, pa:282, pb:322, c:322, d:334}),
