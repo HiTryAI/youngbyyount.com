@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex" />
   <!-- Open Graph so the link shows a rich card in WhatsApp / iMessage / Telegram -->
   <meta property="og:title" content="Du bist eingeladen 🌱" />
-  <meta property="og:description" content="Ein Freund lädt dich zu Young by You ein. Lade die App – dein Code ist schon dabei." />
+  <meta property="og:description" content="Ein Freund lädt dich zu Young by You ein – mit seinem Code testest du 28 Tage kostenlos statt 14." />
   <meta property="og:type" content="website" />
   <style>
     :root {
@@ -80,7 +80,19 @@
     <div class="emoji">🌱</div>
     <h1>Du bist eingeladen</h1>
     <p class="sub">Ein Freund nutzt Young by You – tägliche Routinen, 33 Denkspiele
-      und für jeden Fortschritt echte Bäume – und möchte dich dabei haben.</p>
+      und für jeden Fortschritt echte Bäume – und möchte dich dabei haben.
+      Mit seinem Code testest du <b>28 Tage kostenlos statt 14</b>.</p>
+
+    <!-- Der Code steht VOR den Knöpfen: iOS reicht ihn nicht durch den App
+         Store, also muss er erst in die Zwischenablage – und danach erst
+         darf jemand weggehen, um die App zu laden. -->
+    <div class="codewrap" id="codeBox" hidden>
+      <div class="codelabel">Dein Einladungscode</div>
+      <div class="code" id="codeRow" title="Tippen zum Kopieren">
+        <code id="codeText"></code>
+        <span class="copy" id="copyLabel">Kopieren</span>
+      </div>
+    </div>
 
     <div class="stores">
       <a class="store primary" id="appStore" href="#">
@@ -94,26 +106,19 @@
     </div>
 
     <ol class="steps">
-      <li><span class="n">1</span><span><b>App laden</b> und öffnen</span></li>
-      <li><span class="n">2</span><span>Zu <b>Profil → Freunde einladen</b></span></li>
-      <li><span class="n">3</span><span><b>Code eingeben</b> – fertig</span></li>
+      <li><span class="n">1</span><span><b>Code kopieren</b> (oben tippen)</span></li>
+      <li><span class="n">2</span><span><b>App laden</b> und öffnen</span></li>
+      <li><span class="n">3</span><span>Beim ersten Start <b>„Einfügen"</b> – fertig</span></li>
     </ol>
-
-    <div class="codewrap" id="codeBox" hidden>
-      <div class="codelabel">Der Code deines Freundes</div>
-      <div class="code" id="codeRow" title="Tippen zum Kopieren">
-        <code id="codeText"></code>
-        <span class="copy" id="copyLabel">Kopieren</span>
-      </div>
-    </div>
 
     <p style="margin-top:14px"><a id="openApp" href="#" hidden
       style="font-size:13.5px;font-weight:700;color:var(--mint);text-decoration:none">
       App schon installiert? Hier öffnen →</a></p>
 
-    <p class="foot">Ehrlich gesagt: Am Preis ändert der Code für dich nichts.
-      Er zählt für <b>deinen Freund</b> – wirst du irgendwann Mitglied,
-      schenken wir ihm dafür Monate.</p>
+    <p class="foot">Der Code bringt euch beiden etwas: dir 28 freie Tage statt 14,
+      deinem Freund sofort eine Woche. Und wirst du irgendwann Mitglied,
+      schenken wir ihm dafür Monate. Ohne Code kannst du die App natürlich
+      trotzdem 14 Tage lang ganz benutzen.</p>
 
     <p class="foot"><a href="/">youngbyyou.com</a> · Werde jünger, gemeinsam.</p>
   </main>
