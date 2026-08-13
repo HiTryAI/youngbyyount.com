@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Kreatin · Was belegt ist und was nicht · Young by You</title>
+  <meta name="description" content="Kreatin, ehrlich sortiert: die zwei in der EU zugelassenen Aussagen, drei Studien im Volltext-Nachweis, die Einnahme, die Kaufberatung – und was Kreatin ausdrücklich nicht kann." />
+  <meta property="og:title" content="Kreatin – was belegt ist, und was nicht" />
+  <meta property="og:description" content="Die zwei zugelassenen EU-Aussagen, drei Studien mit DOI, Einnahme, Kaufberatung – und eine ehrliche Liste dessen, was Kreatin nicht kann. Die Wissensseite aus Young by You." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://youngbyyou.com/creatin/" />
+  <meta property="og:image" content="https://youngbyyou.com/creatin/ring-de.jpg" />
+  <meta name="theme-color" content="#0A0E1A" />
+  <link rel="canonical" href="https://youngbyyou.com/creatin/" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="../assets/app_icon_1024.png" />
+  <style>
+    :root {
+      --bg: #0A0E1A; --bg-deep: #070A14; --surface: #131A2C; --surface-hi: #1B2440;
+      --stroke: #263150; --stroke-hi: rgba(120,150,210,.20);
+      --mint: #4ADEC2; --gold: #F5C97B;
+      /* Der Farbton der Kreatin-Kugel im Rad der App: HSL 210. Web und App
+         zeigen dieselbe Farbe, weil sie dieselbe Zahl benutzen. */
+      --accent: #5294D6; --accent-hi: #8FBEF0;
+      --text: #F2F5FA; --text-2: #9AA6C0; --text-3: #5E6A87;
+      --r-card: 20px; --r-panel: 28px; --r-pill: 100px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(120% 70% at 50% -10%, rgba(82,148,214,0.16), transparent 60%),
+        radial-gradient(100% 70% at 50% 115%, rgba(74,222,194,0.06), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      padding: 0 20px calc(48px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+
+    header.top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 18px 0 6px;
+    }
+    header.top .brand {
+      color: var(--text-2); text-decoration: none; font-size: 14px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    header.top .brand:hover { color: var(--text); }
+    header.top .brand img { width: 30px; height: 30px; border-radius: 8px; display: block; }
+    .lang {
+      appearance: none; cursor: pointer; font: inherit;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .04em;
+      color: var(--text-2); background: rgba(255,255,255,.03);
+      border: 1px solid var(--stroke); border-radius: var(--r-pill);
+      padding: 7px 13px; transition: color .15s, border-color .15s, background .15s;
+    }
+    .lang:hover { color: var(--text); border-color: var(--stroke-hi); }
+
+    /* ── Kopf ───────────────────────────────────────────────────────── */
+    .hero { text-align: center; padding: 34px 0 4px; }
+    .orb {
+      width: 92px; height: 92px; margin: 0 auto 20px; border-radius: 50%;
+      background: radial-gradient(circle at 32% 26%, var(--accent-hi), #1D4F80 78%);
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 0 44px rgba(82,148,214,.42), 0 12px 26px rgba(0,0,0,.45);
+      display: grid; place-items: center; font-size: 40px; line-height: 1;
+    }
+    .eyebrow {
+      display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent-hi);
+    }
+    h1 {
+      font-size: clamp(34px, 8.6vw, 52px); line-height: 1.06; letter-spacing: -.03em;
+      font-weight: 850; margin: 12px 0 14px;
+    }
+    .grad {
+      background: linear-gradient(100deg, var(--accent-hi), var(--mint));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub { font-size: 17px; color: var(--text-2); max-width: 34em; margin: 0 auto; }
+    .stamp {
+      margin: 18px auto 0; display: inline-flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px 10px; font-size: 12.5px; color: var(--text-3);
+    }
+    .stamp b { color: var(--mint); font-weight: 700; }
+
+    /* ── Bausteine ──────────────────────────────────────────────────── */
+    section { padding: 34px 0 0; }
+    h2 {
+      font-size: 21px; font-weight: 820; letter-spacing: -.015em; margin-bottom: 6px;
+    }
+    .lead { color: var(--text-2); font-size: 14.5px; margin-bottom: 16px; max-width: 40em; }
+
+    .card {
+      background: linear-gradient(180deg, var(--surface), var(--bg-deep));
+      border: 1px solid var(--stroke); border-radius: var(--r-card);
+      padding: 18px 20px;
+    }
+    .card + .card { margin-top: 12px; }
+
+    .claim {
+      border-color: rgba(82,148,214,.42);
+      background: linear-gradient(180deg, rgba(82,148,214,.14), rgba(82,148,214,.04));
+      padding: 20px 22px;
+    }
+    .claim .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--accent-hi); font-size: 13px; font-weight: 800; margin-bottom: 12px;
+    }
+    .claim p.line { font-size: 16.5px; font-weight: 650; line-height: 1.45; }
+    .claim p.line + p.line { margin-top: 12px; }
+    .claim .cond { margin-top: 14px; font-size: 13px; color: var(--text-2); line-height: 1.5; }
+
+    .point .fig {
+      color: var(--accent-hi); font-size: 19px; font-weight: 820; letter-spacing: -.02em;
+    }
+    .point .short { font-size: 15.5px; font-weight: 650; margin: 2px 0 8px; }
+    .point .long { font-size: 14.5px; color: var(--text-2); }
+
+    ul.plain { list-style: none; }
+    ul.plain li {
+      position: relative; padding: 11px 0 11px 26px; font-size: 15px; color: var(--text);
+      border-top: 1px solid var(--stroke);
+    }
+    ul.plain li:first-child { border-top: none; }
+    ul.plain li::before {
+      content: ""; position: absolute; left: 4px; top: 19px;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    }
+    ul.plain.no li::before { background: none; border: 1.5px solid var(--text-3); }
+    ul.plain.no li { color: var(--text-2); }
+
+    .study .meta { font-size: 12.5px; color: var(--text-3); margin-top: 10px; }
+    .study h3 { font-size: 15px; font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+    .study p { font-size: 14.5px; color: var(--text-2); }
+    .study a { color: var(--accent-hi); text-decoration: none; font-weight: 700; }
+    .study a:hover { text-decoration: underline; }
+    .grade {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: var(--r-pill);
+      border: 1px solid currentColor; margin-bottom: 10px;
+    }
+    .g3 { color: var(--mint); }
+    .g2 { color: var(--accent-hi); }
+    .g1 { color: var(--gold); }
+
+    /* ── In der App ─────────────────────────────────────────────────── */
+    .shots { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+    .shots figure { width: min(240px, 42vw); }
+    .shots img {
+      width: 100%; height: auto; display: block; border-radius: 22px;
+      border: 1px solid var(--stroke); box-shadow: 0 18px 40px rgba(0,0,0,.5);
+    }
+    .shots figcaption { margin-top: 10px; font-size: 12.5px; color: var(--text-3); text-align: center; }
+
+    .cta { text-align: center; padding: 40px 0 8px; }
+    .btn {
+      display: inline-block; text-decoration: none; font-size: 16px; font-weight: 800;
+      color: #06121F; background: linear-gradient(100deg, var(--accent-hi), var(--mint));
+      padding: 15px 30px; border-radius: var(--r-pill);
+      box-shadow: 0 14px 30px rgba(82,148,214,.28);
+    }
+    .cta p { margin-top: 12px; font-size: 13.5px; color: var(--text-2); }
+
+    .footnote {
+      margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--stroke);
+      font-size: 12px; color: var(--text-3); line-height: 1.6;
+    }
+    .footnote a { color: var(--text-2); }
+    @media (min-width: 640px) { .hero { padding-top: 46px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/"><img src="../assets/app_icon_1024.png" alt="" /> Young by You</a>
+      <button class="lang" id="lang" aria-label="Switch language">EN</button>
+    </header>
+
+    <div class="hero">
+      <div class="orb" aria-hidden="true">⚡</div>
+      <span class="eyebrow" data-de="Wissensseite" data-en="Knowledge page">Wissensseite</span>
+      <h1 data-de="Kreatin.&lt;br /&gt;&lt;span class=&quot;grad&quot;&gt;Was belegt ist – und was nicht.&lt;/span&gt;" data-en="Creatine.&lt;br /&gt;&lt;span class=&quot;grad&quot;&gt;What is proven – and what is not.&lt;/span&gt;">Kreatin.<br /><span class="grad">Was belegt ist – und was nicht.</span></h1>
+      <p class="sub" data-de="Mehr Leistung bei kurzen, intensiven Belastungen – kaum ein Ergänzungsstoff ist besser untersucht. Diese Seite ist die Web-Fassung der Wissensseite aus Young by You: dieselben Sätze, dieselben Quellen." data-en="More output in short, intense efforts – hardly any supplement is studied better. This page is the web version of the knowledge page inside Young by You: the same sentences, the same sources.">Mehr Leistung bei kurzen, intensiven Belastungen – kaum ein Ergänzungsstoff ist besser untersucht. Diese Seite ist die Web-Fassung der Wissensseite aus Young by You: dieselben Sätze, dieselben Quellen.</p>
+      <p class="stamp">
+        <span><b data-de="Sehr gut belegt" data-en="Very well proven">Sehr gut belegt</b></span>
+        <span data-de="· geprüft am 13. August 2026" data-en="· checked 13 August 2026">· geprüft am 13. August 2026</span>
+      </p>
+    </div>
+
+    <!-- Der Rechtskern der Seite: NUR die zwei zugelassenen Aussagen stehen
+         als Wirkversprechen da, samt Bedingung. Alles andere ist Beobachtung
+         und steht weiter unten bei den Studien. -->
+    <section>
+      <div class="card claim">
+        <span class="tag">✔ <span data-de="Zugelassene Aussage (EU)" data-en="Authorised claim (EU)">Zugelassene Aussage (EU)</span></span>
+        <p class="line" data-de="Kreatin erhöht die körperliche Leistung bei Schnellkrafttraining im Rahmen kurzzeitiger intensiver körperlicher Betätigung." data-en="Creatine increases physical performance in successive bursts of short-term, high intensity exercise.">Kreatin erhöht die körperliche Leistung bei Schnellkrafttraining im Rahmen kurzzeitiger intensiver körperlicher Betätigung.</p>
+        <p class="line" data-de="Bei über 55-Jährigen steigert Kreatin zusammen mit Krafttraining die Wirkung auf die Muskelkraft." data-en="In adults over 55, creatine combined with resistance training enhances the effect on muscle strength.">Bei über 55-Jährigen steigert Kreatin zusammen mit Krafttraining die Wirkung auf die Muskelkraft.</p>
+        <p class="cond" data-de="Gilt ab 3 g Kreatin täglich; die zweite Aussage zusätzlich nur mit Krafttraining mindestens dreimal pro Woche über mehrere Wochen. Wortlaut nach VO (EU) 432/2012 und 2017/672." data-en="Applies from 3 g of creatine daily; the second statement additionally requires resistance training at least three times per week for several weeks. Wording per Regulation (EU) 432/2012 and 2017/672.">Gilt ab 3 g Kreatin täglich; die zweite Aussage zusätzlich nur mit Krafttraining mindestens dreimal pro Woche über mehrere Wochen. Wortlaut nach VO (EU) 432/2012 und 2017/672.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-de="Was bringt es mir?" data-en="What does it do for me?">Was bringt es mir?</h2>
+      <p class="lead" data-de="Drei Punkte – jeder mit dem Grund darunter, nicht nur mit der Zahl." data-en="Three points – each with the reason underneath, not just the number.">Drei Punkte – jeder mit dem Grund darunter, nicht nur mit der Zahl.</p>
+
+      <div class="card point">
+        <div class="fig" data-de="+ Wiederholungen" data-en="+ reps">+ Wiederholungen</div>
+        <div class="short" data-de="Mehr Leistung bei Sprints und schweren Sätzen" data-en="More output in sprints and heavy sets">Mehr Leistung bei Sprints und schweren Sätzen</div>
+        <p class="long" data-de="Kreatin füllt den Phosphokreatin-Speicher im Muskel. Aus ihm wird bei Belastungen unter etwa zehn Sekunden die Energie nachgeliefert – deshalb wirkt Kreatin genau dort: beim Sprint, beim schweren Satz, im Intervall. Über Wochen summieren sich die zusätzlichen Wiederholungen zu mehr Kraft und Muskel. Für lange, gleichmäßige Ausdauer bringt der Speicher nichts – das steht deshalb unten bei „Was es nicht kann“." data-en="Creatine fills the phosphocreatine store inside the muscle. That store delivers the energy for efforts under about ten seconds – which is exactly where creatine works: the sprint, the heavy set, the interval. Over weeks, those extra repetitions add up to more strength and muscle. For long, steady endurance the store contributes nothing – which is why that line sits under “What it cannot do”.">Kreatin füllt den Phosphokreatin-Speicher im Muskel. Aus ihm wird bei Belastungen unter etwa zehn Sekunden die Energie nachgeliefert – deshalb wirkt Kreatin genau dort: beim Sprint, beim schweren Satz, im Intervall. Über Wochen summieren sich die zusätzlichen Wiederholungen zu mehr Kraft und Muskel. Für lange, gleichmäßige Ausdauer bringt der Speicher nichts – das steht deshalb unten bei „Was es nicht kann“.</p>
+      </div>
+
+      <div class="card point">
+        <div class="fig" data-de="3 g täglich" data-en="3 g daily">3 g täglich</div>
+        <div class="short" data-de="Die Menge, ab der die zugelassene EU-Aussage gilt" data-en="The dose from which the authorised EU claim applies">Die Menge, ab der die zugelassene EU-Aussage gilt</div>
+        <p class="long" data-de="Die Europäische Behörde für Lebensmittelsicherheit hat die Wirkung auf die Schnellkraft geprüft und die Aussage zugelassen – ab 3 g täglich, für Erwachsene mit intensiver körperlicher Betätigung. Das ist selten: Die allermeisten Nahrungsergänzungsmittel haben keine einzige zugelassene Wirkaussage." data-en="The European Food Safety Authority reviewed the effect on high-intensity performance and authorised the claim – from 3 g daily, for adults performing intense exercise. That is rare: the vast majority of supplements carry not a single authorised claim.">Die Europäische Behörde für Lebensmittelsicherheit hat die Wirkung auf die Schnellkraft geprüft und die Aussage zugelassen – ab 3 g täglich, für Erwachsene mit intensiver körperlicher Betätigung. Das ist selten: Die allermeisten Nahrungsergänzungsmittel haben keine einzige zugelassene Wirkaussage.</p>
+      </div>
+
+      <div class="card point">
+        <div class="fig">55+</div>
+        <div class="short" data-de="Mit Krafttraining mehr Muskelkraft im Alter" data-en="With resistance training, more strength at higher age">Mit Krafttraining mehr Muskelkraft im Alter</div>
+        <p class="long" data-de="Ab Mitte fünfzig geht Muskelkraft von allein verloren. Die zweite zugelassene EU-Aussage gilt genau hier: Kreatin verstärkt die Wirkung von Krafttraining auf die Muskelkraft bei über 55-Jährigen – Bedingung sind 3 g täglich und Training mindestens dreimal pro Woche über mehrere Wochen. Ohne das Training gilt auch die Aussage nicht." data-en="From the mid-fifties on, muscle strength declines by itself. The second authorised EU claim covers exactly this: creatine enhances the effect of resistance training on muscle strength in adults over 55 – conditional on 3 g daily and training at least three times per week for several weeks. Without the training, the claim does not apply either.">Ab Mitte fünfzig geht Muskelkraft von allein verloren. Die zweite zugelassene EU-Aussage gilt genau hier: Kreatin verstärkt die Wirkung von Krafttraining auf die Muskelkraft bei über 55-Jährigen – Bedingung sind 3 g täglich und Training mindestens dreimal pro Woche über mehrere Wochen. Ohne das Training gilt auch die Aussage nicht.</p>
+      </div>
+    </section>
+
+    <!-- Die Hälfte, die sonst niemand hinschreibt. Sie steht bewusst VOR
+         Einnahme und Kauf: wer hier abspringt, hat richtig entschieden. -->
+    <section>
+      <h2 data-de="Was es nicht kann" data-en="What it cannot do">Was es nicht kann</h2>
+      <p class="lead" data-de="Die ehrliche Hälfte – wortgleich mit der App. Ein Mittel, das alles kann, gibt es nicht." data-en="The honest half – word for word as in the app. There is no supplement that does everything.">Die ehrliche Hälfte – wortgleich mit der App. Ein Mittel, das alles kann, gibt es nicht.</p>
+      <div class="card">
+        <ul class="plain no">
+          <li data-de="Es ersetzt kein Training – ohne Trainingsreiz keine Anpassung." data-en="It does not replace training – no stimulus, no adaptation.">Es ersetzt kein Training – ohne Trainingsreiz keine Anpassung.</li>
+          <li data-de="Es macht nicht schlank." data-en="It does not make you lean.">Es macht nicht schlank.</li>
+          <li data-de="Die Gewichtszunahme der ersten Wochen ist Wasser im Muskel, kein Muskel." data-en="The weight gain of the first weeks is water inside the muscle, not muscle.">Die Gewichtszunahme der ersten Wochen ist Wasser im Muskel, kein Muskel.</li>
+          <li data-de="Für reine Ausdauerleistung ist kein Vorteil belegt." data-en="No benefit is established for steady endurance exercise.">Für reine Ausdauerleistung ist kein Vorteil belegt.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-de="Wie nehme ich es?" data-en="How do I take it?">Wie nehme ich es?</h2>
+      <div class="card">
+        <ul class="plain">
+          <li data-de="3–5 g Kreatin-Monohydrat täglich – jeden Tag, auch an trainingsfreien." data-en="3–5 g of creatine monohydrate daily – every day, including rest days.">3–5 g Kreatin-Monohydrat täglich – jeden Tag, auch an trainingsfreien.</li>
+          <li data-de="Der Zeitpunkt ist zweitrangig; entscheidend ist die Regelmäßigkeit." data-en="Timing matters little; consistency is what counts.">Der Zeitpunkt ist zweitrangig; entscheidend ist die Regelmäßigkeit.</li>
+          <li data-de="Eine „Ladephase“ ist möglich, aber nicht nötig – die Speicher sind nach 2–4 Wochen auch so gefüllt." data-en="A “loading phase” is possible but unnecessary – stores fill within 2–4 weeks anyway.">Eine „Ladephase“ ist möglich, aber nicht nötig – die Speicher sind nach 2–4 Wochen auch so gefüllt.</li>
+          <li data-de="Ausreichend trinken." data-en="Drink enough water.">Ausreichend trinken.</li>
+          <li data-de="Bei bestehender Nierenerkrankung vorher ärztlich klären." data-en="With existing kidney disease, talk to a doctor first.">Bei bestehender Nierenerkrankung vorher ärztlich klären.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-de="Worauf achte ich beim Kauf?" data-en="What to check when buying">Worauf achte ich beim Kauf?</h2>
+      <div class="card">
+        <ul class="plain">
+          <li data-de="Kreatin-Monohydrat reicht – teurere Formen sind nicht besser belegt." data-en="Creatine monohydrate is all you need – pricier forms are not better proven.">Kreatin-Monohydrat reicht – teurere Formen sind nicht besser belegt.</li>
+          <li data-de="Auf geprüfte Reinheit achten (z. B. Creapure® oder eine unabhängige Laboranalyse)." data-en="Look for verified purity (e.g. Creapure® or an independent lab analysis).">Auf geprüfte Reinheit achten (z. B. Creapure® oder eine unabhängige Laboranalyse).</li>
+          <li data-de="Pulver wirkt gleich und kostet weniger als Kapseln." data-en="Powder works the same as capsules and costs less.">Pulver wirkt gleich und kostet weniger als Kapseln.</li>
+          <li data-de="Mischungen mit Zucker oder „Booster“-Zusätzen braucht niemand." data-en="Nobody needs blends with sugar or “booster” additives.">Mischungen mit Zucker oder „Booster“-Zusätzen braucht niemand.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-de="Wie sicher ist das?" data-en="How solid is the evidence?">Wie sicher ist das?</h2>
+      <p class="lead" data-de="Drei Arbeiten, jede mit Ergebnis und Fundstelle. Wo die Lage offen ist, steht das da – auch wenn es unbequemer klingt." data-en="Three papers, each with its result and where to find it. Where the picture is open, it says so – even when that reads less impressively.">Drei Arbeiten, jede mit Ergebnis und Fundstelle. Wo die Lage offen ist, steht das da – auch wenn es unbequemer klingt.</p>
+
+      <div class="card study">
+        <span class="grade g3" data-de="Sehr gut belegt" data-en="Very well proven">Sehr gut belegt</span>
+        <h3>International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation</h3>
+        <p data-de="Die Fachgesellschaft wertet die Gesamtlage: Kreatin-Monohydrat ist das am besten belegte Ergänzungsmittel für Leistung bei kurzen, intensiven Belastungen und für fettfreie Masse; die langfristige Einnahme gilt bei Gesunden als sicher." data-en="The society’s reading of the whole field: creatine monohydrate is the best-supported supplement for performance in short, intense efforts and for lean mass; long-term use is considered safe in healthy people.">Die Fachgesellschaft wertet die Gesamtlage: Kreatin-Monohydrat ist das am besten belegte Ergänzungsmittel für Leistung bei kurzen, intensiven Belastungen und für fettfreie Masse; die langfristige Einnahme gilt bei Gesunden als sicher.</p>
+        <p class="meta">Journal of the ISSN · 2017 · <a href="https://doi.org/10.1186/s12970-017-0173-z" target="_blank" rel="noopener">doi.org/10.1186/s12970-017-0173-z ↗</a></p>
+      </div>
+
+      <div class="card study">
+        <span class="grade g2" data-de="Gut belegt" data-en="Well proven">Gut belegt</span>
+        <h3>Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults</h3>
+        <p data-de="Meta-Analyse über 22 kontrollierte Studien mit älteren Erwachsenen: Wer zum Krafttraining Kreatin nahm, baute mehr fettfreie Masse und mehr Kraft auf als mit Training allein." data-en="Meta-analysis of 22 controlled trials in older adults: adding creatine to resistance training built more lean mass and more strength than training alone.">Meta-Analyse über 22 kontrollierte Studien mit älteren Erwachsenen: Wer zum Krafttraining Kreatin nahm, baute mehr fettfreie Masse und mehr Kraft auf als mit Training allein.</p>
+        <p class="meta">Open Access Journal of Sports Medicine · 2017 · <a href="https://doi.org/10.2147/OAJSM.S123529" target="_blank" rel="noopener">doi.org/10.2147/OAJSM.S123529 ↗</a></p>
+      </div>
+
+      <div class="card study">
+        <span class="grade g1" data-de="Erste Hinweise" data-en="Early evidence">Erste Hinweise</span>
+        <h3>Effects of creatine supplementation on cognitive function – a systematic review and meta-analysis</h3>
+        <p data-de="Meta-Analyse randomisierter Studien: Das Gedächtnis verbesserte sich (mittlere Sicherheit der Belege), Aufmerksamkeit und Verarbeitungsgeschwindigkeit nur mit geringer Sicherheit. Ein Übersichtsartikel aus demselben Jahr hält die theoretische Grundlage dagegen für nicht gestützt – die Frage ist offen, und genau so steht sie hier." data-en="Meta-analysis of randomised trials: memory improved (moderate certainty of evidence), attention and processing speed only with low certainty. A review from the same year finds the theoretical basis unsupported – the question is open, and that is exactly how it is stated here.">Meta-Analyse randomisierter Studien: Das Gedächtnis verbesserte sich (mittlere Sicherheit der Belege), Aufmerksamkeit und Verarbeitungsgeschwindigkeit nur mit geringer Sicherheit. Ein Übersichtsartikel aus demselben Jahr hält die theoretische Grundlage dagegen für nicht gestützt – die Frage ist offen, und genau so steht sie hier.</p>
+        <p class="meta">Frontiers in Nutrition · 2024 · <a href="https://doi.org/10.3389/fnut.2024.1424972" target="_blank" rel="noopener">doi.org/10.3389/fnut.2024.1424972 ↗</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-de="So sieht das in der App aus" data-en="How this looks inside the app">So sieht das in der App aus</h2>
+      <p class="lead" data-de="Kreatin ist die erste von 25 Kategorien im Rad. Ein Schalter oben rechts auf der Seite legt „Kreatin nehmen“ als Routine auf deine Startseite – abhaken bringt Punkte und Puzzleteile." data-en="Creatine is the first of 25 categories on the wheel. A switch at the top right of the page puts “Take creatine” on your home screen as a routine – ticking it off earns points and puzzle pieces.">Kreatin ist die erste von 25 Kategorien im Rad. Ein Schalter oben rechts auf der Seite legt „Kreatin nehmen“ als Routine auf deine Startseite – abhaken bringt Punkte und Puzzleteile.</p>
+      <div class="shots">
+        <figure>
+          <img src="ring-de.jpg" width="480" height="1040" loading="lazy"
+               data-img-de="ring-de.jpg" data-img-en="ring-en.jpg"
+               data-alt-de="Das Rad der Produktkategorien in Young by You, Kreatin in der Mitte"
+               data-alt-en="The wheel of product categories in Young by You, creatine in the centre"
+               alt="Das Rad der Produktkategorien in Young by You, Kreatin in der Mitte" />
+          <figcaption data-de="Das Rad – 25 Kategorien, eine in der Mitte." data-en="The wheel – 25 categories, one in the centre.">Das Rad – 25 Kategorien, eine in der Mitte.</figcaption>
+        </figure>
+        <figure>
+          <img src="lese-de.jpg" width="480" height="1040" loading="lazy"
+               data-img-de="lese-de.jpg" data-img-en="lese-en.jpg"
+               data-alt-de="Die Wissensseite zu Kreatin in der App mit der zugelassenen EU-Aussage"
+               data-alt-en="The creatine knowledge page in the app showing the authorised EU claim"
+               alt="Die Wissensseite zu Kreatin in der App mit der zugelassenen EU-Aussage" />
+          <figcaption data-de="Dieselben Sätze, dieselben Quellen." data-en="The same sentences, the same sources.">Dieselben Sätze, dieselben Quellen.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a class="btn" id="get" href="/" data-de="App laden" data-en="Get the app">App laden</a>
+      <p data-de="Kostenlos ausprobieren – 14 Tage die ganze App." data-en="Try it free – the whole app for 14 days.">Kostenlos ausprobieren – 14 Tage die ganze App.</p>
+    </div>
+
+    <p class="footnote" data-de="Nahrungsergänzungsmittel ersetzen keine ausgewogene Ernährung und keine gesunde Lebensweise. Diese Seite ist Information, keine Heilaussage und keine ärztliche Beratung; bei bestehenden Erkrankungen, in Schwangerschaft und Stillzeit sowie bei Kindern vorher ärztlich klären. Wirkaussagen sind ausschließlich die in der EU zugelassenen, samt Bedingung. Stand der Prüfung: 13. August 2026. Fragen oder ein Fehler entdeckt? hello@youngbyyou.com" data-en="Food supplements do not replace a balanced diet or a healthy lifestyle. This page is information, not a health claim and not medical advice; with existing conditions, during pregnancy and breastfeeding and for children, talk to a doctor first. The only effect statements made are the ones authorised in the EU, including their conditions. Last checked: 13 August 2026. Questions, or found a mistake? hello@youngbyyou.com">Nahrungsergänzungsmittel ersetzen keine ausgewogene Ernährung und keine gesunde Lebensweise. Diese Seite ist Information, keine Heilaussage und keine ärztliche Beratung; bei bestehenden Erkrankungen, in Schwangerschaft und Stillzeit sowie bei Kindern vorher ärztlich klären. Wirkaussagen sind ausschließlich die in der EU zugelassenen, samt Bedingung. Stand der Prüfung: 13. August 2026. Fragen oder ein Fehler entdeckt? hello@youngbyyou.com</p>
+    <p class="footnote" style="border: none; padding-top: 8px;">
+      <a href="/">Young by You</a> · <a href="/privacy.html" data-de="Datenschutz" data-en="Privacy">Datenschutz</a> · <a href="mailto:hello@youngbyyou.com">hello@youngbyyou.com</a>
+    </p>
+  </div>
+
+  <script src="/store.js"></script>
+  <script>
+    // Store links come from /store.js — one flip on launch day covers every page.
+    (function () {
+      var s = window.YBY_STORE || {};
+      var get = document.getElementById('get');
+      if (get && s.appStore) get.href = s.appStore;
+    })();
+
+    // ── DE/EN: Deutsch steht im HTML (gut für Suchmaschinen), JS tauscht nur.
+    //    h1 trägt Auszeichnung, dort also innerHTML; Bilder tauschen src+alt.
+    var btn = document.getElementById('lang');
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-' + lang + ']').forEach(function (el) {
+        var val = el.getAttribute('data-' + lang);
+        if (val == null) return;
+        if (el.tagName === 'H1') el.innerHTML = val; else el.textContent = val;
+      });
+      document.querySelectorAll('[data-img-' + lang + ']').forEach(function (el) {
+        el.src = el.getAttribute('data-img-' + lang);
+        var alt = el.getAttribute('data-alt-' + lang);
+        if (alt) el.alt = alt;
+      });
+      btn.textContent = lang === 'de' ? 'EN' : 'DE';
+      try { localStorage.setItem('yby-lang', lang); } catch (e) {}
+    }
+    // Reihenfolge: ?lang= aus einem Link schlägt die Erinnerung, die schlägt
+    // die Browsersprache. So kann die App gezielt die englische Fassung öffnen.
+    var initial = 'de', forced = null;
+    try { forced = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+    if (forced === 'de' || forced === 'en') {
+      initial = forced;
+    } else {
+      var saved = null;
+      try { saved = localStorage.getItem('yby-lang'); } catch (e) {}
+      if (saved === 'de' || saved === 'en') initial = saved;
+      else if (!navigator.language.startsWith('de')) initial = 'en';
+    }
+    btn.addEventListener('click', function () {
+      apply(document.documentElement.lang === 'de' ? 'en' : 'de');
+    });
+    if (initial !== 'de') apply(initial);
+  </script>
+</body>
+</html>
