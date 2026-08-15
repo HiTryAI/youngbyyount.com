@@ -1,0 +1,1961 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>10.000 Jahre jünger · Young by You</title>
+<meta name="description" content="Die erste gemeinsame Young-Herausforderung. Jeder, dessen geschätztes biologisches Alter unter seinem echten liegt, legt die Differenz in einen gemeinsamen Zähler. Ziel: 10.000 Jahre." />
+<meta name="theme-color" content="#060911" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+<link rel="apple-touch-icon" href="../assets/app_icon_1024.png" />
+<link rel="canonical" href="https://youngbyyou.com/launch/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://youngbyyou.com/launch/" />
+<meta property="og:site_name" content="Young by You" />
+<meta property="og:title" content="10.000 JAHRE JÜNGER" />
+<meta property="og:description" content="Die erste gemeinsame Young-Herausforderung. Wie alt bist du wirklich?" />
+<meta property="og:image" content="https://youngbyyou.com/launch/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="10.000 JAHRE JÜNGER" />
+<meta name="twitter:description" content="Die erste gemeinsame Young-Herausforderung. Wie alt bist du wirklich?" />
+<meta name="twitter:image" content="https://youngbyyou.com/launch/og.jpg" />
+
+<style>
+/*
+ * ── Die Farben ──────────────────────────────────────────────────────────────
+ * Dieselben, die die App und /hain tragen: tiefes Nachtblau, Minze, Gold.
+ * Dazu zwei, die es nur hier gibt – Mittelmeerblau und Waldgrün –, weil die
+ * Landschaft am Ende der Seite aus ihnen gemalt wird.
+ *
+ * `--dawn` läuft von 0 (oben, Nacht) bis 1 (unten, Morgen). Alles, was heller
+ * werden soll, während man scrollt, hängt an dieser einen Zahl.
+ */
+:root {
+  --night:#060911; --deep:#0A0E1A; --surface:#111829; --surface-hi:#18213A;
+  --stroke:rgba(120,150,210,.16); --stroke-hi:rgba(120,150,210,.30);
+  --mint:#4ADEC2; --mint-hi:#6CF0D8; --gold:#F5C97B; --gold-deep:#E9B45F;
+  --sea:#2E6E8E; --forest:#1E5B45;
+  --text:#F4F7FC; --text-2:#9AA6C0; --text-3:#616D8A;
+  --r-s:14px; --r-m:20px; --r-l:28px; --r-pill:100px;
+  --pad:clamp(18px,5vw,32px);
+  --dawn:0;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+/* `hidden` muss gewinnen. Ein eigenes `display:grid` weiter unten würde den
+   Browser sonst überstimmen, und ein verstecktes Element stünde sichtbar da. */
+[hidden] { display:none !important; }
+html { background:var(--night); -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,system-ui,sans-serif;
+  color:var(--text);
+  background:var(--night);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  line-height:1.5;
+}
+
+/* Der Himmel liegt hinter allem und wird mit `--dawn` heller. Ein fixiertes
+   Element statt eines Hintergrunds am Body: So malt der Browser es einmal und
+   schiebt es danach nur noch, statt bei jedem Bildlauf neu zu rechnen. */
+.sky {
+  position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 50% calc(112% - var(--dawn) * 62%),
+      rgba(245,201,123,calc(.10 + var(--dawn) * .30)), transparent 62%),
+    radial-gradient(90% 60% at 78% 4%, rgba(74,222,194,.10), transparent 60%),
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--night), #16233C calc(var(--dawn) * 55%)) 0%,
+      color-mix(in oklab, var(--deep),  #23324F calc(var(--dawn) * 55%)) 100%);
+}
+/* Sehr feine Körnung – ohne sie sieht ein so großer Verlauf auf OLED gebändert
+   aus. Ein Data-URI, damit die Seite keine einzige Datei nachladen muss. */
+.grain {
+  position:fixed; inset:-50%; z-index:-1; pointer-events:none; opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap { width:min(1080px,100%); margin:0 auto; padding-inline:var(--pad); }
+.narrow { width:min(720px,100%); margin-inline:auto; }
+
+/* ── Kopfzeile ───────────────────────────────────────────────────────────── */
+header.top {
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px var(--pad) 12px;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:linear-gradient(180deg, rgba(6,9,17,.72), rgba(6,9,17,0));
+}
+header.top .brand {
+  display:inline-flex; align-items:center; gap:9px;
+  color:var(--text); text-decoration:none; font-weight:700; font-size:14px;
+}
+header.top .brand img { width:28px; height:28px; border-radius:8px; display:block; }
+.langbar { display:flex; gap:6px; }
+.langbar button {
+  appearance:none; cursor:pointer; font:inherit;
+  font-size:12px; font-weight:800; letter-spacing:.05em;
+  color:var(--text-3); background:transparent;
+  border:1px solid transparent; border-radius:var(--r-pill); padding:6px 11px;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.langbar button[aria-pressed="true"] {
+  color:var(--text); border-color:var(--stroke); background:rgba(255,255,255,.05);
+}
+.langbar button:hover { color:var(--text); }
+
+/* ── Held ────────────────────────────────────────────────────────────────── */
+.hero {
+  position:relative; min-height:100svh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:8px 0 calc(28px + env(safe-area-inset-bottom));
+}
+.eyebrow {
+  display:inline-flex; align-items:center; gap:8px; align-self:center;
+  font-size:clamp(10px,2.6vw,11.5px); font-weight:800; letter-spacing:.20em;
+  text-transform:uppercase; color:var(--gold);
+  border:1px solid rgba(245,201,123,.26); border-radius:var(--r-pill);
+  padding:7px 15px; background:rgba(245,201,123,.06);
+}
+.eyebrow .dot {
+  width:6px; height:6px; border-radius:50%; background:var(--gold);
+  box-shadow:0 0 0 0 rgba(245,201,123,.7); animation:beat 2.8s var(--ease) infinite;
+}
+@keyframes beat {
+  0%,70%,100% { box-shadow:0 0 0 0 rgba(245,201,123,.55); }
+  35% { box-shadow:0 0 0 7px rgba(245,201,123,0); }
+}
+
+/* Die Zielmarke. Riesig, aber HOHL – sie ist das Versprechen, nicht der Stand.
+   Der volle, leuchtende Zähler darunter ist die Wahrheit. Zwei massive Zahlen
+   nebeneinander würden sich gegenseitig auffressen. */
+.goalline { text-align:center; margin:22px 0 4px; }
+.goalline b, .goalline span {
+  display:block;
+  font-size:clamp(48px,17.5vw,118px); line-height:.86;
+  font-weight:800; letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.goalline b {
+  color:transparent;
+  -webkit-text-stroke:1.4px rgba(244,247,252,.42);
+  text-stroke:1.4px rgba(244,247,252,.42);
+}
+.goalline .l1 { color:rgba(244,247,252,.92); }
+.goalline .l2 {
+  background:linear-gradient(96deg,var(--mint-hi),var(--gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero .lead {
+  text-align:center; color:var(--text-2); margin:20px auto 0;
+  max-width:34ch; font-size:clamp(15px,4vw,18px); text-wrap:balance;
+}
+
+/* ── Der Zähler ──────────────────────────────────────────────────────────── */
+.counter { margin:30px auto 0; text-align:center; position:relative; }
+.counter .value {
+  display:flex; align-items:flex-start; justify-content:center;
+  font-weight:800; letter-spacing:-.03em;
+  font-size:clamp(44px,13.5vw,86px); line-height:1;
+  font-variant-numeric:tabular-nums lining-nums;
+  color:#fff;
+  position:relative;
+}
+/* Das Leuchten liegt HINTER der Zahl, nicht auf ihr. Ein `text-shadow` würde
+   an jedem Ziffernfenster abgeschnitten (die Fenster müssen `overflow:hidden`
+   sein, damit die Rolle funktioniert) – man sähe helle Rechtecke statt eines
+   Scheins. */
+.counter::before {
+  content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
+  width:min(560px,96%); height:1.5em; pointer-events:none; z-index:-1;
+  background:radial-gradient(closest-side, rgba(74,222,194,.30), rgba(74,222,194,.06) 58%, transparent 76%);
+  filter:blur(6px);
+  transition:opacity .6s var(--ease); opacity:1;
+}
+.counter .value.pulse { animation:pulse 1.5s var(--ease); }
+@keyframes pulse {
+  0%,100% { filter:none; }
+  22% { filter:drop-shadow(0 0 26px rgba(108,240,216,.8)) drop-shadow(0 0 60px rgba(245,201,123,.4)); }
+}
+/* Eine Ziffer ist ein Fenster über einer Spalte von 0–9. Wenn sich der Wert
+   ändert, fährt die Spalte nach oben – keine Zahl blinkt weg, sie rollt. */
+/* `align-items:flex-start` ist hier kein Geschmack, sondern Pflicht: In einem
+   flex-Kasten würde ein Ziffernfenster sonst auf die volle Zeilenhöhe gedehnt
+   und gäbe die Nachbarziffern der Spalte frei – man sähe drei Zahlen
+   übereinander statt einer. */
+.odo { display:inline-flex; align-items:flex-start; line-height:1; }
+.odo .d { display:block; overflow:hidden; height:1em; flex:none; }
+.odo .d .col {
+  display:block; will-change:transform;
+  transition:transform .95s cubic-bezier(.16,.84,.28,1);
+}
+.odo .d .col i { display:block; height:1em; font-style:normal; }
+.odo .sep { display:inline-block; }
+@media (prefers-reduced-motion:reduce){ .odo .d .col { transition:none; } }
+
+.counter .label {
+  display:flex; justify-content:center; align-items:center; gap:9px;
+  margin-top:12px; font-size:clamp(11px,3vw,13px); font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--mint);
+}
+.info {
+  appearance:none; cursor:pointer; font:inherit; line-height:0;
+  width:19px; height:19px; border-radius:50%;
+  border:1px solid var(--stroke-hi); background:transparent; color:var(--text-2);
+  font-size:11px; font-weight:800; display:inline-grid; place-items:center;
+  transition:color .15s, border-color .15s;
+}
+.info:hover { color:var(--text); border-color:var(--mint); }
+
+/* ── Fortschritt: eine Lichtlinie am Horizont ────────────────────────────── */
+.progress { margin:26px auto 0; max-width:520px; }
+.track {
+  position:relative; height:3px; border-radius:3px;
+  background:linear-gradient(90deg, rgba(154,166,192,.16), rgba(154,166,192,.07));
+}
+.fill {
+  position:absolute; inset:0 auto 0 0; width:0%; border-radius:3px;
+  background:linear-gradient(90deg,var(--mint),var(--mint-hi) 55%,var(--gold));
+  box-shadow:0 0 16px rgba(108,240,216,.6);
+  transition:width 1.2s var(--ease);
+}
+.fill::after {
+  content:""; position:absolute; right:-5px; top:50%; transform:translateY(-50%);
+  width:11px; height:11px; border-radius:50%;
+  background:radial-gradient(circle,#fff,var(--gold) 45%,rgba(245,201,123,0) 72%);
+}
+@media (prefers-reduced-motion:reduce){ .fill { transition:none; } }
+/* Kleine Blätter markieren die Viertel – der Balken bekommt damit einen Weg
+   statt nur einer Länge. Sie leuchten auf, sobald sie überholt sind. */
+.leaves { position:relative; height:0; }
+.leaf {
+  position:absolute; top:-15px; width:9px; height:9px; margin-left:-4.5px;
+  color:var(--text-3); transition:color .8s var(--ease), transform .8s var(--ease);
+  transform:translateY(0) scale(.9);
+}
+.leaf.on { color:var(--gold); transform:translateY(-2px) scale(1.12); }
+.progress .under {
+  display:flex; justify-content:space-between; gap:12px;
+  margin-top:16px; font-size:13.5px; color:var(--text-2);
+  font-variant-numeric:tabular-nums;
+}
+.progress .under b { color:var(--text); font-weight:700; }
+.progress .together {
+  margin-top:9px; text-align:center; font-size:13.5px; color:var(--text-3);
+}
+
+/* ── Aufruf ──────────────────────────────────────────────────────────────── */
+.cta { margin:34px auto 0; text-align:center; }
+.cta .q {
+  font-size:clamp(19px,5.2vw,26px); font-weight:800; letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.btn {
+  appearance:none; cursor:pointer; font:inherit; text-decoration:none;
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  font-size:16px; font-weight:800; letter-spacing:-.01em;
+  padding:15px 26px; border-radius:var(--r-pill); border:0;
+  color:#06131A; background:linear-gradient(96deg,var(--mint-hi),var(--mint));
+  box-shadow:0 10px 34px rgba(74,222,194,.26);
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease), filter .18s;
+}
+.btn:hover { transform:translateY(-2px); box-shadow:0 16px 44px rgba(74,222,194,.34); }
+.btn:active { transform:translateY(0); }
+.btn.ghost {
+  color:var(--text); background:rgba(255,255,255,.05);
+  border:1px solid var(--stroke); box-shadow:none;
+}
+.btn.ghost:hover { border-color:var(--stroke-hi); box-shadow:none; }
+.cta .sub { margin-top:13px; font-size:13.5px; color:var(--text-3); max-width:34ch; margin-inline:auto; }
+.stores { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:16px; }
+.store {
+  display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+  padding:10px 18px 10px 15px; border-radius:var(--r-s);
+  border:1px solid var(--stroke); background:rgba(255,255,255,.04); color:var(--text);
+  transition:border-color .15s, background .15s;
+}
+.store:hover { border-color:var(--stroke-hi); background:rgba(255,255,255,.07); }
+.store svg { width:21px; height:21px; flex:none; }
+.store .t { text-align:left; line-height:1.15; }
+.store .t small { display:block; font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--text-3); }
+.store .t b { font-size:14.5px; font-weight:700; }
+.store.second { opacity:.72; }
+
+/* „Sag mir Bescheid" – solange es die App noch nicht zu holen gibt. */
+.notify { margin-top:16px; display:none; }
+.notify.on { display:block; }
+.notify form { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.notify input {
+  font:inherit; font-size:15px; color:var(--text);
+  background:rgba(255,255,255,.05); border:1px solid var(--stroke);
+  border-radius:var(--r-pill); padding:13px 18px; min-width:min(260px,72vw);
+  transition:border-color .15s;
+}
+.notify input:focus { outline:none; border-color:var(--mint); }
+.notify .said { color:var(--mint); font-size:14px; font-weight:700; }
+
+.scrollhint {
+  margin-top:auto; padding-top:26px; text-align:center;
+  color:var(--text-3); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+}
+.scrollhint span { display:block; margin:9px auto 0; width:1px; height:26px;
+  background:linear-gradient(180deg,var(--text-3),transparent); }
+
+/* Niedrige, breite Fenster (fast jeder Laptop): Der Knopf muss ohne Scrollen
+   erreichbar sein. Er ist der Grund, warum es diese Seite gibt – ein Besucher
+   darf nie erst die ganze Geschichte lesen müssen, bevor er mitmachen kann. */
+@media (max-height:920px) and (min-width:760px) {
+  .goalline { margin:12px 0 2px; }
+  .goalline b, .goalline span { font-size:clamp(48px,10vw,92px); }
+  .hero .lead { margin-top:14px; font-size:16.5px; }
+  .counter { margin-top:20px; }
+  .counter .value { font-size:clamp(40px,7vw,68px); }
+  .progress { margin-top:18px; }
+  .cta { margin-top:22px; }
+  .scrollhint { padding-top:14px; }
+}
+
+/* ── Abschnitte ──────────────────────────────────────────────────────────── */
+section { padding:clamp(56px,13vw,110px) 0; position:relative; }
+.kicker {
+  font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--mint); margin-bottom:14px;
+}
+h2 {
+  font-size:clamp(26px,7vw,46px); line-height:1.06; letter-spacing:-.03em;
+  font-weight:800; text-wrap:balance;
+}
+h2 em { font-style:normal; color:var(--gold); }
+.say { color:var(--text-2); margin-top:16px; font-size:clamp(15px,4vw,17.5px); max-width:52ch; text-wrap:pretty; }
+
+/* Alles, was von unten hereinkommt, tut es EINMAL und dann nie wieder. */
+.rise { opacity:0; transform:translateY(22px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+.rise.in { opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce){ .rise { opacity:1; transform:none; transition:none; } }
+
+/* ── Momente ─────────────────────────────────────────────────────────────── */
+.moments { display:grid; gap:10px; margin-top:26px; }
+.moment {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; border-radius:var(--r-m);
+  border:1px solid var(--stroke); background:rgba(255,255,255,.035);
+  animation:momentIn .7s var(--ease) both;
+}
+@keyframes momentIn { from { opacity:0; transform:translateY(10px); } }
+@media (prefers-reduced-motion:reduce){ .moment { animation:none; } }
+.moment .plus {
+  font-weight:800; font-size:17px; color:var(--mint); font-variant-numeric:tabular-nums;
+  flex:none; min-width:64px;
+}
+.moment .who { color:var(--text-2); font-size:14.5px; }
+.moment .ago { margin-left:auto; color:var(--text-3); font-size:12.5px; flex:none; }
+.empty {
+  padding:26px; border-radius:var(--r-l); text-align:center;
+  border:1px dashed var(--stroke); background:rgba(255,255,255,.02);
+}
+.empty b { display:block; font-size:18px; margin-bottom:7px; }
+.empty span { color:var(--text-2); font-size:14.5px; }
+
+/* ── Tafel mit echten Zahlen ─────────────────────────────────────────────── */
+.board { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:26px; }
+@media (min-width:760px){ .board { grid-template-columns:repeat(5,1fr); } }
+.tile {
+  padding:22px 18px; border-radius:var(--r-m);
+  border:1px solid var(--stroke); background:rgba(255,255,255,.035);
+}
+.tile b {
+  display:block; font-size:clamp(24px,6vw,32px); font-weight:800; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; line-height:1.05;
+}
+.tile span { display:block; margin-top:7px; font-size:12.5px; color:var(--text-2); }
+.tile.none b { color:var(--text-3); }
+
+/* ── Die Erde ────────────────────────────────────────────────────────────── */
+.globe-wrap { position:relative; margin:30px auto 0; width:min(560px,100%); aspect-ratio:1; }
+.globe-wrap canvas { width:100%; height:100%; display:block; }
+.globe-list { display:grid; gap:8px; margin-top:22px; }
+.grow {
+  display:flex; align-items:baseline; gap:12px; padding:12px 16px;
+  border-radius:var(--r-s); border:1px solid var(--stroke); background:rgba(255,255,255,.03);
+  font-size:14.5px;
+}
+.grow .n { margin-left:auto; color:var(--mint); font-weight:800; font-variant-numeric:tabular-nums; }
+.grow .p { color:var(--text-3); font-size:13px; }
+.note { margin-top:16px; font-size:12.5px; color:var(--text-3); }
+
+/* ── Kapitel ─────────────────────────────────────────────────────────────── */
+.ladder { display:grid; gap:2px; margin-top:26px; }
+.rung {
+  display:flex; align-items:center; gap:14px; padding:16px 18px;
+  border:1px solid var(--stroke); background:rgba(255,255,255,.03);
+}
+.ladder .rung:first-child { border-radius:var(--r-m) var(--r-m) 0 0; }
+.ladder .rung:last-child { border-radius:0 0 var(--r-m) var(--r-m); }
+.rung .mark {
+  width:22px; height:22px; border-radius:50%; flex:none; display:grid; place-items:center;
+  border:1.5px solid var(--stroke-hi); color:var(--text-3); font-size:12px; font-weight:800;
+}
+.rung.done .mark { background:var(--gold); border-color:var(--gold); color:#1B1405; }
+.rung.now .mark { border-color:var(--mint); color:var(--mint); box-shadow:0 0 0 4px rgba(74,222,194,.12); }
+.rung b { font-size:16px; font-weight:800; letter-spacing:-.01em; }
+.rung .when { margin-left:auto; font-size:12.5px; color:var(--text-3); }
+.rung.now b { color:var(--mint); }
+.rung.done b { color:var(--text-2); }
+
+/* ── Bäume: die ANDERE Zahl ──────────────────────────────────────────────── */
+.split { display:grid; gap:22px; align-items:center; }
+@media (min-width:860px){ .split { grid-template-columns:1.05fr .95fr; gap:48px; } }
+.card {
+  padding:24px; border-radius:var(--r-l);
+  border:1px solid var(--stroke); background:rgba(255,255,255,.035);
+}
+.card h3 { font-size:17px; font-weight:800; letter-spacing:-.01em; }
+.card dl { margin-top:16px; display:grid; gap:10px; }
+.card .row { display:flex; justify-content:space-between; gap:16px; font-size:14.5px; }
+.card .row dt { color:var(--text-3); }
+.card .row dd { color:var(--text); text-align:right; }
+.badge {
+  display:inline-flex; align-items:center; gap:7px; margin-bottom:14px;
+  font-size:11px; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--forest); background:#8FE3B8; border-radius:var(--r-pill); padding:5px 12px;
+}
+.warn {
+  margin-top:18px; padding:14px 16px; border-radius:var(--r-s); font-size:13.5px;
+  border:1px solid rgba(245,201,123,.24); background:rgba(245,201,123,.06); color:var(--gold);
+}
+
+/* ── Die Rechnung, offen hingeschrieben ──────────────────────────────────── */
+.rules { display:grid; gap:10px; margin-top:26px; }
+.rule {
+  padding:18px 20px; border-radius:var(--r-m);
+  border:1px solid var(--stroke); background:rgba(255,255,255,.03);
+}
+.rule b { display:block; font-size:15.5px; margin-bottom:6px; }
+.rule span { color:var(--text-2); font-size:14px; }
+.maths {
+  margin-top:22px; padding:22px; border-radius:var(--r-l); text-align:center;
+  border:1px solid var(--stroke); background:rgba(255,255,255,.03);
+  font-variant-numeric:tabular-nums;
+}
+.maths .line { font-size:clamp(15px,4.4vw,19px); color:var(--text-2); }
+.maths .res { margin-top:12px; font-size:clamp(26px,8vw,40px); font-weight:800; color:var(--mint); letter-spacing:-.02em; }
+
+/* ── Der Weg ─────────────────────────────────────────────────────────────── */
+.loop { display:grid; gap:10px; margin-top:26px; counter-reset:step; }
+@media (min-width:860px){ .loop { grid-template-columns:repeat(4,1fr); } }
+.step {
+  padding:20px; border-radius:var(--r-m); position:relative;
+  border:1px solid var(--stroke); background:rgba(255,255,255,.03);
+}
+.step::before {
+  counter-increment:step; content:counter(step);
+  display:grid; place-items:center; width:26px; height:26px; border-radius:50%;
+  background:rgba(74,222,194,.14); color:var(--mint);
+  font-size:12.5px; font-weight:800; margin-bottom:12px;
+}
+.step b { display:block; font-size:15.5px; margin-bottom:5px; }
+.step span { color:var(--text-2); font-size:13.5px; }
+
+/* ── Landschaft am Ende ──────────────────────────────────────────────────── */
+.finale { padding-bottom:0; }
+.scene-wrap { position:relative; margin-top:32px; }
+.scene-wrap canvas { width:100%; height:min(56vh,420px); display:block; border-radius:var(--r-l) var(--r-l) 0 0; }
+.finale .ask {
+  text-align:center; font-size:clamp(28px,8.5vw,58px); line-height:1.02;
+  letter-spacing:-.035em; font-weight:800; text-wrap:balance;
+}
+.finale .starts { text-align:center; margin-top:14px; color:var(--gold); font-size:clamp(16px,4.6vw,21px); font-weight:700; }
+
+footer {
+  padding:40px var(--pad) calc(34px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--stroke); margin-top:60px;
+  color:var(--text-3); font-size:13px; text-align:center;
+}
+footer a { color:var(--text-2); text-decoration:none; }
+footer a:hover { color:var(--text); }
+footer .links { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+footer .fine { max-width:60ch; margin:14px auto 0; line-height:1.6; }
+
+/* ── Deine Zahl / die Herausforderung eines Freundes ─────────────────────── */
+.personal {
+  margin:22px auto 0; padding:26px 22px; border-radius:var(--r-l); text-align:center;
+  border:1px solid rgba(245,201,123,.28);
+  background:radial-gradient(120% 130% at 50% 0%, rgba(245,201,123,.14), rgba(255,255,255,.03) 62%);
+  display:none;
+}
+.personal.on { display:block; animation:momentIn .8s var(--ease) both; }
+.personal .top { font-size:11.5px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+.personal .big {
+  font-size:clamp(42px,14vw,84px); font-weight:800; letter-spacing:-.035em; line-height:1;
+  margin:10px 0 6px; font-variant-numeric:tabular-nums;
+  background:linear-gradient(96deg,var(--mint-hi),var(--gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.personal .said { color:var(--text-2); font-size:15px; }
+.personal .acts { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+.duel { display:grid; gap:8px; margin-top:18px; max-width:340px; margin-inline:auto; }
+.duel .side { display:flex; align-items:center; gap:12px; font-size:15px; }
+.duel .side .bar { flex:1; height:7px; border-radius:7px; background:rgba(255,255,255,.07); overflow:hidden; }
+.duel .side .bar i { display:block; height:100%; width:0; border-radius:7px; transition:width 1s var(--ease); }
+.duel .side.me .bar i { background:linear-gradient(90deg,var(--mint),var(--mint-hi)); }
+.duel .side.them .bar i { background:linear-gradient(90deg,var(--text-3),var(--text-2)); }
+.duel .side .n { font-variant-numeric:tabular-nums; font-weight:800; min-width:52px; text-align:right; }
+.verdict { margin-top:14px; font-size:18px; font-weight:800; color:var(--gold); }
+
+/* Teilkarte */
+.cardbox { margin:20px auto 0; width:min(300px,74vw); }
+.cardbox canvas {
+  width:100%; height:auto; display:block; border-radius:var(--r-m);
+  border:1px solid var(--stroke); box-shadow:0 22px 60px rgba(0,0,0,.5);
+}
+
+/* ── Erklärfenster ───────────────────────────────────────────────────────── */
+dialog {
+  border:0; padding:0; background:transparent; color:var(--text);
+  max-width:min(520px,92vw); width:100%;
+}
+dialog::backdrop { background:rgba(4,7,13,.78); backdrop-filter:blur(6px); }
+dialog .sheet {
+  border-radius:var(--r-l); padding:26px; border:1px solid var(--stroke-hi);
+  background:linear-gradient(180deg,var(--surface-hi),var(--surface));
+  box-shadow:0 30px 90px rgba(0,0,0,.6);
+}
+dialog h3 { font-size:19px; font-weight:800; margin-bottom:12px; letter-spacing:-.01em; }
+dialog p { color:var(--text-2); font-size:14.5px; margin-bottom:12px; }
+dialog .close { margin-top:8px; width:100%; }
+
+/* ── Der Begleiter: selten, kurz, nie im Weg ─────────────────────────────── */
+.buddy {
+  position:fixed; right:14px; bottom:calc(16px + env(safe-area-inset-bottom));
+  width:78px; height:78px; z-index:50; pointer-events:none;
+  opacity:0; transform:translateY(16px) scale(.9);
+  transition:opacity .5s var(--ease), transform .6s var(--ease);
+}
+.buddy.on { opacity:1; transform:none; }
+.buddy .say {
+  position:absolute; right:78px; bottom:22px; white-space:nowrap;
+  font-size:12.5px; font-weight:700; color:var(--text);
+  background:rgba(17,24,41,.94); border:1px solid var(--stroke-hi);
+  border-radius:var(--r-pill); padding:7px 13px;
+}
+@media (prefers-reduced-motion:reduce){ .buddy { transition:none; } }
+
+/* Feier */
+.confetti { position:fixed; inset:0; z-index:60; pointer-events:none; display:none; }
+.confetti.on { display:block; }
+.flash {
+  position:fixed; inset:0; z-index:59; pointer-events:none; opacity:0;
+  background:radial-gradient(60% 50% at 50% 55%, rgba(255,255,255,.85), rgba(245,201,123,.25) 45%, transparent 72%);
+}
+.flash.on { animation:flash 2.4s var(--ease) forwards; }
+@keyframes flash { 0%{opacity:0} 12%{opacity:1} 100%{opacity:0} }
+
+.mock {
+  position:fixed; left:50%; top:0; transform:translateX(-50%); z-index:99;
+  background:#B4232A; color:#fff; font-size:11px; font-weight:800;
+  letter-spacing:.16em; padding:5px 16px; border-radius:0 0 10px 10px;
+}
+
+.sr {
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+:focus-visible { outline:2px solid var(--mint); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+<header class="top">
+  <a class="brand" href="/"><img src="../assets/app_icon.png" alt="" width="28" height="28" /><span>Young by You</span></a>
+  <div class="langbar" role="group" aria-label="Sprache / Language">
+    <button type="button" data-lang="de" aria-pressed="true">DE</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ══ Held ══════════════════════════════════════════════════════════════ -->
+  <div class="hero">
+    <span class="eyebrow"><span class="dot" aria-hidden="true"></span><span data-t="eyebrow">Die erste gemeinsame Young-Runde</span></span>
+
+    <h1 class="goalline">
+      <span class="sr" data-t="h1sr">10.000 Jahre jünger</span>
+      <b aria-hidden="true">10.000</b>
+      <span class="l1" aria-hidden="true" data-t="years">JAHRE</span>
+      <span class="l2" aria-hidden="true" data-t="younger">JÜNGER</span>
+    </h1>
+
+    <p class="lead" data-t="lead">Was wäre, wenn tausende kleine Veränderungen zusammen etwas Außergewöhnliches ergeben?</p>
+
+    <!-- Dein Beitrag oder der eines Freundes – nur sichtbar, wenn es ihn gibt. -->
+    <div class="personal" id="personal" role="status">
+      <div class="top" id="pTop"></div>
+      <div class="big" id="pBig"></div>
+      <div class="said" id="pSaid"></div>
+      <div class="duel" id="pDuel" hidden>
+        <div class="side them"><span data-t="them">Sie</span><span class="bar"><i id="dThem"></i></span><span class="n" id="nThem"></span></div>
+        <div class="side me"><span data-t="youare">Du</span><span class="bar"><i id="dMe"></i></span><span class="n" id="nMe"></span></div>
+      </div>
+      <div class="verdict" id="pVerdict" hidden></div>
+      <div class="cardbox" id="cardbox" hidden><canvas id="shareCard" width="1080" height="1920" role="img" aria-label="Deine Teilkarte"></canvas></div>
+      <div class="acts" id="pActs"></div>
+    </div>
+
+    <div class="counter">
+      <div class="value" id="counter" aria-hidden="true"><span class="odo" id="odo"></span></div>
+      <p class="sr" id="counterSr" role="status" aria-live="polite"></p>
+      <div class="label">
+        <span data-t="together">Jahre jünger, zusammen</span>
+        <button class="info" type="button" id="whatBtn" aria-label="Was bedeutet das?">i</button>
+      </div>
+
+      <div class="progress">
+        <div class="track" role="img" id="trackImg">
+          <div class="fill" id="fill"></div>
+        </div>
+        <div class="leaves" id="leaves" aria-hidden="true"></div>
+        <div class="under">
+          <span><b id="pctNum">0 %</b> <span data-t="done">geschafft</span></span>
+          <span><b id="leftNum">10.000</b> <span data-t="togo">Jahre bis zum Ziel</span></span>
+        </div>
+        <p class="together" data-t="closer">Zusammen kommen wir näher.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <p class="q" data-t="howold">Wie alt bist du wirklich?</p>
+      <a class="btn" id="mainCta" href="#how" data-t="findout">Kostenlos herausfinden →</a>
+      <p class="sub" data-t="ctasub">Mach den Young-Test und leg dein Ergebnis in den gemeinsamen Zähler.</p>
+      <div class="stores" id="stores"></div>
+      <div class="notify" id="notify">
+        <form id="notifyForm">
+          <input type="email" id="notifyMail" required autocomplete="email" placeholder="deine@adresse.de" aria-label="E-Mail" />
+          <button class="btn ghost" type="submit" data-t="tellme">Sag mir Bescheid</button>
+        </form>
+        <p class="sub" id="notifySaid"></p>
+      </div>
+    </div>
+
+    <div class="scrollhint" aria-hidden="true"><span></span></div>
+  </div>
+
+  <!-- ══ Momente ═══════════════════════════════════════════════════════════ -->
+  <section class="rise" id="moments-sec">
+    <p class="kicker" data-t="k_moments">Gerade eben</p>
+    <h2 data-t="h_moments">Jede Zahl hier ist ein Mensch.</h2>
+    <p class="say" data-t="s_moments">Kein Name, kein Ort, keine Angabe über die Gesundheit – nur die Jahre, die jemand freiwillig dazugelegt hat, und wann.</p>
+    <div class="moments" id="moments"></div>
+  </section>
+
+  <!-- ══ Der Weg ═══════════════════════════════════════════════════════════ -->
+  <section class="rise" id="how">
+    <p class="kicker" data-t="k_loop">So läuft es</p>
+    <h2 data-t="h_loop">Vier Schritte, und die Zahl bewegt sich.</h2>
+    <div class="loop">
+      <div class="step"><b data-t="l1t">Mach den Test</b><span data-t="l1s">Ein paar Angaben über dich und deinen Alltag. Kostenlos, ohne Konto.</span></div>
+      <div class="step"><b data-t="l2t">Sieh deine Schätzung</b><span data-t="l2s">Dein geschätztes biologisches Alter – gerechnet auf deinem Gerät.</span></div>
+      <div class="step"><b data-t="l3t">Leg deine Jahre dazu</b><span data-t="l3s">Nur die Differenz verlässt dein Telefon, und nur wenn du zustimmst.</span></div>
+      <div class="step"><b data-t="l4t">Fordere jemanden heraus</b><span data-t="l4s">Dein Link zeigt deine Zahl. Wer sie schlagen will, muss mitmachen.</span></div>
+    </div>
+  </section>
+
+  <!-- ══ Tafel ═════════════════════════════════════════════════════════════ -->
+  <section class="rise">
+    <p class="kicker" data-t="k_board">Der Stand</p>
+    <h2 data-t="h_board">Nur Zahlen, die wirklich jemand erzeugt hat.</h2>
+    <div class="board" id="board"></div>
+    <p class="note" data-t="n_board">Alle Werte kommen live vom Server. Steht hier eine Null, ist es eine echte Null.</p>
+  </section>
+
+  <!-- ══ Erde ══════════════════════════════════════════════════════════════ -->
+  <section class="rise">
+    <p class="kicker" data-t="k_globe">Auf der Welt</p>
+    <h2 data-t="h_globe">Ein Licht für jede Gegend, die mitmacht.</h2>
+    <div class="globe-wrap"><canvas id="globe" role="img" aria-label="Weltkugel mit Lichtern für teilnehmende Länder"></canvas></div>
+    <div class="globe-list" id="globeList"></div>
+    <p class="note" id="cohortNote"></p>
+  </section>
+
+  <!-- ══ Kapitel ═══════════════════════════════════════════════════════════ -->
+  <section class="rise">
+    <p class="kicker" data-t="k_ladder">Die Kapitel</p>
+    <h2 data-t="h_ladder">10.000 ist Kapitel eins. <em>Nicht das Ende.</em></h2>
+    <div class="ladder" id="ladder"></div>
+  </section>
+
+  <!-- ══ Bäume ═════════════════════════════════════════════════════════════ -->
+  <section class="rise">
+    <div class="split">
+      <div>
+        <span class="badge" data-t="b_trees">Echte Bäume</span>
+        <h2 data-t="h_trees">Besser für dich. <em>Besser für die Welt.</em></h2>
+        <p class="say" data-t="s_trees">Bleib vier aktive Wochen bei deinen Routinen, und Young bezahlt die Pflanzung eines echten Baumes. Mit Zertifikat, mit Ort, mit Art.</p>
+        <div class="warn" data-t="w_trees">Das ist eine eigene Zahl. Gepflanzte Bäume werden nie mit dem Jahres-Zähler verrechnet – die beiden haben nichts miteinander zu tun.</div>
+      </div>
+      <div class="card">
+        <h3 id="treeTitle">Baum Nr. 0001</h3>
+        <dl>
+          <div class="row"><dt data-t="t_where">Ort</dt><dd id="treeWhere">—</dd></div>
+          <div class="row"><dt data-t="t_kind">Art</dt><dd id="treeKind">—</dd></div>
+          <div class="row"><dt data-t="t_who">Partner</dt><dd>Tree-Nation</dd></div>
+          <div class="row"><dt data-t="t_cert">Zertifikat</dt><dd id="treeCert">—</dd></div>
+        </dl>
+        <p class="note" id="treeNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Die Rechnung ══════════════════════════════════════════════════════ -->
+  <section class="rise" id="method">
+    <p class="kicker" data-t="k_rules">Offen gerechnet</p>
+    <h2 data-t="h_rules">Wie diese Zahl entsteht.</h2>
+    <div class="maths">
+      <div class="line" id="mathLine">34 − 28,7</div>
+      <div class="res" id="mathRes">+5,3</div>
+    </div>
+    <div class="rules">
+      <div class="rule"><b data-t="r1t">Es ist eine Schätzung, kein Befund.</b><span data-t="r1s">Young schätzt das biologische Alter aus dem, was jemand über sich angibt. Der Zähler addiert die positiven Unterschiede zwischen echtem Alter und dieser Schätzung. Das ist Motivation, keine ärztliche Diagnose.</span></div>
+      <div class="rule"><b data-t="r2t">Minus zählt als null.</b><span data-t="r2s">Wer nach eigener Angabe älter dasteht, als er ist, zieht der Gemeinschaft nichts ab. Sein echtes Ergebnis sieht er trotzdem – in der App, wo es hingehört.</span></div>
+      <div class="rule"><b data-t="r3t">Ein Mensch, ein Beitrag.</b><span data-t="r3s">Es zählt das erste gültige Ergebnis. Wer den Test wiederholt, bis die Zahl gefällt, bewegt nichts mehr.</span></div>
+      <div class="rule"><b data-t="r4t">Der Server rechnet, nicht dein Telefon.</b><span data-t="r4s">Die App schickt zwei Zahlen, die Differenz bildet der Server. Kein Gerät kann den öffentlichen Zähler selbst hochsetzen.</span></div>
+      <div class="rule"><b data-t="r5t">Was dein Telefon verlässt, ist eine Zahl.</b><span data-t="r5s">Deine Differenz in Jahren, dein Jahrzehnt, dein Land aus der Geräteeinstellung. Kein Geburtsdatum, kein geschätztes Alter, keine einzige Angabe über deinen Lebensstil – und nur, wenn du zustimmst.</span></div>
+    </div>
+  </section>
+
+  <!-- ══ Ende ══════════════════════════════════════════════════════════════ -->
+  <section class="rise finale">
+    <div class="scene-wrap"><canvas id="scene" role="img" aria-label="Eine Landschaft, die mit dem gemeinsamen Fortschritt wächst"></canvas></div>
+    <div style="padding-top:34px">
+      <p class="ask" data-t="h_end">Wie jung können wir werden?</p>
+      <p class="starts" data-t="s_end">Es fängt mit dir an.</p>
+      <div class="cta" style="margin-top:26px">
+        <a class="btn" id="endCta" href="#how" data-t="findout">Kostenlos herausfinden →</a>
+        <div class="stores" id="stores2"></div>
+        <p class="sub" data-t="endsub">Finde dein geschätztes biologisches Alter kostenlos heraus und werde Teil der Young-Herausforderung.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="links">
+    <a href="/">Young by You</a>
+    <a href="/infos/" data-t="f_more">Mehr über die App</a>
+    <a href="/hain/" data-t="f_grove">Der Hain</a>
+    <a href="/privacy.html" data-t="f_privacy">Datenschutz</a>
+    <a href="mailto:hello@youngbyyou.com">hello@youngbyyou.com</a>
+  </div>
+  <p class="fine" data-t="f_fine">Das geschätzte biologische Alter beruht auf allgemeinen wissenschaftlichen Zusammenhängen und deinen eigenen Angaben. Es ist kein medizinisches Gutachten, keine Diagnose und ersetzt keine ärztliche Beratung. Sprich vor größeren Änderungen deines Lebensstils mit einer Ärztin oder einem Arzt.</p>
+</footer>
+
+<div class="buddy" id="buddy" aria-hidden="true">
+  <div class="say" id="buddySay"></div>
+  <svg viewBox="0 0 100 100" width="78" height="78" aria-hidden="true">
+    <ellipse cx="50" cy="88" rx="26" ry="5" fill="rgba(0,0,0,.35)"/>
+    <path d="M50 78 C34 74 26 60 28 46 C40 46 50 56 50 70Z" fill="#2E8B67"/>
+    <path d="M50 78 C66 74 74 60 72 46 C60 46 50 56 50 70Z" fill="#3FA97E"/>
+    <circle cx="50" cy="40" r="21" fill="#F5E7C8"/>
+    <circle cx="43" cy="38" r="3.1" fill="#20301F"/>
+    <circle cx="57" cy="38" r="3.1" fill="#20301F"/>
+    <path d="M44 47 Q50 52 56 47" stroke="#20301F" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M50 19 Q50 8 58 5 Q60 14 50 19Z" fill="#4ADEC2"/>
+  </svg>
+</div>
+
+<dialog id="what">
+  <div class="sheet">
+    <h3 data-t="w_title">Was bedeutet diese Zahl?</h3>
+    <p data-t="w_p1">Young schätzt das biologische Alter aus den Angaben, die Menschen selbst über sich machen. Der gemeinsame Zähler addiert die positiven Unterschiede zwischen dem echten Alter der Teilnehmenden und ihrer Young-Schätzung.</p>
+    <p data-t="w_p2">Es ist eine motivierende Schätzung, keine medizinische Diagnose. Niemand hat nachweislich Jahre zurückgedreht – die Zahl sagt, wie weit die Schätzungen der Gemeinschaft unter ihren Geburtstagen liegen.</p>
+    <button class="btn ghost close" type="button" data-t="w_close">Verstanden</button>
+  </div>
+</dialog>
+
+<script src="../store.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+ * „10.000 Jahre jünger" – die Startseite der ersten gemeinsamen Young-Runde.
+ *
+ * Drei Regeln, die diese Datei zusammenhalten:
+ *
+ *  1. **Nichts wird erfunden.** Jede Zahl auf dieser Seite kommt aus
+ *     /v1/challenge. Gibt es noch keine Beiträge, steht hier eine ehrliche
+ *     Null und eine Einladung – niemals ein hübscher Platzhalter, der nach
+ *     Betrieb aussieht. Erfundene Aktivität ist der schnellste Weg, das
+ *     Vertrauen zu verlieren, das diese Seite aufbauen soll.
+ *  2. **Der Held ist sofort da.** Text, Zähler und Knopf stehen im HTML und
+ *     brauchen kein Skript. Was hier passiert, macht sie lebendig – es baut
+ *     sie nicht.
+ *  3. **Bewegt wird nur, was sich wirklich geändert hat.** Der Zähler rollt,
+ *     wenn der Server eine neue Summe meldet. Er rollt nie, „damit etwas
+ *     passiert".
+ * ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+'use strict';
+
+var API = 'https://yby-grove.yby-circle-worker.workers.dev';
+var STATE_URL = API + '/v1/challenge';
+var LESS = matchMedia('(prefers-reduced-motion: reduce)');
+
+/* ── Sprache ────────────────────────────────────────────────────────────────
+ * Zwei Tabellen, ein Schlüssel je Textstelle. Dieselbe Bauweise wie in der
+ * App: Wer eine Zeile ändert, ändert sie an genau einer Stelle. */
+var T = {
+  de: {
+    title:'10.000 Jahre jünger · Young by You',
+    eyebrow:'Die erste gemeinsame Young-Runde',
+    h1sr:'10.000 Jahre jünger', years:'JAHRE', younger:'JÜNGER',
+    lead:'Was wäre, wenn tausende kleine Veränderungen zusammen etwas Außergewöhnliches ergeben?',
+    yearsWord:'Jahre', together:'Jahre jünger, zusammen', done:'geschafft', togo:'Jahre bis zum Ziel',
+    closer:'Zusammen kommen wir näher.',
+    howold:'Wie alt bist du wirklich?', findout:'Kostenlos herausfinden →',
+    ctasub:'Mach den Young-Test und leg dein Ergebnis in den gemeinsamen Zähler.',
+    tellme:'Sag mir Bescheid', mailHint:'deine@adresse.de',
+    notifyHint:'Die App öffnet bald. Wir sagen dir an genau einem Tag Bescheid – am Starttag.',
+    notifyOk:'Du stehst auf der Liste. Danke!', notifyBad:'Diese Adresse sieht nicht richtig aus.',
+    k_moments:'Gerade eben', h_moments:'Jede Zahl hier ist ein Mensch.',
+    s_moments:'Kein Name, kein Ort, keine Angabe über die Gesundheit – nur die Jahre, die jemand freiwillig dazugelegt hat, und wann.',
+    emptyT:'Noch ist es still hier.', emptyS:'Der Erste, der seine Jahre dazulegt, steht in dieser Zeile. Vielleicht du.',
+    k_loop:'So läuft es', h_loop:'Vier Schritte, und die Zahl bewegt sich.',
+    l1t:'Mach den Test', l1s:'Ein paar Angaben über dich und deinen Alltag. Kostenlos, ohne Konto.',
+    l2t:'Sieh deine Schätzung', l2s:'Dein geschätztes biologisches Alter – gerechnet auf deinem Gerät.',
+    l3t:'Leg deine Jahre dazu', l3s:'Nur die Differenz verlässt dein Telefon, und nur wenn du zustimmst.',
+    l4t:'Fordere jemanden heraus', l4s:'Dein Link zeigt deine Zahl. Wer sie schlagen will, muss mitmachen.',
+    k_board:'Der Stand', h_board:'Nur Zahlen, die wirklich jemand erzeugt hat.',
+    n_board:'Alle Werte kommen live vom Server. Steht hier eine Null, ist es eine echte Null.',
+    tYears:'Jahre jünger', tPeople:'Teilnehmende', tTrees:'echte Bäume gepflanzt', tCountries:'Länder', tStreak:'Tage Serie im Schnitt',
+    k_globe:'Auf der Welt', h_globe:'Ein Licht für jede Gegend, die mitmacht.',
+    cohort:'Ein Land bekommt erst ab {n} Teilnehmenden einen Namen. Darunter wäre die Zahl eine Aussage über einzelne Menschen.',
+    globeEmpty:'Noch leuchtet nichts. Das erste Licht geht an, sobald irgendwo auf der Welt genug Menschen mitmachen.',
+    k_ladder:'Die Kapitel', h_ladder:'10.000 ist Kapitel eins. <em>Nicht das Ende.</em>',
+    running:'läuft', reachedOn:'erreicht am',
+    b_trees:'Echte Bäume', h_trees:'Besser für dich. <em>Besser für die Welt.</em>',
+    s_trees:'Bleib vier aktive Wochen bei deinen Routinen, und Young bezahlt die Pflanzung eines echten Baumes. Mit Zertifikat, mit Ort, mit Art.',
+    w_trees:'Das ist eine eigene Zahl. Gepflanzte Bäume werden nie mit dem Jahres-Zähler verrechnet – die beiden haben nichts miteinander zu tun.',
+    t_where:'Ort', t_kind:'Art', t_who:'Partner', t_cert:'Zertifikat',
+    treeNone:'Der erste echte Baum wird gepflanzt, sobald das erste Mitglied vier aktive Wochen zusammen hat.',
+    treeSome:'{n} Bäume stehen bereits – jeder mit eigenem Zertifikat im Hain.',
+    k_rules:'Offen gerechnet', h_rules:'Wie diese Zahl entsteht.',
+    r1t:'Es ist eine Schätzung, kein Befund.',
+    r1s:'Young schätzt das biologische Alter aus dem, was jemand über sich angibt. Der Zähler addiert die positiven Unterschiede zwischen echtem Alter und dieser Schätzung. Das ist Motivation, keine ärztliche Diagnose.',
+    r2t:'Minus zählt als null.',
+    r2s:'Wer nach eigener Angabe älter dasteht, als er ist, zieht der Gemeinschaft nichts ab. Sein echtes Ergebnis sieht er trotzdem – in der App, wo es hingehört.',
+    r3t:'Ein Mensch, ein Beitrag.',
+    r3s:'Es zählt das erste gültige Ergebnis. Wer den Test wiederholt, bis die Zahl gefällt, bewegt nichts mehr.',
+    r4t:'Der Server rechnet, nicht dein Telefon.',
+    r4s:'Die App schickt zwei Zahlen, die Differenz bildet der Server. Kein Gerät kann den öffentlichen Zähler selbst hochsetzen.',
+    r5t:'Was dein Telefon verlässt, ist eine Zahl.',
+    r5s:'Deine Differenz in Jahren, dein Jahrzehnt, dein Land aus der Geräteeinstellung. Kein Geburtsdatum, kein geschätztes Alter, keine einzige Angabe über deinen Lebensstil – und nur, wenn du zustimmst.',
+    h_end:'Wie jung können wir werden?', s_end:'Es fängt mit dir an.',
+    endsub:'Finde dein geschätztes biologisches Alter kostenlos heraus und werde Teil der Young-Herausforderung.',
+    f_more:'Mehr über die App', f_grove:'Der Hain', f_privacy:'Datenschutz',
+    f_fine:'Das geschätzte biologische Alter beruht auf allgemeinen wissenschaftlichen Zusammenhängen und deinen eigenen Angaben. Es ist kein medizinisches Gutachten, keine Diagnose und ersetzt keine ärztliche Beratung. Sprich vor größeren Änderungen deines Lebensstils mit einer Ärztin oder einem Arzt.',
+    w_title:'Was bedeutet diese Zahl?',
+    w_p1:'Young schätzt das biologische Alter aus den Angaben, die Menschen selbst über sich machen. Der gemeinsame Zähler addiert die positiven Unterschiede zwischen dem echten Alter der Teilnehmenden und ihrer Young-Schätzung.',
+    w_p2:'Es ist eine motivierende Schätzung, keine medizinische Diagnose. Niemand hat nachweislich Jahre zurückgedreht – die Zahl sagt, wie weit die Schätzungen der Gemeinschaft unter ihren Geburtstagen liegen.',
+    w_close:'Verstanden',
+    someone:'Jemand', someoneIn:'Jemand · {c}',
+    justNow:'gerade eben', minAgo:'vor {n} Min.', hourAgo:'vor {n} Std.', dayAgo:'vor {n} Tagen',
+    youGave:'Du hast beigetragen', toCommunity:'zur Young-Gemeinschaft.',
+    nowAt:'Die Gemeinschaft steht jetzt bei {n} Jahren.',
+    youMoved:'Du hast die Welt {n} Jahre näher gebracht.',
+    theyGave:'{who} hat beigetragen', beatThem:'Schaffst du mehr?',
+    them:'Sie', youare:'Du', youWon:'Du gewinnst um {n} Jahre.', youLost:'{n} Jahre fehlen dir noch.', tie:'Gleichstand.',
+    challenge:'Freund herausfordern', share:'Teilen', copy:'Link kopieren', copied:'Kopiert!',
+    openApp:'App schon installiert? Hier öffnen →',
+    shareText:'Ich habe {n} Jahre in die Young-Herausforderung gelegt. Schaffst du mehr?',
+    cardTop:'YOUNG-HERAUSFORDERUNG', cardAdd:'Jahre beigetragen', cardBeat:'Schaffst du mehr?',
+    b25:'Ein Viertel steht.', b50:'Die Hälfte!', b75:'Fast da.', b100:'Wir haben es geschafft!',
+    weDid:'WIR HABEN ES GESCHAFFT.', onlyStart:'Das war erst der Anfang.', nextGoal:'Nächstes Ziel',
+    dl_ios:'Laden im', dl_ios2:'App Store', dl_and:'Jetzt bei', dl_and2:'Google Play'
+  },
+  en: {
+    title:'10,000 Years Younger · Young by You',
+    eyebrow:'The first global Young challenge',
+    h1sr:'10,000 years younger', years:'YEARS', younger:'YOUNGER',
+    lead:'What if thousands of small changes could add up to something extraordinary?',
+    yearsWord:'years', together:'Years younger together', done:'complete', togo:'years to go',
+    closer:'Together, we’re getting closer.',
+    howold:'How old are you really?', findout:'Find out for free →',
+    ctasub:'Take the Young test and add your result to the global challenge.',
+    tellme:'Tell me', mailHint:'your@address.com',
+    notifyHint:'The app opens soon. We’ll write to you on exactly one day — launch day.',
+    notifyOk:'You’re on the list. Thank you!', notifyBad:'That address doesn’t look right.',
+    k_moments:'Right now', h_moments:'Every number here is a person.',
+    s_moments:'No name, no location, no health details — only the years somebody chose to add, and when.',
+    emptyT:'It’s still quiet here.', emptyS:'The first person to add their years appears on this line. Maybe you.',
+    k_loop:'How it works', h_loop:'Four steps, and the number moves.',
+    l1t:'Take the test', l1s:'A few things about you and your day. Free, no account.',
+    l2t:'See your estimate', l2s:'Your estimated biological age — calculated on your device.',
+    l3t:'Add your years', l3s:'Only the difference leaves your phone, and only if you agree.',
+    l4t:'Challenge a friend', l4s:'Your link shows your number. Beating it means joining in.',
+    k_board:'The state of things', h_board:'Only numbers somebody actually created.',
+    n_board:'Every value comes live from the server. If it says zero, it is a real zero.',
+    tYears:'years younger', tPeople:'participants', tTrees:'real trees planted', tCountries:'countries', tStreak:'day streak on average',
+    k_globe:'Around the world', h_globe:'One light for every region taking part.',
+    cohort:'A country is only named once {n} people take part. Below that, the number would say something about individuals.',
+    globeEmpty:'Nothing is lit yet. The first light comes on as soon as enough people somewhere join in.',
+    k_ladder:'The chapters', h_ladder:'10,000 is chapter one. <em>Not the end.</em>',
+    running:'in progress', reachedOn:'completed',
+    b_trees:'Real trees', h_trees:'Better for you. <em>Better for the world.</em>',
+    s_trees:'Stay consistent with your routines for four active weeks and Young funds the planting of a real tree. With a certificate, a location and a species.',
+    w_trees:'This is a separate number. Planted trees are never mixed into the years counter — the two have nothing to do with each other.',
+    t_where:'Location', t_kind:'Species', t_who:'Planting partner', t_cert:'Certificate',
+    treeNone:'The first real tree is planted as soon as the first member completes four active weeks.',
+    treeSome:'{n} trees are already standing — each with its own certificate in the grove.',
+    k_rules:'Openly calculated', h_rules:'How this number comes about.',
+    r1t:'It is an estimate, not a finding.',
+    r1s:'Young estimates biological age from what people tell it about themselves. The counter adds the positive differences between real age and that estimate. It is motivation, not a medical diagnosis.',
+    r2t:'Negative counts as zero.',
+    r2s:'If somebody’s estimate is above their real age, they take nothing away from the community. They still see their true result — in the app, where it belongs.',
+    r3t:'One person, one contribution.',
+    r3s:'The first valid result is the one that counts. Retaking the test until the number looks better moves nothing.',
+    r4t:'The server does the maths, not your phone.',
+    r4s:'The app sends two numbers; the server forms the difference. No device can raise the public counter by itself.',
+    r5t:'What leaves your phone is a number.',
+    r5s:'Your difference in years, your decade, your country from the device setting. No date of birth, no estimated age, not one detail about your lifestyle — and only if you agree.',
+    h_end:'How young can we become?', s_end:'It starts with you.',
+    endsub:'Find out your estimated biological age for free and become part of the Young Challenge.',
+    f_more:'About the app', f_grove:'The Grove', f_privacy:'Privacy',
+    f_fine:'The estimated biological age is based on general scientific relationships and your own answers. It is not a medical assessment, not a diagnosis, and no substitute for medical advice. Talk to a doctor before making major lifestyle changes.',
+    w_title:'What does this mean?',
+    w_p1:'Young estimates biological age from the information users provide. The community counter adds together the positive differences between participating users’ chronological ages and their Young estimated biological ages.',
+    w_p2:'It is a motivational estimate, not a medical diagnosis. Nobody has provably turned back the clock — the number says how far the community’s estimates sit below their birthdays.',
+    w_close:'Got it',
+    someone:'Someone', someoneIn:'Someone · {c}',
+    justNow:'just now', minAgo:'{n} min ago', hourAgo:'{n} h ago', dayAgo:'{n} d ago',
+    youGave:'You contributed', toCommunity:'to the Young community.',
+    nowAt:'The community is now {n} years younger.',
+    youMoved:'You just moved the world {n} years closer.',
+    theyGave:'{who} contributed', beatThem:'Can you beat them?',
+    them:'Them', youare:'You', youWon:'You won by {n} years.', youLost:'{n} years to go.', tie:'A tie.',
+    challenge:'Challenge a friend', share:'Share', copy:'Copy link', copied:'Copied!',
+    openApp:'Already have the app? Open it →',
+    shareText:'I added {n} years to the Young Challenge. Can you beat me?',
+    cardTop:'YOUNG CHALLENGE', cardAdd:'years contributed', cardBeat:'Can you beat me?',
+    b25:'A quarter of the way.', b50:'Halfway!', b75:'Almost there.', b100:'We made it!',
+    weDid:'WE DID IT.', onlyStart:'This was only the beginning.', nextGoal:'Next goal',
+    dl_ios:'Download on the', dl_ios2:'App Store', dl_and:'Get it on', dl_and2:'Google Play'
+  }
+};
+
+var lang = pickLang();
+function pickLang() {
+  var q = new URLSearchParams(location.search).get('lang');
+  if (q === 'de' || q === 'en') return q;
+  try { var s = localStorage.getItem('yby_lang'); if (s === 'de' || s === 'en') return s; } catch (e) {}
+  return (navigator.language || 'de').toLowerCase().indexOf('de') === 0 ? 'de' : 'en';
+}
+function t(key, vars) {
+  var s = (T[lang] && T[lang][key]) || T.de[key] || '';
+  if (vars) for (var k in vars) s = s.split('{' + k + '}').join(vars[k]);
+  return s;
+}
+
+/* Zahlen im Format der jeweiligen Sprache. 6.482,7 in Deutschland,
+   6,482.7 in England – eine falsch gesetzte Trennung macht aus einer großen
+   Zahl eine winzige und umgekehrt. */
+function nf(n, dec) {
+  return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB', {
+    minimumFractionDigits: dec || 0, maximumFractionDigits: dec == null ? 0 : dec
+  }).format(n);
+}
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.title = t('title');
+  var nodes = document.querySelectorAll('[data-t]');
+  for (var i = 0; i < nodes.length; i++) {
+    var key = nodes[i].getAttribute('data-t');
+    var val = t(key);
+    if (!val) continue;
+    if (val.indexOf('<em>') >= 0) nodes[i].innerHTML = val; else nodes[i].textContent = val;
+  }
+  var goal = document.querySelector('.goalline b');
+  if (goal) goal.textContent = nf(state ? state.goal : 10000);
+  var btns = document.querySelectorAll('.langbar button');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].setAttribute('aria-pressed', btns[j].getAttribute('data-lang') === lang ? 'true' : 'false');
+  }
+  document.getElementById('cohortNote').textContent = t('cohort', { n: state ? state.minCohort : 5 });
+  document.getElementById('notifySaid').textContent = t('notifyHint');
+  document.getElementById('notifyMail').placeholder = t('mailHint');
+  buildStores();
+  if (state) render(state, true);
+  paintPersonal();
+}
+var langBtns = document.querySelectorAll('.langbar button');
+for (var lb = 0; lb < langBtns.length; lb++) {
+  langBtns[lb].addEventListener('click', function () {
+    lang = this.getAttribute('data-lang');
+    try { localStorage.setItem('yby_lang', lang); } catch (e) {}
+    applyLang();
+    track('lang_switch', { lang: lang });
+  });
+}
+
+/* ── Zahlen zählen, ohne jemandem zu folgen ─────────────────────────────────
+ * Kein Skript von außen, kein Cookie, keine Kennung. `track` schreibt in eine
+ * Warteschlange am Fenster; wer später ein Werkzeug anschließt, findet dort
+ * den vollständigen Trichter. Bis dahin kostet es nichts und verrät nichts.
+ * Woher jemand kam, steht im Sitzungsspeicher und stirbt mit dem Reiter. */
+window.ybyEvents = window.ybyEvents || [];
+function track(name, data) {
+  var e = { e: name, at: Date.now(), src: attribution() };
+  if (data) for (var k in data) e[k] = data[k];
+  window.ybyEvents.push(e);
+  if (typeof window.YBY_TRACK === 'function') { try { window.YBY_TRACK(e); } catch (x) {} }
+}
+function attribution() {
+  try {
+    var got = sessionStorage.getItem('yby_src');
+    if (got) return got;
+    var p = new URLSearchParams(location.search);
+    var src = p.get('utm_source') || p.get('ref') || (document.referrer ? new URL(document.referrer).hostname : 'direct');
+    sessionStorage.setItem('yby_src', src);
+    return src;
+  } catch (e) { return 'direct'; }
+}
+track('launch_page_view');
+
+/* ── Der Zähler: eine Ziffer ist ein Fenster über einer Spalte ────────────── */
+var odoEl = document.getElementById('odo');
+var shown = null;
+function setCounter(value) {
+  var text = nf(value, 1);
+  if (odoEl.childElementCount === 0 || odoEl.getAttribute('data-shape') !== shapeOf(text)) {
+    odoEl.setAttribute('data-shape', shapeOf(text));
+    odoEl.innerHTML = '';
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (ch >= '0' && ch <= '9') {
+        var d = document.createElement('span'); d.className = 'd';
+        var col = document.createElement('span'); col.className = 'col';
+        for (var n = 0; n <= 9; n++) { var it = document.createElement('i'); it.textContent = n; col.appendChild(it); }
+        d.appendChild(col); odoEl.appendChild(d);
+      } else {
+        var s = document.createElement('span'); s.className = 'sep'; s.textContent = ch; odoEl.appendChild(s);
+      }
+    }
+  }
+  var digits = odoEl.querySelectorAll('.d .col');
+  var k = 0;
+  for (var c = 0; c < text.length; c++) {
+    var chr = text[c];
+    if (chr >= '0' && chr <= '9') {
+      // Jede Ziffer startet eine Spur später als ihre linke Nachbarin. Das
+      // ist der ganze Unterschied zwischen „es springt" und „es rollt".
+      (function (col, target, delay) {
+        setTimeout(function () { col.style.transform = 'translateY(-' + target + 'em)'; },
+          LESS.matches ? 0 : delay);
+      })(digits[k], Number(chr), k * 55);
+      k++;
+    }
+  }
+  document.getElementById('counterSr').textContent = text + ' ' + t('together');
+}
+function shapeOf(s) { return s.replace(/[0-9]/g, '#'); }
+
+/* ── Fortschritt ───────────────────────────────────────────────────────────── */
+var leavesEl = document.getElementById('leaves');
+(function buildLeaves() {
+  var LEAF = '<svg viewBox="0 0 12 12" width="9" height="9" fill="currentColor"><path d="M11 1C5 1 1 4 1 8c0 1 0 2 1 3 1-4 4-6 7-7-2 2-4 3-6 7 5 0 8-4 8-10z"/></svg>';
+  [25, 50, 75].forEach(function (p) {
+    var el = document.createElement('span');
+    el.className = 'leaf'; el.style.left = p + '%'; el.innerHTML = LEAF;
+    el.setAttribute('data-at', p);
+    leavesEl.appendChild(el);
+  });
+})();
+
+/* ── Der Stand vom Server ─────────────────────────────────────────────────── */
+var state = null, etag = null, timer = null, mock = new URLSearchParams(location.search).has('mock');
+
+function load() {
+  // In der Vorschau fragt die Seite den Server gar nicht erst – sonst würde
+  // der echte Stand die erfundene Zahl eine Sekunde später überschreiben und
+  // die Vorschau wäre kaputt, ohne dass man sähe, warum.
+  if (mock) return;
+  var headers = {};
+  if (etag) headers['if-none-match'] = etag;
+  fetch(STATE_URL, { headers: headers, cache: 'no-store' })
+    .then(function (r) {
+      if (r.status === 304) return null;
+      etag = r.headers.get('etag');
+      return r.json();
+    })
+    .then(function (data) { if (data) apply(data); })
+    .catch(function () { /* Kein Netz: Die Seite bleibt stehen, wie sie ist. */ })
+    .then(schedule);
+}
+function schedule() {
+  clearTimeout(timer);
+  // Ein Reiter im Hintergrund fragt nicht. Das spart auf dem Telefon spürbar
+  // Akku und auf dem Server jede Menge Anfragen, die niemand sieht.
+  timer = setTimeout(load, document.hidden ? 60000 : 9000);
+}
+document.addEventListener('visibilitychange', function () { if (!document.hidden) load(); });
+
+function apply(data) {
+  var before = state;
+  state = data;
+  render(data, !before);
+  if (before && data.total > before.total) {
+    // NUR hier wird gefeiert: wenn der Server eine höhere Summe gemeldet hat.
+    document.getElementById('counter').classList.remove('pulse');
+    void document.getElementById('counter').offsetWidth;
+    document.getElementById('counter').classList.add('pulse');
+    sparks();
+  }
+  if (before && data.milestones.length > before.milestones.length) {
+    celebrate(data.milestones[data.milestones.length - 1].goal);
+  }
+  // Der eigene Moment nennt den Stand der Gemeinschaft. Welche der beiden
+  // Antworten zuerst da ist, entscheidet das Netz – also wird nach jeder von
+  // beiden neu geschrieben.
+  if (me || them) paintPersonal();
+}
+
+function render(d, first) {
+  setCounter(d.total);
+  var pct = d.goal > 0 ? Math.min(100, (d.total / d.goal) * 100) : 0;
+  document.getElementById('fill').style.width = pct.toFixed(2) + '%';
+  document.getElementById('pctNum').textContent = nf(pct, 1) + ' %';
+  document.getElementById('leftNum').textContent = nf(Math.max(0, d.goal - d.total), 1);
+  document.getElementById('trackImg').setAttribute('aria-label',
+    nf(d.total, 1) + ' / ' + nf(d.goal) + ' — ' + nf(pct, 1) + ' %');
+  var lv = leavesEl.children;
+  for (var i = 0; i < lv.length; i++) {
+    lv[i].classList.toggle('on', pct >= Number(lv[i].getAttribute('data-at')));
+  }
+  var goalEl = document.querySelector('.goalline b');
+  if (goalEl) goalEl.textContent = nf(d.goal);
+  renderMoments(d);
+  renderBoard(d);
+  renderGlobe(d);
+  renderLadder(d);
+  renderTrees(d);
+  scene.progress(pct / 100);
+  if (first) { document.getElementById('cohortNote').textContent = t('cohort', { n: d.minCohort }); }
+  maybeBuddy(pct);
+}
+
+/* ── Momente ───────────────────────────────────────────────────────────────
+ * Gibt es nichts zu zeigen, steht dort eine Einladung – niemals eine
+ * ausgedachte Person aus Berlin. */
+function renderMoments(d) {
+  var box = document.getElementById('moments');
+  box.innerHTML = '';
+  if (!d.recent.length) {
+    var e = document.createElement('div');
+    e.className = 'empty';
+    e.innerHTML = '<b></b><span></span>';
+    e.querySelector('b').textContent = t('emptyT');
+    e.querySelector('span').textContent = t('emptyS');
+    box.appendChild(e);
+    return;
+  }
+  d.recent.forEach(function (m, i) {
+    var row = document.createElement('div');
+    row.className = 'moment';
+    row.style.animationDelay = (i * 70) + 'ms';
+    var who = m.region ? t('someoneIn', { c: countryName(m.region) }) : t('someone');
+    row.innerHTML = '<span class="plus"></span><span class="who"></span><span class="ago"></span>';
+    row.querySelector('.plus').textContent = '+' + nf(m.years, 1);
+    row.querySelector('.who').textContent = who;
+    row.querySelector('.ago').textContent = ago(m.at);
+    box.appendChild(row);
+  });
+}
+function ago(iso) {
+  var ms = Date.now() - new Date(iso).getTime();
+  var min = Math.round(ms / 60000);
+  if (min < 2) return t('justNow');
+  if (min < 60) return t('minAgo', { n: min });
+  var h = Math.round(min / 60);
+  if (h < 24) return t('hourAgo', { n: h });
+  return t('dayAgo', { n: Math.round(h / 24) });
+}
+
+/* ── Tafel ─────────────────────────────────────────────────────────────────── */
+function renderBoard(d) {
+  var tiles = [
+    { v: nf(d.total, 1), l: t('tYears') },
+    { v: nf(d.participants), l: t('tPeople') },
+    { v: nf(d.trees), l: t('tTrees') },
+    { v: nf(d.countries), l: t('tCountries') },
+    { v: d.averageStreak == null ? '—' : nf(d.averageStreak, 1), l: t('tStreak') }
+  ];
+  var box = document.getElementById('board');
+  box.innerHTML = '';
+  tiles.forEach(function (x) {
+    var el = document.createElement('div');
+    el.className = 'tile' + (x.v === '0' || x.v === '—' ? ' none' : '');
+    el.innerHTML = '<b></b><span></span>';
+    el.querySelector('b').textContent = x.v;
+    el.querySelector('span').textContent = x.l;
+    box.appendChild(el);
+  });
+}
+
+/* ── Kapitel ───────────────────────────────────────────────────────────────── */
+function renderLadder(d) {
+  var box = document.getElementById('ladder');
+  box.innerHTML = '';
+  var doneSet = {};
+  d.milestones.forEach(function (m) { doneSet[m.goal] = m.at; });
+  d.goals.forEach(function (g) {
+    var row = document.createElement('div');
+    var done = doneSet[g] != null;
+    var now = !done && g === d.goal;
+    row.className = 'rung' + (done ? ' done' : now ? ' now' : '');
+    row.innerHTML = '<span class="mark"></span><b></b><span class="when"></span>';
+    row.querySelector('.mark').textContent = done ? '✓' : now ? '●' : '';
+    row.querySelector('b').textContent = nf(g) + ' ' + t('yearsWord');
+    row.querySelector('.when').textContent = done
+      ? t('reachedOn') + ' ' + new Date(doneSet[g]).toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB', { month: 'long', year: 'numeric' })
+      : now ? t('running') : '';
+    box.appendChild(row);
+  });
+}
+
+/* ── Bäume ─────────────────────────────────────────────────────────────────── */
+function renderTrees(d) {
+  var has = d.trees > 0;
+  document.getElementById('treeTitle').textContent =
+    (lang === 'de' ? 'Baum Nr. ' : 'Real Tree #') + String(has ? d.trees : 1).padStart(4, '0');
+  document.getElementById('treeNote').textContent =
+    has ? t('treeSome', { n: nf(d.trees) }) : t('treeNone');
+  // Ort, Art und Zertifikat stehen erst da, wenn wirklich gepflanzt wurde.
+  // Ein Beispielbaum mit erfundenem Ort wäre genau die Art Behauptung, die
+  // diese Seite nicht macht.
+  var dash = has ? null : '—';
+  document.getElementById('treeWhere').textContent = dash || (lang === 'de' ? 'im Hain nachsehen' : 'see the grove');
+  document.getElementById('treeKind').textContent = dash || (lang === 'de' ? 'im Hain nachsehen' : 'see the grove');
+  var cert = document.getElementById('treeCert');
+  cert.textContent = '';
+  if (has) { var a = document.createElement('a'); a.href = '/hain/'; a.textContent = lang === 'de' ? 'Zum Hain →' : 'To the grove →'; a.style.color = 'var(--mint)'; a.style.textDecoration = 'none'; cert.appendChild(a); }
+  else cert.textContent = '—';
+}
+
+/* ── Die Erde ──────────────────────────────────────────────────────────────
+ * Kein Kartenbild, keine Küstenlinien: eine Drahtkugel mit Lichtern an den
+ * Mittelpunkten der Länder, die über der Schwelle liegen. Das ist ehrlicher
+ * als eine Karte (wir kennen keine Orte, nur Länder), schöner, und es lädt
+ * keine einzige Datei nach. */
+var COUNTRY = {
+  DE:[51.2,10.4,'Deutschland','Germany'], AT:[47.6,14.1,'Österreich','Austria'],
+  CH:[46.8,8.2,'Schweiz','Switzerland'], GB:[54.0,-2.0,'Großbritannien','United Kingdom'],
+  IE:[53.2,-8.0,'Irland','Ireland'], FR:[46.6,2.4,'Frankreich','France'],
+  ES:[40.2,-3.7,'Spanien','Spain'], PT:[39.6,-8.0,'Portugal','Portugal'],
+  IT:[42.8,12.6,'Italien','Italy'], NL:[52.2,5.5,'Niederlande','Netherlands'],
+  BE:[50.6,4.6,'Belgien','Belgium'], LU:[49.8,6.1,'Luxemburg','Luxembourg'],
+  DK:[56.1,9.5,'Dänemark','Denmark'], SE:[62.0,15.0,'Schweden','Sweden'],
+  NO:[64.0,11.0,'Norwegen','Norway'], FI:[64.0,26.0,'Finnland','Finland'],
+  IS:[64.9,-19.0,'Island','Iceland'], PL:[52.0,19.4,'Polen','Poland'],
+  CZ:[49.8,15.5,'Tschechien','Czechia'], SK:[48.7,19.7,'Slowakei','Slovakia'],
+  HU:[47.2,19.4,'Ungarn','Hungary'], RO:[45.9,25.0,'Rumänien','Romania'],
+  BG:[42.7,25.5,'Bulgarien','Bulgaria'], GR:[39.1,22.0,'Griechenland','Greece'],
+  HR:[45.1,15.2,'Kroatien','Croatia'], SI:[46.1,14.8,'Slowenien','Slovenia'],
+  RS:[44.0,20.9,'Serbien','Serbia'], UA:[48.4,31.2,'Ukraine','Ukraine'],
+  TR:[39.0,35.2,'Türkei','Türkiye'], IL:[31.4,35.0,'Israel','Israel'],
+  AE:[24.0,54.0,'VAE','UAE'], SA:[24.0,45.0,'Saudi-Arabien','Saudi Arabia'],
+  ZA:[-29.0,24.0,'Südafrika','South Africa'], EG:[26.8,30.8,'Ägypten','Egypt'],
+  MA:[31.8,-7.1,'Marokko','Morocco'], NG:[9.1,8.7,'Nigeria','Nigeria'],
+  KE:[0.0,37.9,'Kenia','Kenya'], IN:[21.0,78.0,'Indien','India'],
+  PK:[30.4,69.3,'Pakistan','Pakistan'], TH:[15.9,101.0,'Thailand','Thailand'],
+  VN:[14.1,108.3,'Vietnam','Vietnam'], ID:[-2.5,118.0,'Indonesien','Indonesia'],
+  PH:[12.9,121.8,'Philippinen','Philippines'], SG:[1.35,103.8,'Singapur','Singapore'],
+  MY:[4.2,101.9,'Malaysia','Malaysia'], JP:[36.2,138.3,'Japan','Japan'],
+  KR:[35.9,127.8,'Südkorea','South Korea'], CN:[35.9,104.2,'China','China'],
+  HK:[22.3,114.2,'Hongkong','Hong Kong'], TW:[23.7,121.0,'Taiwan','Taiwan'],
+  AU:[-25.3,133.8,'Australien','Australia'], NZ:[-41.0,174.9,'Neuseeland','New Zealand'],
+  US:[39.8,-98.6,'USA','United States'], CA:[56.1,-106.3,'Kanada','Canada'],
+  MX:[23.6,-102.6,'Mexiko','Mexico'], BR:[-14.2,-51.9,'Brasilien','Brazil'],
+  AR:[-38.4,-63.6,'Argentinien','Argentina'], CL:[-35.7,-71.5,'Chile','Chile'],
+  CO:[4.6,-74.3,'Kolumbien','Colombia'], PE:[-9.2,-75.0,'Peru','Peru'],
+  RU:[61.5,105.3,'Russland','Russia']
+};
+function countryName(code) {
+  var c = COUNTRY[code];
+  if (c) return lang === 'de' ? c[2] : c[3];
+  try { return new Intl.DisplayNames([lang], { type: 'region' }).of(code) || code; } catch (e) { return code; }
+}
+
+var globe = (function () {
+  var cv = document.getElementById('globe'), ctx = cv.getContext('2d');
+  var lights = [], spin = 0, raf = 0, size = 0;
+  function fit() {
+    var dpr = Math.min(2, devicePixelRatio || 1);
+    var w = cv.clientWidth || 320;
+    size = w;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(w * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function project(lat, lng) {
+    var la = lat * Math.PI / 180, lo = (lng + spin) * Math.PI / 180;
+    return {
+      x: Math.cos(la) * Math.sin(lo),
+      y: -Math.sin(la),
+      z: Math.cos(la) * Math.cos(lo)
+    };
+  }
+  function draw() {
+    var r = size * 0.42, cx = size / 2, cy = size / 2;
+    ctx.clearRect(0, 0, size, size);
+
+    // Atmosphäre
+    var glow = ctx.createRadialGradient(cx, cy, r * .72, cx, cy, r * 1.24);
+    glow.addColorStop(0, 'rgba(74,222,194,.16)');
+    glow.addColorStop(1, 'rgba(74,222,194,0)');
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, r * 1.24, 0, 7); ctx.fill();
+
+    // Der Körper
+    var body = ctx.createRadialGradient(cx - r * .3, cy - r * .35, r * .1, cx, cy, r);
+    body.addColorStop(0, 'rgba(27,38,64,.95)');
+    body.addColorStop(1, 'rgba(8,12,22,.98)');
+    ctx.fillStyle = body; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.fill();
+
+    // Netz: Breiten- und Längenkreise, hinten schwächer
+    ctx.lineWidth = 1;
+    for (var lat = -60; lat <= 60; lat += 30) {
+      ctx.beginPath();
+      for (var i = 0; i <= 90; i++) {
+        var p = project(lat, i * 4);
+        if (p.z < 0) { ctx.stroke(); ctx.beginPath(); continue; }
+        var X = cx + p.x * r, Y = cy + p.y * r;
+        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+      }
+      ctx.strokeStyle = 'rgba(120,150,210,.16)'; ctx.stroke();
+    }
+    for (var lo = 0; lo < 360; lo += 30) {
+      ctx.beginPath();
+      var started = false;
+      for (var j = -90; j <= 90; j += 3) {
+        var q = project(j, lo);
+        if (q.z < 0) { if (started) { ctx.stroke(); ctx.beginPath(); started = false; } continue; }
+        var X2 = cx + q.x * r, Y2 = cy + q.y * r;
+        if (!started) { ctx.moveTo(X2, Y2); started = true; } else ctx.lineTo(X2, Y2);
+      }
+      ctx.strokeStyle = 'rgba(120,150,210,.11)'; ctx.stroke();
+    }
+    // Äquator etwas kräftiger – die Kugel bekommt damit eine Achse.
+    ctx.beginPath();
+    for (var e = 0; e <= 180; e++) {
+      var pe = project(0, e * 2);
+      if (pe.z < 0) { ctx.stroke(); ctx.beginPath(); continue; }
+      var Xe = cx + pe.x * r, Ye = cy + pe.y * r;
+      if (e === 0) ctx.moveTo(Xe, Ye); else ctx.lineTo(Xe, Ye);
+    }
+    ctx.strokeStyle = 'rgba(245,201,123,.20)'; ctx.stroke();
+
+    // Die Lichter
+    var beat = LESS.matches ? 1 : (0.82 + 0.18 * Math.sin(Date.now() / 900));
+    lights.forEach(function (L) {
+      var p = project(L.lat, L.lng);
+      if (p.z < -0.05) return;
+      var X = cx + p.x * r, Y = cy + p.y * r;
+      var front = Math.max(0, Math.min(1, (p.z + .05) / .5));
+      var rad = (3.4 + L.weight * 5.5) * beat;
+      var halo = ctx.createRadialGradient(X, Y, 0, X, Y, rad * 3.6);
+      halo.addColorStop(0, 'rgba(108,240,216,' + (0.55 * front) + ')');
+      halo.addColorStop(1, 'rgba(108,240,216,0)');
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(X, Y, rad * 3.6, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,' + (0.9 * front) + ')';
+      ctx.beginPath(); ctx.arc(X, Y, rad * .5, 0, 7); ctx.fill();
+    });
+
+    // Vordere Kante – der Rand macht aus einer Scheibe eine Kugel.
+    ctx.strokeStyle = 'rgba(150,180,235,.22)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke();
+  }
+  function tick() {
+    spin += 0.13;
+    draw();
+    raf = requestAnimationFrame(tick);
+  }
+  return {
+    set: function (regions) {
+      var max = 1;
+      regions.forEach(function (r) { if (r.participants > max) max = r.participants; });
+      lights = regions.filter(function (r) { return COUNTRY[r.region]; }).map(function (r) {
+        return { lat: COUNTRY[r.region][0], lng: COUNTRY[r.region][1], weight: r.participants / max };
+      });
+      draw();
+    },
+    start: function () {
+      fit(); draw();
+      addEventListener('resize', function () { fit(); draw(); });
+      if (!LESS.matches && !raf) tick();
+    }
+  };
+})();
+
+function renderGlobe(d) {
+  globe.set(d.regions);
+  var box = document.getElementById('globeList');
+  box.innerHTML = '';
+  if (!d.regions.length) {
+    var e = document.createElement('div');
+    e.className = 'empty'; e.innerHTML = '<span></span>';
+    e.querySelector('span').textContent = t('globeEmpty');
+    box.appendChild(e);
+    return;
+  }
+  d.regions.forEach(function (r) {
+    var row = document.createElement('div');
+    row.className = 'grow';
+    row.innerHTML = '<span class="c"></span><span class="p"></span><span class="n"></span>';
+    row.querySelector('.c').textContent = countryName(r.region);
+    row.querySelector('.p').textContent = nf(r.participants) + ' ' + t('tPeople');
+    row.querySelector('.n').textContent = '+' + nf(r.years, 1);
+    box.appendChild(row);
+  });
+}
+
+/* ── Läden ─────────────────────────────────────────────────────────────────
+ * Solange store.js keine echten Adressen trägt, gibt es hier keine Knöpfe,
+ * die ins Leere führen – dann übernimmt „Sag mir Bescheid". */
+function buildStores() {
+  var S = window.YBY_STORE || {};
+  var ios = S.appStore, and = S.playStore;
+  var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var boxes = [document.getElementById('stores'), document.getElementById('stores2')];
+  boxes.forEach(function (box) {
+    if (!box) return;
+    box.innerHTML = '';
+    var list = [];
+    if (ios) list.push({ url: ios, top: t('dl_ios'), name: t('dl_ios2'), ev: 'store_click_ios', icon: APPLE });
+    if (and) list.push({ url: and, top: t('dl_and'), name: t('dl_and2'), ev: 'store_click_android', icon: PLAY });
+    if (isIOS) list.sort(function (a) { return a.ev === 'store_click_ios' ? -1 : 1; });
+    else list.sort(function (a) { return a.ev === 'store_click_android' ? -1 : 1; });
+    list.forEach(function (s, i) {
+      var a = document.createElement('a');
+      a.className = 'store' + (i > 0 ? ' second' : '');
+      a.href = s.url; a.rel = 'noopener';
+      a.innerHTML = s.icon + '<span class="t"><small></small><b></b></span>';
+      a.querySelector('small').textContent = s.top;
+      a.querySelector('b').textContent = s.name;
+      a.addEventListener('click', function () { track(s.ev); });
+      box.appendChild(a);
+    });
+  });
+  var noStore = !ios && !and;
+  document.getElementById('notify').classList.toggle('on', noStore);
+  var main = document.getElementById('mainCta'), end = document.getElementById('endCta');
+  var first = ios || and;
+  [main, end].forEach(function (b) {
+    if (!b) return;
+    if (first) { b.href = first; b.addEventListener('click', function () { track('hero_cta_click'); }); }
+    else { b.href = '#how'; }
+  });
+  if (noStore) {
+    // Ohne Laden ist der Hauptknopf ein Versprechen, kein Link: Er führt zu
+    // der Zeile, in der man eine Adresse hinterlassen kann.
+    [main, end].forEach(function (b) {
+      if (!b) return;
+      b.href = '#how';
+      b.addEventListener('click', function () {
+        track('hero_cta_click');
+        var box = document.getElementById('notifyMail');
+        if (box) { box.focus({ preventScroll: false }); }
+      });
+    });
+  }
+  // Smart App Banner – nur mit echter Nummer, sonst zeigt iOS eine Fehlseite.
+  var id = (ios || '').match(/id(\d{6,})/);
+  if (id && !document.querySelector('meta[name="apple-itunes-app"]')) {
+    var m = document.createElement('meta');
+    m.name = 'apple-itunes-app';
+    m.content = 'app-id=' + id[1] + (challengeCode ? ', app-argument=youngbyyou://challenge?c=' + challengeCode : '');
+    document.head.appendChild(m);
+  }
+}
+var APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.6-1.9-1.5-.2-3 .9-3.8.9s-2-.9-3.2-.9C6.2 7.2 4.6 8.2 3.8 9.8c-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8 2.2-1.2 3-2.3c.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.5-3.9zM14 5.6c.7-.8 1.1-2 1-3.2-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.3z"/></svg>';
+var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4ADEC2" d="M3.6 2.3c-.3.3-.5.8-.5 1.4v16.6c0 .6.2 1.1.5 1.4l.1.1 9.3-9.3v-.2L3.6 2.3z"/><path fill="#F5C97B" d="M16 15.3l-3.1-3.1v-.2L16 8.9l.1.1 3.7 2.1c1 .6 1 1.6 0 2.2l-3.8 2z"/><path fill="#9AA6C0" d="M16.1 15.2L12.9 12 3.6 21.3c.3.4.9.4 1.6 0l10.9-6.1"/><path fill="#F4F7FC" opacity=".7" d="M16.1 8.8L5.2 2.7c-.7-.4-1.3-.4-1.6 0L12.9 12l3.2-3.2z"/></svg>';
+
+/* ── „Sag mir Bescheid" ───────────────────────────────────────────────────── */
+document.getElementById('notifyForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  var box = document.getElementById('notifyMail');
+  var said = document.getElementById('notifySaid');
+  fetch(API + '/v1/challenge/notify', {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: box.value, lang: lang })
+  }).then(function (r) {
+    if (r.ok) { said.textContent = t('notifyOk'); said.classList.add('said'); box.value = ''; track('notify_signup'); }
+    else { said.textContent = t('notifyBad'); }
+  }).catch(function () { said.textContent = t('notifyBad'); });
+});
+
+/* ── Erklärfenster ────────────────────────────────────────────────────────── */
+var what = document.getElementById('what');
+document.getElementById('whatBtn').addEventListener('click', function () {
+  what.showModal(); track('what_opened');
+});
+what.querySelector('.close').addEventListener('click', function () { what.close(); });
+what.addEventListener('click', function (e) { if (e.target === what) what.close(); });
+
+/* ── Dein Moment / die Herausforderung eines Freundes ──────────────────────
+ * ?me=<code>  → du kommst gerade aus der App zurück
+ * ?c=<code>   → jemand hat dir seinen Link geschickt
+ * Beides holt seine Zahl vom Server. In der Adresszeile steht nie eine Zahl,
+ * die jemand ändern könnte. */
+var params = new URLSearchParams(location.search);
+var myCode = params.get('me');
+var challengeCode = params.get('c');
+var me = null, them = null;
+
+if (myCode) fetchWho(myCode, function (r) { me = r; paintPersonal(); celebrateMine(); });
+if (challengeCode) { track('challenge_link_opened', { from: challengeCode }); fetchWho(challengeCode, function (r) { them = r; paintPersonal(); }); }
+
+function fetchWho(code, done) {
+  fetch(API + '/v1/challenge/who/' + encodeURIComponent(code))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { if (d) done(d); })
+    .catch(function () {});
+}
+
+function paintPersonal() {
+  var box = document.getElementById('personal');
+  if (!me && !them) { box.classList.remove('on'); return; }
+  box.classList.add('on');
+  var top = document.getElementById('pTop'), big = document.getElementById('pBig'), said = document.getElementById('pSaid');
+  var duel = document.getElementById('pDuel'), verdict = document.getElementById('pVerdict');
+  var acts = document.getElementById('pActs');
+  acts.innerHTML = ''; duel.hidden = true; verdict.hidden = true;
+
+  if (me && them) {
+    // Beide Zahlen sind da: das Duell.
+    top.textContent = t('youGave');
+    big.textContent = '+' + nf(me.years, 1);
+    said.textContent = state ? t('nowAt', { n: nf(state.total, 1) }) : '';
+    duel.hidden = false; verdict.hidden = false;
+    var max = Math.max(me.years, them.years, 0.1);
+    document.getElementById('nThem').textContent = '+' + nf(them.years, 1);
+    document.getElementById('nMe').textContent = '+' + nf(me.years, 1);
+    document.getElementById('dThem').style.width = (them.years / max * 100) + '%';
+    document.getElementById('dMe').style.width = (me.years / max * 100) + '%';
+    var diff = Math.round((me.years - them.years) * 10) / 10;
+    verdict.textContent = diff > 0 ? t('youWon', { n: nf(diff, 1) })
+      : diff < 0 ? t('youLost', { n: nf(-diff, 1) }) : t('tie');
+    addShareButtons(acts, me);
+    drawCard(me);
+  } else if (me) {
+    top.textContent = t('youGave');
+    big.textContent = '+' + nf(me.years, 1);
+    said.textContent = (state ? t('nowAt', { n: nf(state.total, 1) }) + ' ' : '') + t('youMoved', { n: nf(me.years, 1) });
+    addShareButtons(acts, me);
+    drawCard(me);
+  } else {
+    var who = them.name || t('someone');
+    top.textContent = t('theyGave', { who: who });
+    big.textContent = '+' + nf(them.years, 1);
+    said.textContent = t('beatThem');
+    var go = document.createElement('a');
+    go.className = 'btn'; go.textContent = t('findout');
+    go.href = document.getElementById('mainCta').getAttribute('href');
+    go.addEventListener('click', function () { track('hero_cta_click', { from: 'challenge' }); });
+    acts.appendChild(go);
+    var open = document.createElement('a');
+    open.className = 'btn ghost'; open.textContent = t('openApp');
+    open.href = 'youngbyyou://challenge?c=' + encodeURIComponent(them.code);
+    acts.appendChild(open);
+  }
+}
+
+function addShareButtons(acts, mine) {
+  var link = 'https://youngbyyou.com/launch/?c=' + encodeURIComponent(mine.code);
+  var text = t('shareText', { n: nf(mine.years, 1) });
+  var b1 = document.createElement('button');
+  b1.className = 'btn'; b1.type = 'button'; b1.textContent = t('challenge');
+  b1.addEventListener('click', function () {
+    track('share_started', { how: 'challenge' });
+    if (navigator.share) {
+      navigator.share({ title: 'Young by You', text: text, url: link })
+        .then(function () { track('share_completed'); }).catch(function () {});
+    } else copy(link, b1);
+  });
+  acts.appendChild(b1);
+  var b2 = document.createElement('button');
+  b2.className = 'btn ghost'; b2.type = 'button'; b2.textContent = t('copy');
+  b2.addEventListener('click', function () { copy(link, b2); });
+  acts.appendChild(b2);
+}
+function copy(text, btn) {
+  var old = btn.textContent;
+  var done = function () { btn.textContent = t('copied'); setTimeout(function () { btn.textContent = old; }, 1600); track('share_completed', { how: 'copy' }); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(function () {});
+  else {
+    var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+}
+
+/* ── Die Teilkarte ─────────────────────────────────────────────────────────
+ * Hochkant, 1080×1920, gemalt im Browser – kein Server, kein Warten, und sie
+ * sieht auf jedem Gerät gleich aus. */
+function drawCard(mine) {
+  var cv = document.getElementById('shareCard');
+  document.getElementById('cardbox').hidden = false;
+  var c = cv.getContext('2d'), W = 1080, H = 1920;
+
+  var sky = c.createLinearGradient(0, 0, 0, H);
+  sky.addColorStop(0, '#060911'); sky.addColorStop(.55, '#0F1830'); sky.addColorStop(1, '#1A2748');
+  c.fillStyle = sky; c.fillRect(0, 0, W, H);
+  var sun = c.createRadialGradient(W / 2, H * .82, 40, W / 2, H * .82, W * .9);
+  sun.addColorStop(0, 'rgba(245,201,123,.34)'); sun.addColorStop(1, 'rgba(245,201,123,0)');
+  c.fillStyle = sun; c.fillRect(0, 0, W, H);
+
+  c.textAlign = 'center';
+  c.fillStyle = '#F5C97B';
+  c.font = '800 34px -apple-system,system-ui,sans-serif';
+  c.letterSpacing = '8px';
+  c.fillText(t('cardTop'), W / 2, 250);
+  c.letterSpacing = '0px';
+
+  c.fillStyle = '#FFFFFF';
+  c.font = '800 300px -apple-system,system-ui,sans-serif';
+  c.fillText('+' + nf(mine.years, 1), W / 2, 800);
+
+  c.fillStyle = '#4ADEC2';
+  c.font = '700 52px -apple-system,system-ui,sans-serif';
+  c.fillText(t('cardAdd'), W / 2, 900);
+
+  if (mine.name) {
+    c.fillStyle = 'rgba(244,247,252,.75)';
+    c.font = '700 46px -apple-system,system-ui,sans-serif';
+    c.fillText(mine.name, W / 2, 1010);
+  }
+
+  // Der Horizont: dieselbe Lichtlinie wie auf der Seite.
+  var y = 1240;
+  c.strokeStyle = 'rgba(154,166,192,.22)'; c.lineWidth = 6; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(150, y); c.lineTo(W - 150, y); c.stroke();
+  var pct = state ? Math.min(1, state.total / state.goal) : 0;
+  var g = c.createLinearGradient(150, 0, W - 150, 0);
+  g.addColorStop(0, '#4ADEC2'); g.addColorStop(1, '#F5C97B');
+  c.strokeStyle = g; c.lineWidth = 8;
+  c.beginPath(); c.moveTo(150, y); c.lineTo(150 + (W - 300) * Math.max(.02, pct), y); c.stroke();
+  c.fillStyle = 'rgba(244,247,252,.66)';
+  c.font = '600 38px -apple-system,system-ui,sans-serif';
+  c.fillText(state ? nf(state.total, 1) + ' / ' + nf(state.goal) : '', W / 2, y + 80);
+
+  c.fillStyle = '#FFFFFF';
+  c.font = '800 76px -apple-system,system-ui,sans-serif';
+  c.fillText(t('cardBeat'), W / 2, 1560);
+
+  c.fillStyle = 'rgba(244,247,252,.55)';
+  c.font = '600 40px -apple-system,system-ui,sans-serif';
+  c.fillText('youngbyyou.com', W / 2, 1740);
+  cv.setAttribute('aria-label', t('cardAdd') + ': ' + nf(mine.years, 1));
+}
+
+/* ── Feiern – aber nur, wenn es etwas zu feiern gibt ───────────────────────── */
+function celebrateMine() { sparks(); }
+
+var cvC = document.getElementById('confetti'), ctxC = cvC.getContext('2d'), bits = [], rafC = 0;
+function sparks() {
+  if (LESS.matches) return;
+  cvC.classList.add('on');
+  cvC.width = innerWidth; cvC.height = innerHeight;
+  var box = document.getElementById('counter').getBoundingClientRect();
+  for (var i = 0; i < 26; i++) {
+    bits.push({
+      x: box.left + box.width / 2, y: box.top + box.height / 2,
+      vx: (Math.random() - .5) * 4.2, vy: -Math.random() * 4.6 - 1.2,
+      r: Math.random() * 2.4 + 1, life: 1,
+      c: Math.random() > .5 ? '108,240,216' : '245,201,123'
+    });
+  }
+  if (!rafC) rafC = requestAnimationFrame(stepSparks);
+}
+function stepSparks() {
+  ctxC.clearRect(0, 0, cvC.width, cvC.height);
+  for (var i = bits.length - 1; i >= 0; i--) {
+    var b = bits[i];
+    b.x += b.vx; b.y += b.vy; b.vy += 0.075; b.life -= 0.012;
+    if (b.life <= 0) { bits.splice(i, 1); continue; }
+    ctxC.fillStyle = 'rgba(' + b.c + ',' + b.life + ')';
+    ctxC.beginPath(); ctxC.arc(b.x, b.y, b.r, 0, 7); ctxC.fill();
+  }
+  if (bits.length) rafC = requestAnimationFrame(stepSparks);
+  else { rafC = 0; cvC.classList.remove('on'); ctxC.clearRect(0, 0, cvC.width, cvC.height); }
+}
+
+/* Ein erreichtes Kapitel ist kein neuer Zahlenwert, sondern ein Moment: Licht
+   über die ganze Seite, dann der Satz, dann das nächste Ziel. Der Zähler wird
+   dabei NICHT zurückgesetzt – er läuft weiter, nur das Ziel darüber wechselt. */
+function celebrate(goal) {
+  track('milestone_reached', { goal: goal });
+  var f = document.getElementById('flash');
+  f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+  if (!LESS.matches) { for (var i = 0; i < 6; i++) setTimeout(sparks, i * 180); }
+  document.documentElement.style.setProperty('--dawn', '1');
+  buddySays(t('b100'), 6000);
+  var box = document.getElementById('personal');
+  box.classList.add('on');
+  document.getElementById('pTop').textContent = t('weDid');
+  document.getElementById('pBig').textContent = nf(goal);
+  document.getElementById('pSaid').textContent = t('onlyStart') + ' ' + t('nextGoal') + ': ' + nf(state.goal);
+}
+
+/* ── Der Begleiter ─────────────────────────────────────────────────────────
+ * Selten und kurz. Er taucht an den Vierteln EINMAL auf und verschwindet
+ * wieder – ein Gesicht, das immer da ist, ist keine Freude mehr, sondern
+ * Möblierung. */
+var buddySeen = {};
+function maybeBuddy(pct) {
+  [[25, 'b25'], [50, 'b50'], [75, 'b75']].forEach(function (m) {
+    if (pct >= m[0] && !buddySeen[m[0]]) { buddySeen[m[0]] = 1; buddySays(t(m[1]), 4500); }
+  });
+}
+var buddyTimer = 0;
+function buddySays(text, ms) {
+  var b = document.getElementById('buddy');
+  document.getElementById('buddySay').textContent = text;
+  b.classList.add('on');
+  clearTimeout(buddyTimer);
+  buddyTimer = setTimeout(function () { b.classList.remove('on'); }, ms);
+}
+
+/* ── Die Landschaft ────────────────────────────────────────────────────────
+ * Gemalt, nicht geladen: kein Bild, keine Datei, und sie passt sich jedem
+ * Stand an. Bei 0 % ein leerer, kühler Hang; mit jedem Prozent kommen Gräser,
+ * Blumen, Sträucher und Bäume dazu, das Meer wird wärmer, die Sonne steigt.
+ *
+ * Das ist SINNBILD, keine Behauptung: Diese Landschaft ist nicht durch die
+ * Herausforderung entstanden. Sie zeigt, wie weit die Gemeinschaft ist. */
+var scene = (function () {
+  var cv = document.getElementById('scene'), ctx = cv.getContext('2d');
+  var p = 0, w = 0, h = 0;
+  // Ein eigener Zufall mit fester Saat: Die Landschaft sieht bei jedem Besuch
+  // gleich aus. Ein Ort, der sich bei jedem Laden umbaut, ist kein Ort.
+  function rnd(seed) {
+    var s = seed;
+    return function () { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; };
+  }
+  function fit() {
+    var dpr = Math.min(2, devicePixelRatio || 1);
+    w = cv.clientWidth || 320; h = cv.clientHeight || 260;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+  function mix(a, b, k) {
+    return [Math.round(a[0] + (b[0] - a[0]) * k), Math.round(a[1] + (b[1] - a[1]) * k), Math.round(a[2] + (b[2] - a[2]) * k)];
+  }
+  function rgb(c, a) { return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+  function draw() {
+    if (!w) return;
+    ctx.clearRect(0, 0, w, h);
+    var k = Math.max(0, Math.min(1, p));
+    var horizon = h * 0.52;
+
+    // Himmel: von kalter Nacht zu warmem Morgen.
+    var sky = ctx.createLinearGradient(0, 0, 0, horizon);
+    sky.addColorStop(0, rgb(mix([9, 14, 26], [38, 58, 96], k)));
+    sky.addColorStop(1, rgb(mix([22, 32, 54], [232, 186, 130], k)));
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, w, horizon + 1);
+
+    // Sonne: steigt mit dem Fortschritt aus dem Wasser.
+    var sy = horizon - k * horizon * 0.42;
+    var sun = ctx.createRadialGradient(w * .72, sy, 2, w * .72, sy, h * (.18 + k * .3));
+    sun.addColorStop(0, 'rgba(255,243,214,' + (.5 + k * .5) + ')');
+    sun.addColorStop(.4, 'rgba(245,201,123,' + (.28 + k * .34) + ')');
+    sun.addColorStop(1, 'rgba(245,201,123,0)');
+    ctx.fillStyle = sun; ctx.fillRect(0, 0, w, horizon + 2);
+
+    // Das Meer.
+    var sea = ctx.createLinearGradient(0, horizon, 0, h);
+    sea.addColorStop(0, rgb(mix([18, 34, 56], [46, 110, 142], k)));
+    sea.addColorStop(1, rgb(mix([10, 18, 32], [24, 62, 88], k)));
+    ctx.fillStyle = sea; ctx.fillRect(0, horizon, w, h - horizon);
+    // Lichtspur der Sonne auf dem Wasser: einzelne Striche, die nach unten
+    // breiter und schwächer werden. Gleich starke Linien sähen aus wie ein
+    // Zaun im Meer.
+    for (var g = 0; g < 9; g++) {
+      var yy = horizon + 3 + g * (h * .012);
+      var ww = (w * .03) + g * g * (w * .006);
+      ctx.fillStyle = 'rgba(250,222,168,' + ((.16 + k * .22) * (1 - g / 9)) + ')';
+      ctx.fillRect(w * .72 - ww / 2, yy, ww, 1.2);
+    }
+
+    /* Die Hügel, vier Lagen von hinten nach vorn.
+     *
+     * Zwei Dinge machen aus Formen eine Landschaft, und beide sind hier
+     * wichtiger als jedes Detail:
+     *  • Was weiter weg ist, ist KLEINER, blasser und kühler. Ein Baum, der
+     *    hinten so groß ist wie vorn, nimmt dem Bild jede Tiefe.
+     *  • Was wächst, wächst AUF dem Boden, nicht irgendwo im Hang. Jede
+     *    Pflanze bekommt darum die Höhe genau ihres eigenen x-Wertes. */
+    var LAYERS = [
+      { amp:.028, base:horizon + h*.09, cold:[32,46,70],  warm:[74,104,92], size:.020, dens:13, haze:.60 },
+      { amp:.042, base:horizon + h*.20, cold:[22,34,54],  warm:[48,88,72],  size:.034, dens:15, haze:.32 },
+      { amp:.050, base:horizon + h*.33, cold:[14,24,40],  warm:[30,68,54],  size:.056, dens:14, haze:.12 },
+      { amp:.036, base:horizon + h*.48, cold:[8,14,25],   warm:[17,44,36],  size:.086, dens:11, haze:0   }
+    ];
+    LAYERS.forEach(function (L, li) {
+      var groundY = function (x) {
+        return L.base
+          + Math.sin((x / w) * (4.4 + li) + li * 2.2) * (h * L.amp)
+          + Math.sin((x / w) * (11.3 + li * 3) + li) * (h * L.amp * .34);
+      };
+      ctx.fillStyle = rgb(mix(L.cold, L.warm, k));
+      ctx.beginPath(); ctx.moveTo(0, h);
+      for (var x = 0; x <= w + 8; x += 6) ctx.lineTo(x, groundY(x));
+      ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+      // Was auf dieser Lage steht, wächst mit dem Fortschritt – und zwar in
+      // dieser Reihenfolge: erst Gras, dann Blumen, dann Sträucher, dann
+      // Bäume. So sieht man am Bild, wie weit die Gemeinschaft ist.
+      var r = rnd(9001 + li * 733);
+      var n = Math.round(k * L.dens);
+      var items = [];
+      for (var i = 0; i < n; i++) {
+        // Gleichmäßige Abstände sehen aus wie eine Tapete. Der Platz je
+        // Pflanze ist fest, ihr Ort darin nicht – so entstehen Lücken und
+        // Gruppen wie an einem echten Hang.
+        var px = (i + r() * 1.9 - .45) * (w / Math.max(1, n));
+        items.push({ x: px, y: groundY(px) + 1, s: h * L.size * (.72 + r() * .56), t: r() });
+      }
+      // Von hinten nach vorn zeichnen, damit sich Kronen richtig überlappen.
+      items.sort(function (a, b) { return a.y - b.y; });
+      items.forEach(function (it) {
+        if (k > .60 && it.t > .55) tree(it.x, it.y, it.s, k, li);
+        else if (k > .25 && it.t > .30) bush(it.x, it.y, it.s * .34, k, li);
+        else grass(it.x, it.y, it.s * .22, k);
+        if (k > .14 && it.t < .22) flower(it.x + it.s * .2, it.y, it.s * .10, li);
+      });
+
+      // Dunst über den hinteren Lagen – der billigste und stärkste Trick für
+      // Tiefe: Luft zwischen den Hügeln, nicht nur Farbe.
+      if (L.haze > 0) {
+        var hz = ctx.createLinearGradient(0, L.base - h * L.amp * 1.6, 0, L.base + h * .18);
+        hz.addColorStop(0, 'rgba(' + Math.round(120 + k * 110) + ',' + Math.round(150 + k * 70) + ',' + Math.round(180 - k * 40) + ',' + (L.haze * (.14 + k * .2)) + ')');
+        hz.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = hz;
+        ctx.fillRect(0, L.base - h * L.amp * 1.6, w, h * .3);
+      }
+    });
+  }
+  /* Die Pflanzen. Absichtlich sehr wenige Striche je Stück: Zwanzig schlichte
+     Formen mit richtigen Größen wirken wie eine Landschaft, zwanzig fein
+     ausgearbeitete mit falschen Größen wie ein Aufkleber. */
+  function grass(x, y, s, k) {
+    ctx.strokeStyle = 'rgba(' + Math.round(70 + k * 60) + ',' + Math.round(120 + k * 60) + ',95,.5)';
+    ctx.lineWidth = 1; ctx.beginPath();
+    ctx.moveTo(x, y); ctx.quadraticCurveTo(x + s * .6, y - s * .8, x + s * .2, y - s); ctx.stroke();
+  }
+  function bush(x, y, s, k, li) {
+    var a = .55 + li * .12;
+    ctx.fillStyle = 'rgba(' + Math.round(30 + k * 26) + ',' + Math.round(82 + k * 52) + ',64,' + a + ')';
+    ctx.beginPath(); ctx.ellipse(x, y - s * .55, s, s * .68, 0, 0, 7); ctx.fill();
+  }
+  function tree(x, y, s, k, li) {
+    var a = .60 + li * .11;
+    ctx.strokeStyle = 'rgba(46,36,28,' + a + ')';
+    ctx.lineWidth = Math.max(.9, s * .055);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - s * .45); ctx.stroke();
+    // Zwei versetzte Kronen statt einer Ellipse: Der Umriss wird unregelmäßig,
+    // und genau das trennt einen Baum von einem Lolli.
+    ctx.fillStyle = 'rgba(' + Math.round(26 + k * 24) + ',' + Math.round(88 + k * 54) + ',68,' + a + ')';
+    ctx.beginPath(); ctx.ellipse(x, y - s * .66, s * .30, s * .34, 0, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x - s * .16, y - s * .54, s * .22, s * .24, 0, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x + s * .17, y - s * .58, s * .19, s * .22, 0, 0, 7); ctx.fill();
+    // Ein Lichtsaum auf der Sonnenseite.
+    ctx.fillStyle = 'rgba(255,238,196,' + (k * .13 * a) + ')';
+    ctx.beginPath(); ctx.ellipse(x + s * .16, y - s * .78, s * .13, s * .14, 0, 0, 7); ctx.fill();
+  }
+  function flower(x, y, s, li) {
+    if (li < 2) return; // Blumen sieht man nur vorne – hinten wären es Pixel.
+    ctx.fillStyle = ['rgba(245,201,123,.85)', 'rgba(240,236,228,.8)', 'rgba(226,148,164,.75)'][Math.floor(x) % 3];
+    ctx.beginPath(); ctx.arc(x, y - s * 2.4, Math.max(.9, s), 0, 7); ctx.fill();
+  }
+  return {
+    progress: function (v) { p = v; draw(); },
+    start: function () { fit(); addEventListener('resize', fit); }
+  };
+})();
+
+/* ── Der Morgen: die Seite wird heller, je weiter man kommt ────────────────── */
+var ticking = false;
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(function () {
+    var max = document.body.scrollHeight - innerHeight;
+    var v = max > 0 ? Math.min(1, scrollY / max) : 0;
+    document.documentElement.style.setProperty('--dawn', v.toFixed(3));
+    ticking = false;
+  });
+}
+addEventListener('scroll', onScroll, { passive: true });
+
+/* Abschnitte kommen einmal herein und bleiben dann. */
+if ('IntersectionObserver' in window) {
+  var io = new IntersectionObserver(function (rows) {
+    rows.forEach(function (r) { if (r.isIntersecting) { r.target.classList.add('in'); io.unobserve(r.target); } });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('.rise').forEach(function (el) { io.observe(el); });
+} else {
+  document.querySelectorAll('.rise').forEach(function (el) { el.classList.add('in'); });
+}
+
+/* ── Los ───────────────────────────────────────────────────────────────────── */
+applyLang();
+setCounter(0);
+scene.start();
+globe.start();
+onScroll();
+load();
+
+/* Mit ?mock=1 kann man die Seite mit einem erfundenen Stand ansehen – aber
+   nur mit einem roten Balken quer über dem Bildschirm. Eine Vorschau, die man
+   nicht von der Wirklichkeit unterscheiden kann, landet irgendwann als
+   Ausschnitt in einer Präsentation. */
+if (mock) {
+  var band = document.createElement('div');
+  band.className = 'mock'; band.textContent = 'MOCK DATA';
+  document.body.appendChild(band);
+  var q = Number(params.get('mock')) || 6482.7;
+  setTimeout(function () {
+    apply({
+      challengeId: 'mock', total: q, participants: 1284, goal: 10000,
+      goals: [10000, 100000, 1000000, 10000000, 100000000],
+      milestones: [], countries: 27, trees: 312, averageStreak: 8.3, minCohort: 5,
+      regions: [
+        { region: 'DE', participants: 640, years: 3120.5 },
+        { region: 'GB', participants: 210, years: 998.2 },
+        { region: 'US', participants: 180, years: 851.4 },
+        { region: 'SE', participants: 44, years: 210.7 },
+        { region: 'AU', participants: 31, years: 141.9 }
+      ],
+      recent: [
+        { years: 4.8, region: 'DE', at: new Date(Date.now() - 90000).toISOString() },
+        { years: 2.1, region: 'GB', at: new Date(Date.now() - 600000).toISOString() },
+        { years: 7.3, region: 'US', at: new Date(Date.now() - 3600000).toISOString() },
+        { years: 3.6, region: null, at: new Date(Date.now() - 7200000).toISOString() }
+      ],
+      at: new Date().toISOString()
+    });
+  }, 300);
+}
+})();
+</script>
+</body>
+</html>
