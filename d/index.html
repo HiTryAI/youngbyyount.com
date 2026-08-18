@@ -80,7 +80,7 @@
     <div class="logo"><div class="mono">Y</div><div class="word">Young by You</div></div>
     <div class="emoji">🎯</div>
     <h1>Du wurdest herausgefordert!</h1>
-    <p class="sub">Ein Freund fordert dich zu einem Brain‑Duell bei Young by You heraus.
+    <p class="sub" id="sub">Ein Freund fordert dich zu einem Brain‑Duell bei Young by You heraus.
       Lade die App, tritt an – und schlag seinen Rekord.</p>
 
     <div class="stores">
@@ -97,7 +97,7 @@
     <ol class="steps">
       <li><span class="n">1</span><span><b>App laden</b> und öffnen</span></li>
       <li><span class="n">2</span><span>Zu <b>Spiele</b> gehen</span></li>
-      <li><span class="n">3</span><span><b>Code einfügen</b> und antreten</span></li>
+      <li><span class="n">3</span><span id="step3"><b>Code einfügen</b> und antreten</span></li>
     </ol>
 
     <div class="codewrap" id="codeBox" hidden>
@@ -184,10 +184,31 @@
       });
     }
 
+    // Die OFFENE Herausforderung (?g=SPIEL, seit 18.08.2026): jemand hat ein
+    // Spiel ausgesucht, OHNE es selbst zu spielen. Es gibt also keinen Code
+    // und keinen Punktestand – nur ein Spiel und einen Menschen. Deshalb
+    // steht hier absichtlich KEIN Spielname: eine von Hand gepflegte Liste
+    // hat schon einmal die sieben neuesten Spiele stillschweigend auf der
+    // Download-Seite stranden lassen. Wie das Spiel heißt, steht ohnehin in
+    // der Nachricht, die daneben liegt – und die App weiß es sowieso.
+    function showOpenChallenge(game) {
+      document.getElementById('sub').textContent =
+        'Ein Freund lädt dich zu einer Runde bei Young by You ein. '
+        + 'Lade die App, spiel eine Runde – und schick ihm dein Ergebnis.';
+      document.getElementById('step3').innerHTML =
+        '<b>Spiel starten</b> und Ergebnis zurückschicken';
+      const openApp = document.getElementById('openApp');
+      openApp.href = withFrom('youngbyyou://d?g=' + encodeURIComponent(game));
+      openApp.hidden = false;
+    }
+
     const params = new URLSearchParams(location.search);
     const code = (params.get('c') || '').trim();
+    const game = (params.get('g') || '').trim().toLowerCase();
     if (code) {
       showCode(code);
+    } else if (/^[a-z0-9]{2,20}$/.test(game)) {
+      showOpenChallenge(game);
     } else {
       // Kurzcode form: ?s=AB2CD (the 404-page router rewrites the typed
       // /d/AB2CD to this), uppercased – people type what they saw and the
