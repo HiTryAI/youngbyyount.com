@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hilfe &amp; Support – Young by You</title>
+<title>Support – Young by You</title>
 <meta name="description" content="Hilfe zu Young by You: Antworten auf häufige Fragen, Abo verwalten, Daten löschen und der direkte Draht zu uns.">
-<meta property="og:title" content="Hilfe &amp; Support – Young by You">
+<meta property="og:title" content="Support – Young by You">
 <meta property="og:description" content="Antworten auf häufige Fragen und der direkte Draht zu uns.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://youngbyyou.com/assets/app_icon_1024.png">
@@ -214,7 +214,7 @@
 <div class="wrap">
 
   <header class="top">
-    <p class="eyebrow" data-t="eyebrow">Hilfe &amp; Support</p>
+    <p class="eyebrow" data-t="eyebrow">Support</p>
     <h1 data-t="h1">Wir helfen dir weiter.</h1>
     <p class="lede" data-t="lede">Hier findest du Antworten auf die häufigsten Fragen. Wenn deine Frage nicht dabei ist, schreib uns einfach — wir antworten jeder Nachricht.</p>
   </header>
@@ -372,8 +372,9 @@
 
   <footer>
     <div class="flinks">
-      <a href="/">Startseite</a>
+      <a href="/" data-t="f_home">Startseite</a>
       <a href="/privacy.html" data-t="f_priv">Datenschutz</a>
+      <a href="/launch/" data-t="f_launch">10.000 Jahre jünger</a>
       <a href="/spiele/" data-t="f_games">Alle Spiele</a>
       <a href="mailto:hello@youngbyyou.com">hello@youngbyyou.com</a>
     </div>
@@ -387,7 +388,7 @@
 // Die deutschen Texte stehen im HTML. Beim ersten Umschalten merken wir sie uns,
 // damit der Weg zurueck genauso einfach ist wie der Weg hin.
 const en = {
-  eyebrow: 'Help &amp; Support',
+  eyebrow: 'Support',
   h1: 'We are here to help.',
   lede: 'Answers to the most common questions below. If yours is not there, just write to us — every message gets a reply.',
   c_h: 'Write to us',
@@ -434,7 +435,9 @@ const en = {
   q14: 'My friend is not getting my challenge.',
   a14: '<p>The link works in any browser, even without the app. If nothing happens, send the link again — some messengers cut long links short.</p>',
 
+  f_home: 'Home',
   f_priv: 'Privacy',
+  f_launch: '10,000 years younger',
   f_games: 'All games',
   f_note: 'The bio-age estimate is based on your input and general scientific relationships. It is not a medical assessment and does not replace professional medical advice.',
 };
@@ -443,8 +446,21 @@ const de = {};
 document.querySelectorAll('[data-t]').forEach((el) => { de[el.dataset.t] = el.innerHTML; });
 
 const toggle = document.getElementById('langToggle');
+
+// FALLE: die Startseite legt die Sprache unter "yby_lang" ab (Unterstrich),
+// die Infoseite unter "yby-lang" (Bindestrich). Wer auf der Startseite EN
+// waehlt und hierher klickt, bekaeme sonst wieder Deutsch. Also BEIDE lesen –
+// die Startseite zuerst, weil fast jeder von dort kommt – und beide schreiben.
+function readLang() {
+  try {
+    const saved = localStorage.getItem('yby_lang') || localStorage.getItem('yby-lang');
+    if (saved === 'en' || saved === 'de') return saved;
+  } catch (_) {}
+  // Nichts gespeichert: wie die Startseite nach der Sprache des Geraets gehen.
+  return (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
+}
+
 let lang = 'de';
-try { lang = localStorage.getItem('yby-lang') === 'en' ? 'en' : 'de'; } catch (_) {}
 
 function setLang(next) {
   lang = next;
@@ -454,11 +470,14 @@ function setLang(next) {
     const value = next === 'de' ? de[el.dataset.t] : en[el.dataset.t];
     if (value) el.innerHTML = value;
   });
-  try { localStorage.setItem('yby-lang', next); } catch (_) {}
+  try {
+    localStorage.setItem('yby_lang', next);
+    localStorage.setItem('yby-lang', next);
+  } catch (_) {}
 }
 
 toggle.addEventListener('click', () => setLang(lang === 'de' ? 'en' : 'de'));
-if (lang === 'en') setLang('en');
+setLang(readLang());
 </script>
 
 </body>
