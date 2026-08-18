@@ -293,9 +293,9 @@ const i18n = {
     nav_cta: 'Get the app',
     nav_games: 'Games',
     eyebrow_games: 'Playful longevity',
-    games_title: '76 brain duels in the app',
+    games_title: '77 brain duels in the app',
     games_sub: 'Short, fast games for reaction, memory and focus – play against yourself, the clock and your friends.',
-    games_cta: 'See all 76 games',
+    games_cta: 'See all 77 games',
     trees_cta: 'The grove: 12 real trees →',
     hero_title: 'How old are you<br><span class="grad">really</span>?',
     hero_sub:
