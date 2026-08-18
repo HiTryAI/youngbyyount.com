@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hilfe &amp; Support – Young by You</title>
+<meta name="description" content="Hilfe zu Young by You: Antworten auf häufige Fragen, Abo verwalten, Daten löschen und der direkte Draht zu uns.">
+<meta property="og:title" content="Hilfe &amp; Support – Young by You">
+<meta property="og:description" content="Antworten auf häufige Fragen und der direkte Draht zu uns.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://youngbyyou.com/assets/app_icon_1024.png">
+<meta name="theme-color" content="#0A0E1A">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="apple-touch-icon" href="../assets/app_icon_1024.png">
+<style>
+  :root {
+    --bg:      #0A0E1A;
+    --surface: #131A2C;
+    --raised:  #1B2440;
+    --stroke:  #263150;
+    --mint:    #4ADEC2;
+    --gold:    #F5C97B;
+    --ink:     #F2F5FA;
+    --ink-2:   #9AA6C0;
+    --ink-3:   #5E6A87;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--mint); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--mint);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 22px; }
+
+  /* ---- nav ---- */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    max-width: 780px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--stroke);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -.01em;
+  }
+  .nav-logo em { font-style: normal; color: var(--mint); }
+  .lang-toggle {
+    background: var(--surface);
+    border: 1px solid var(--stroke);
+    color: var(--ink-2);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    padding: 7px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .lang-toggle:hover { color: var(--ink); border-color: var(--mint); }
+
+  /* ---- head ---- */
+  header.top { padding: 56px 0 40px; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin: 0 0 16px;
+  }
+  h1 {
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.025em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+  .lede { font-size: 19px; color: var(--ink-2); margin: 0; max-width: 56ch; }
+
+  /* ---- contact card ---- */
+  .contact {
+    background: linear-gradient(180deg, rgba(74,222,194,.12), rgba(74,222,194,.03));
+    border: 1px solid #2BB39A;
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin: 36px 0 64px;
+  }
+  .contact h2 { margin: 0 0 8px; font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+  .contact p { margin: 0 0 18px; color: var(--ink-2); font-size: 16px; }
+  .mailbtn {
+    display: inline-block;
+    background: var(--mint);
+    color: #04261F;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 999px;
+  }
+  .mailbtn:hover { background: #6FF2DA; }
+  .within { display: block; margin-top: 14px; font-size: 14px; color: var(--ink-3); }
+
+  /* ---- sections ---- */
+  section { margin-bottom: 60px; }
+  h2.sec {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .sec-sub { color: var(--ink-3); font-size: 15px; margin: 0 0 24px; }
+
+  details {
+    border: 1px solid var(--stroke);
+    border-radius: 11px;
+    background: var(--surface);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  details[open] { border-color: #33436E; }
+  summary {
+    cursor: pointer;
+    padding: 16px 20px;
+    font-weight: 600;
+    font-size: 16.5px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+";
+    color: var(--mint);
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1;
+    flex: none;
+  }
+  details[open] summary::after { content: "–"; }
+  .answer { padding: 0 20px 18px; color: var(--ink-2); font-size: 16px; }
+  .answer p { margin: 0 0 12px; }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer strong { color: var(--ink); font-weight: 600; }
+  .answer ol, .answer ul { margin: 0 0 12px; padding-left: 22px; }
+  .answer li { margin-bottom: 5px; }
+
+  /* ---- footer ---- */
+  footer {
+    border-top: 1px solid var(--stroke);
+    padding: 32px 0 60px;
+    color: var(--ink-3);
+    font-size: 14px;
+  }
+  .flinks { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 18px; }
+  .flinks a { color: var(--ink-2); text-decoration: none; }
+  .flinks a:hover { color: var(--mint); }
+  .fnote { margin: 0 0 12px; line-height: 1.6; max-width: 62ch; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 48 48" width="30" height="30" aria-hidden="true">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#2AB59A"/><stop offset="100%" stop-color="#8FF0DC"/>
+        </linearGradient>
+      </defs>
+      <path d="M14 8 L34 8 C36 8 37 9.5 36 11.3 C33.8 15.3 30 19.8 27.3 22.7 C26.2 23.9 26.2 24.1 27.3 25.3 C30 28.2 33.8 32.7 36 36.7 C37 38.5 36 40 34 40 L14 40 C12 40 11 38.5 12 36.7 C14.2 32.7 18 28.2 20.7 25.3 C21.8 24.1 21.8 23.9 20.7 22.7 C18 19.8 14.2 15.3 12 11.3 C11 9.5 12 8 14 8 Z"
+        fill="none" stroke="url(#lg)" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M17 11.5 L31 11.5 C29.5 14.8 26.8 17.8 25.2 19.4 C24.5 20.1 23.5 20.1 22.8 19.4 C21.2 17.8 18.5 14.8 17 11.5 Z" fill="#F5C97B"/>
+    </svg>
+    <span>Young <em>by You</em></span>
+  </a>
+  <button class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+</div>
+
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow" data-t="eyebrow">Hilfe &amp; Support</p>
+    <h1 data-t="h1">Wir helfen dir weiter.</h1>
+    <p class="lede" data-t="lede">Hier findest du Antworten auf die häufigsten Fragen. Wenn deine Frage nicht dabei ist, schreib uns einfach — wir antworten jeder Nachricht.</p>
+  </header>
+
+  <div class="contact">
+    <h2 data-t="c_h">Schreib uns</h2>
+    <p data-t="c_p">Eine echte Person liest mit. Schreib auf Deutsch oder Englisch.</p>
+    <a class="mailbtn" href="mailto:hello@youngbyyou.com?subject=Hilfe%20zu%20Young%20by%20You">hello@youngbyyou.com</a>
+    <span class="within" data-t="c_w">Wir antworten in der Regel innerhalb von 2 Werktagen.</span>
+  </div>
+
+  <section>
+    <h2 class="sec" data-t="s1_h">Erste Schritte</h2>
+    <p class="sec-sub" data-t="s1_s">Die Fragen, die am Anfang aufkommen.</p>
+
+    <details>
+      <summary data-t="q1">Was macht Young by You eigentlich?</summary>
+      <div class="answer" data-t="a1">
+        <p>Young by You ist eine App fürs Gesundbleiben — mit zwei Hälften.</p>
+        <p><strong>Der Kopf:</strong> 78 Denkspiele in fünf Bereichen. Logik, Fokus, Gedächtnis, Tempo und Wissen. Jedes Spiel hat zwölf Stufen.</p>
+        <p><strong>Der Alltag:</strong> tägliche Routinen aus fünf Säulen — Bewegung, Ernährung, Schlaf, Geist und Soziales. Du hakst ab, was du geschafft hast, und siehst deine Serie wachsen.</p>
+        <p>Dazu kommen Freunde: Du kannst jeden herausfordern, auch wenn er die App gar nicht hat.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q2">Brauche ich ein Konto?</summary>
+      <div class="answer" data-t="a2">
+        <p>Nein. Du kannst sofort loslegen. Dein Fortschritt liegt auf deinem Gerät.</p>
+        <p>Wenn du Freunde einladen oder in der Liga mitspielen willst, brauchst du nur einen Namen — keine E-Mail, kein Passwort.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q3">Was kostet die App?</summary>
+      <div class="answer" data-t="a3">
+        <p>Die ersten <strong>14 Tage sind komplett frei</strong> — die ganze App, ohne Einschränkung. Mit einem Einladungscode von einem Freund sind es <strong>28 Tage</strong>.</p>
+        <p>Danach kannst du weitermachen mit Premium. Wenn du nichts tust, wird nichts abgebucht und nichts gelöscht — dein Fortschritt wartet einfach.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q4">Kann ich ohne die App spielen?</summary>
+      <div class="answer" data-t="a4">
+        <p>Ja. Wenn dir jemand eine Herausforderung schickt, tippst du auf den Link und spielst sofort im Browser. Alle 78 Spiele funktionieren so — ohne Installation, ohne Konto.</p>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2 class="sec" data-t="s2_h">Abo &amp; Käufe</h2>
+    <p class="sec-sub" data-t="s2_s">Alles zu Premium, Kündigung und Rückerstattung.</p>
+
+    <details>
+      <summary data-t="q5">Wie kündige ich mein Abo?</summary>
+      <div class="answer" data-t="a5">
+        <p>Das läuft über Apple, nicht über uns — wir können es nicht für dich tun. So geht es:</p>
+        <ol>
+          <li>Öffne die <strong>Einstellungen</strong> auf deinem iPhone.</li>
+          <li>Tippe ganz oben auf <strong>deinen Namen</strong>.</li>
+          <li>Tippe auf <strong>Abonnements</strong>.</li>
+          <li>Wähle <strong>Young by You</strong> und dann <strong>Abo kündigen</strong>.</li>
+        </ol>
+        <p>Du kannst bis zum Ende des bezahlten Zeitraums weiter alles nutzen.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q6">Ich möchte mein Geld zurück.</summary>
+      <div class="answer" data-t="a6">
+        <p>Rückerstattungen laufen ebenfalls über Apple. Geh auf <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>, melde dich an und wähle den Kauf aus.</p>
+        <p>Wenn Apple ablehnt und du findest, das war unfair: schreib uns. Wir schauen uns das an.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q7">Ich habe bezahlt, aber Premium ist nicht da.</summary>
+      <div class="answer" data-t="a7">
+        <p>Öffne die App, geh auf <strong>Profil</strong> und tippe auf <strong>Käufe wiederherstellen</strong>. In den meisten Fällen ist es damit erledigt.</p>
+        <p>Falls nicht: schreib uns und nenne die E-Mail-Adresse deiner Apple-ID. Wir kümmern uns darum.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q8">Ich habe ein neues Handy. Ist mein Fortschritt weg?</summary>
+      <div class="answer" data-t="a8">
+        <p>Nein, wenn du iCloud eingeschaltet hattest. Die App sichert deinen Fortschritt dort automatisch.</p>
+        <p>Installiere die App auf dem neuen Gerät, geh auf <strong>Profil</strong> und tippe auf <strong>Fortschritt wiederherstellen</strong>. Die App fragt vorher nach — sie überschreibt nie von allein.</p>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2 class="sec" data-t="s3_h">Deine Daten</h2>
+    <p class="sec-sub" data-t="s3_s">Was wir speichern und wie du es löschst.</p>
+
+    <details>
+      <summary data-t="q9">Welche Daten speichert ihr?</summary>
+      <div class="answer" data-t="a9">
+        <p><strong>Auf deinem Gerät bleiben:</strong> deine Routinen, deine Spielergebnisse, deine Serie, deine Angaben zur Gesundheit. Die verlassen dein Handy nicht.</p>
+        <p><strong>Auf unserem Server liegen nur:</strong> dein selbstgewählter Name, dein Teil-Code und deine Punktzahlen aus Duellen und Liga. Das brauchen wir, damit Freunde dich finden und die Liga funktioniert.</p>
+        <p>Wir verkaufen keine Daten und schalten keine Werbung.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q10">Wie lösche ich alles?</summary>
+      <div class="answer" data-t="a10">
+        <p><strong>Auf dem Gerät:</strong> App löschen. Damit ist alles Lokale weg.</p>
+        <p><strong>Auf dem Server:</strong> schreib uns an <a href="mailto:hello@youngbyyou.com?subject=Daten%20l%C3%B6schen">hello@youngbyyou.com</a> mit dem Betreff „Daten löschen" und nenne deinen Teil-Code. Wir löschen innerhalb von 30 Tagen und bestätigen dir das.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q11">Ist die Bio-Alter-Schätzung ein medizinischer Befund?</summary>
+      <div class="answer" data-t="a11">
+        <p><strong>Nein.</strong> Die Schätzung beruht auf deinen eigenen Angaben und allgemeinen wissenschaftlichen Zusammenhängen. Sie ist kein ärztliches Gutachten und ersetzt keine Beratung durch einen Arzt.</p>
+        <p>Dasselbe gilt für den Sehtest und den IQ-Test in der App: gedacht als Anregung, nicht als Diagnose.</p>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2 class="sec" data-t="s4_h">Etwas funktioniert nicht</h2>
+    <p class="sec-sub" data-t="s4_s">Bevor du schreibst — das löst die meisten Fälle.</p>
+
+    <details>
+      <summary data-t="q12">Die App hängt oder stürzt ab.</summary>
+      <div class="answer" data-t="a12">
+        <p>Probiere der Reihe nach:</p>
+        <ol>
+          <li>App ganz schließen und neu öffnen.</li>
+          <li>Handy neu starten.</li>
+          <li>Im App Store prüfen, ob es ein Update gibt.</li>
+        </ol>
+        <p>Hilft nichts davon: schreib uns und sag uns, <strong>welches Gerät</strong> du hast und <strong>an welcher Stelle</strong> es passiert. Damit finden wir es schneller.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q13">Ich bekomme keine Erinnerungen.</summary>
+      <div class="answer" data-t="a13">
+        <p>Geh in die iPhone-<strong>Einstellungen</strong> → <strong>Mitteilungen</strong> → <strong>Young by You</strong> und schalte „Mitteilungen erlauben" ein.</p>
+        <p>Prüfe auch, ob der Fokus-Modus oder „Nicht stören" gerade aktiv ist.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary data-t="q14">Mein Freund bekommt meine Herausforderung nicht.</summary>
+      <div class="answer" data-t="a14">
+        <p>Der Link funktioniert in jedem Browser, auch ohne App. Wenn nichts passiert, schick den Link noch einmal — manche Messenger schneiden lange Links ab.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <div class="flinks">
+      <a href="/">Startseite</a>
+      <a href="/privacy.html" data-t="f_priv">Datenschutz</a>
+      <a href="/spiele/" data-t="f_games">Alle Spiele</a>
+      <a href="mailto:hello@youngbyyou.com">hello@youngbyyou.com</a>
+    </div>
+    <p class="fnote" data-t="f_note">Die Bio-Alter-Schätzung basiert auf deinen Angaben und allgemeinen wissenschaftlichen Zusammenhängen. Sie ist kein medizinisches Gutachten und ersetzt keine ärztliche Beratung.</p>
+    <p>© 2026 Young by You</p>
+  </footer>
+
+</div>
+
+<script>
+// Die deutschen Texte stehen im HTML. Beim ersten Umschalten merken wir sie uns,
+// damit der Weg zurueck genauso einfach ist wie der Weg hin.
+const en = {
+  eyebrow: 'Help &amp; Support',
+  h1: 'We are here to help.',
+  lede: 'Answers to the most common questions below. If yours is not there, just write to us — every message gets a reply.',
+  c_h: 'Write to us',
+  c_p: 'A real person reads it. English or German, both fine.',
+  c_w: 'We usually reply within 2 working days.',
+
+  s1_h: 'Getting started',
+  s1_s: 'The questions that come up first.',
+  q1: 'What does Young by You actually do?',
+  a1: '<p>Young by You is an app for staying healthy — with two halves.</p><p><strong>The mind:</strong> 78 brain games across five areas — logic, focus, memory, speed and knowledge. Every game has twelve levels.</p><p><strong>The day:</strong> daily routines from five pillars — movement, nutrition, sleep, mind and social. You tick off what you did and watch your streak grow.</p><p>On top of that: friends. You can challenge anyone, even someone who does not have the app.</p>',
+  q2: 'Do I need an account?',
+  a2: '<p>No. You can start right away. Your progress lives on your device.</p><p>If you want to invite friends or join the league, all you need is a name — no email, no password.</p>',
+  q3: 'What does it cost?',
+  a3: '<p>The first <strong>14 days are completely free</strong> — the whole app, nothing held back. With an invite code from a friend it is <strong>28 days</strong>.</p><p>After that you can continue with Premium. If you do nothing, nothing is charged and nothing is deleted — your progress simply waits for you.</p>',
+  q4: 'Can I play without installing the app?',
+  a4: '<p>Yes. If someone sends you a challenge, you tap the link and play straight away in your browser. All 78 games work this way — no install, no account.</p>',
+
+  s2_h: 'Subscription &amp; purchases',
+  s2_s: 'Premium, cancelling and refunds.',
+  q5: 'How do I cancel my subscription?',
+  a5: '<p>This goes through Apple, not through us — we cannot do it for you. Here is how:</p><ol><li>Open <strong>Settings</strong> on your iPhone.</li><li>Tap <strong>your name</strong> at the top.</li><li>Tap <strong>Subscriptions</strong>.</li><li>Choose <strong>Young by You</strong>, then <strong>Cancel Subscription</strong>.</li></ol><p>You keep full access until the end of the period you paid for.</p>',
+  q6: 'I want a refund.',
+  a6: '<p>Refunds also go through Apple. Go to <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>, sign in and pick the purchase.</p><p>If Apple says no and you think that was unfair, write to us. We will look into it.</p>',
+  q7: 'I paid but Premium is not there.',
+  a7: '<p>Open the app, go to <strong>Profile</strong> and tap <strong>Restore purchases</strong>. That fixes it in most cases.</p><p>If not: write to us and tell us the email address of your Apple ID. We will sort it out.</p>',
+  q8: 'I have a new phone. Is my progress gone?',
+  a8: '<p>No, as long as iCloud was switched on. The app backs your progress up there automatically.</p><p>Install the app on the new device, go to <strong>Profile</strong> and tap <strong>Restore progress</strong>. The app always asks first — it never overwrites on its own.</p>',
+
+  s3_h: 'Your data',
+  s3_s: 'What we store and how to delete it.',
+  q9: 'What data do you store?',
+  a9: '<p><strong>Stays on your device:</strong> your routines, your game results, your streak, your health entries. These never leave your phone.</p><p><strong>On our server we only keep:</strong> the name you chose, your share code and your scores from duels and the league. We need these so friends can find you and the league can work.</p><p>We do not sell data and we do not run ads.</p>',
+  q10: 'How do I delete everything?',
+  a10: '<p><strong>On the device:</strong> delete the app. Everything local goes with it.</p><p><strong>On the server:</strong> write to <a href="mailto:hello@youngbyyou.com?subject=Delete%20my%20data">hello@youngbyyou.com</a> with the subject "Delete my data" and tell us your share code. We delete within 30 days and confirm it to you.</p>',
+  q11: 'Is the bio-age estimate a medical result?',
+  a11: '<p><strong>No.</strong> The estimate is based on your own entries and general scientific relationships. It is not a medical assessment and does not replace advice from a doctor.</p><p>The same goes for the vision test and the IQ test in the app: meant as a prompt, not as a diagnosis.</p>',
+
+  s4_h: 'Something is not working',
+  s4_s: 'Before you write — this solves most cases.',
+  q12: 'The app freezes or crashes.',
+  a12: '<p>Try these in order:</p><ol><li>Close the app fully and open it again.</li><li>Restart your phone.</li><li>Check the App Store for an update.</li></ol><p>If none of that helps: write to us and tell us <strong>which device</strong> you have and <strong>where exactly</strong> it happens. That helps us find it faster.</p>',
+  q13: 'I am not getting reminders.',
+  a13: '<p>Go to iPhone <strong>Settings</strong> → <strong>Notifications</strong> → <strong>Young by You</strong> and turn on "Allow Notifications".</p><p>Also check whether a Focus mode or "Do Not Disturb" is active right now.</p>',
+  q14: 'My friend is not getting my challenge.',
+  a14: '<p>The link works in any browser, even without the app. If nothing happens, send the link again — some messengers cut long links short.</p>',
+
+  f_priv: 'Privacy',
+  f_games: 'All games',
+  f_note: 'The bio-age estimate is based on your input and general scientific relationships. It is not a medical assessment and does not replace professional medical advice.',
+};
+
+const de = {};
+document.querySelectorAll('[data-t]').forEach((el) => { de[el.dataset.t] = el.innerHTML; });
+
+const toggle = document.getElementById('langToggle');
+let lang = 'de';
+try { lang = localStorage.getItem('yby-lang') === 'en' ? 'en' : 'de'; } catch (_) {}
+
+function setLang(next) {
+  lang = next;
+  document.documentElement.lang = next;
+  toggle.textContent = next === 'de' ? 'EN' : 'DE';
+  document.querySelectorAll('[data-t]').forEach((el) => {
+    const value = next === 'de' ? de[el.dataset.t] : en[el.dataset.t];
+    if (value) el.innerHTML = value;
+  });
+  try { localStorage.setItem('yby-lang', next); } catch (_) {}
+}
+
+toggle.addEventListener('click', () => setLang(lang === 'de' ? 'en' : 'de'));
+if (lang === 'en') setLang('en');
+</script>
+
+</body>
+</html>
