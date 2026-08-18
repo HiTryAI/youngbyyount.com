@@ -320,6 +320,76 @@ details[open] summary::after { content: "–"; }
   .row dt { padding-top: 0; }
 }
 
+/* ── Auf einen Blick ────────────────────────────────────────────────────────
+ * Drei Kaesten nebeneinander, bevor der lange Text anfaengt. Wer nur zehn
+ * Sekunden hat, soll trotzdem die Wahrheit mitnehmen. */
+
+.glance {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s2);
+  margin: var(--s5) 0 var(--s6);
+}
+.glance > div {
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r);
+  padding: 22px 20px;
+}
+/* Die Farbe sagt, worum es geht: Minze = bleibt bei dir, Gold = geht weg,
+ * Grau = passiert gar nicht. */
+.glance > div.here  { border-top: 2px solid var(--mint); }
+.glance > div.there { border-top: 2px solid var(--gold); }
+.glance > div.never { border-top: 2px solid var(--ink-3); }
+
+.glance h3 {
+  margin: 0 0 var(--s1);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.glance p { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--ink); }
+.glance p + p { margin-top: var(--s2); color: var(--ink-2); font-size: 14.5px; }
+
+@media (max-width: 700px) {
+  .glance { grid-template-columns: 1fr; }
+}
+
+/* ── Tabelle (Aufbewahrung) ─────────────────────────────────────────────────
+ * Sie darf am Telefon seitlich rollen – aber NUR sie, nie die ganze Seite. */
+
+.tblwrap {
+  overflow-x: auto;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r);
+  margin: 0 0 var(--s4);
+  -webkit-overflow-scrolling: touch;
+}
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15.5px;
+  min-width: 420px;
+}
+table.tbl th,
+table.tbl td { text-align: left; padding: 13px 20px; }
+table.tbl thead th {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--raised);
+  border-bottom: 1px solid var(--stroke);
+}
+table.tbl tbody tr + tr td { border-top: 1px solid var(--stroke); }
+table.tbl td { color: var(--ink-2); background: var(--surface); }
+table.tbl td:first-child { color: var(--ink); }
+/* Zahlen sollen untereinander stehen wie im Kassenbon. */
+table.tbl td:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
 /* ── Rechtstext ─────────────────────────────────────────────────────────────
  * Lange Absaetze, die niemand freiwillig liest. Deshalb: enge Zeilenlaenge,
  * klare Zwischenraeume, und Ueberschriften, die man beim Ueberfliegen findet. */
