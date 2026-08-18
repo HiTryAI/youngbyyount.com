@@ -1,0 +1,383 @@
+/* ===========================================================================
+ * Young by You – das Aussehen der Unterseiten
+ * ---------------------------------------------------------------------------
+ * EINE Datei fuer Support, Impressum und Datenschutz. Wer hier eine Farbe
+ * aendert, aendert sie auf allen dreien – genau das war der Zweck.
+ *
+ * Die Farben sind nicht neu erfunden: sie stehen so in `lib/theme.dart` der
+ * App. Wer von der Startseite hierher klickt, soll nicht merken, dass er das
+ * Haus gewechselt hat.
+ *
+ * Diese Seiten bekennen sich bewusst zu EINEM dunklen Bild – wie die App und
+ * wie die Startseite. Deshalb kein Hell/Dunkel-Umschalter, aber jede Farbe
+ * ausdruecklich gesetzt, damit nie der Untergrund des Browsers durchscheint.
+ * ======================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --bg:      #0A0E1A;   /* der Nachthimmel, auf dem alles liegt */
+  --surface: #131A2C;   /* eine Karte, die sich einen Schritt abhebt */
+  --raised:  #1B2440;   /* die Karte darueber */
+  --stroke:  #263150;   /* die ruhige Linie */
+  --stroke-hi: #33436E; /* dieselbe Linie, wenn sie gerade wichtig ist */
+
+  --mint:      #4ADEC2; /* der Akzent. Genau EINER. */
+  --mint-hi:   #6FF2DA;
+  --mint-deep: #2BB39A;
+  --mint-ink:  #04261F; /* Schrift auf minzfarbenem Grund */
+  --gold:      #F5C97B; /* das Blatt im Logo – sonst fast nie */
+
+  --ink:   #F2F5FA;
+  --ink-2: #9AA6C0;
+  --ink-3: #5E6A87;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  /* Eine Leiter statt geratener Zahlen. Alle Abstaende kommen von hier. */
+  --s1: 6px;  --s2: 10px; --s3: 16px; --s4: 24px;
+  --s5: 36px; --s6: 56px; --s7: 84px;
+
+  --page: 780px;
+  --pad:  22px;
+  --r:    14px;  /* der eine Radius */
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; background: var(--bg); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Ein sehr leiser Schein hinter dem Seitenkopf – dasselbe Licht, das in der
+ * App hinter dem Startbildschirm steht. Er liegt HINTER allem und faengt
+ * keine Klicks ab. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30vh 0 auto 0;
+  height: 90vh;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(58% 46% at 22% 12%, rgba(74, 222, 194, .13), transparent 68%),
+    radial-gradient(46% 40% at 84% 4%,  rgba(245, 201, 123, .07), transparent 70%);
+}
+body > * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+a { color: var(--mint); text-underline-offset: 3px; }
+a:hover { color: var(--mint-hi); }
+
+/* Tastatur muss man sehen koennen. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap { max-width: var(--page); margin: 0 auto; padding: 0 var(--pad); }
+
+/* ── Kopfleiste ─────────────────────────────────────────────────────────── */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 18px var(--pad);
+}
+/* Die Linie unter der Leiste verlaeuft aus – eine harte Kante quer durchs
+ * Bild ist das Erste, was billig aussieht. */
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--stroke) 18%, var(--stroke) 82%, transparent);
+}
+.nav { position: relative; }
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -.01em;
+}
+.nav-logo em { font-style: normal; color: var(--mint); }
+.nav-logo:hover { color: var(--ink); }
+
+.lang-toggle {
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background .18s ease;
+}
+.lang-toggle:hover {
+  color: var(--ink);
+  border-color: var(--mint-deep);
+  background: var(--raised);
+}
+
+/* ── Seitenkopf ─────────────────────────────────────────────────────────── */
+
+header.top { padding: var(--s7) 0 var(--s5); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin: 0 0 var(--s3);
+}
+/* Ein kurzer Strich vor dem Wort. Er sagt: hier faengt etwas an. */
+.eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--mint), transparent);
+}
+
+h1 {
+  font-size: clamp(32px, 6.2vw, 48px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.028em;
+  margin: 0 0 var(--s3);
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+/* ── Karten ─────────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r);
+  padding: var(--s4) 28px;
+}
+
+/* Die eine Karte, die etwas will. Pro Seite hoechstens einmal. */
+.card.accent {
+  background: linear-gradient(180deg, rgba(74, 222, 194, .12), rgba(74, 222, 194, .03));
+  border-color: var(--mint-deep);
+}
+.card h2 { margin: 0 0 var(--s1); font-size: 21px; font-weight: 700; letter-spacing: -.012em; }
+.card p  { margin: 0 0 var(--s3); color: var(--ink-2); font-size: 16px; }
+.card p:last-child { margin-bottom: 0; }
+
+.btn {
+  display: inline-block;
+  background: var(--mint);
+  color: var(--mint-ink);
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 13px 24px;
+  border-radius: 999px;
+  transition: background .18s ease, transform .18s ease;
+}
+.btn:hover { background: var(--mint-hi); color: var(--mint-ink); transform: translateY(-1px); }
+.btn:active { transform: none; }
+
+.note { display: block; margin-top: var(--s3); font-size: 14px; color: var(--ink-3); }
+
+/* ── Abschnitte ─────────────────────────────────────────────────────────── */
+
+section { margin-bottom: var(--s6); }
+
+h2.sec {
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  margin: 0 0 var(--s1);
+  text-wrap: balance;
+}
+.sec-sub { color: var(--ink-3); font-size: 15px; margin: 0 0 var(--s4); }
+
+/* ── Ausklapper ─────────────────────────────────────────────────────────── */
+
+details {
+  border: 1px solid var(--stroke);
+  border-radius: 11px;
+  background: var(--surface);
+  margin-bottom: var(--s2);
+  overflow: hidden;
+  transition: border-color .18s ease;
+}
+details:hover { border-color: var(--stroke-hi); }
+details[open] { border-color: var(--stroke-hi); background: var(--raised); }
+
+summary {
+  cursor: pointer;
+  padding: var(--s3) 20px;
+  font-weight: 600;
+  font-size: 16.5px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s3);
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: "+";
+  color: var(--mint);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1;
+  flex: none;
+}
+details[open] summary::after { content: "–"; }
+
+.answer { padding: 0 20px 18px; color: var(--ink-2); font-size: 16px; }
+.answer p { margin: 0 0 12px; }
+.answer p:last-child { margin-bottom: 0; }
+.answer strong { color: var(--ink); font-weight: 600; }
+.answer ol, .answer ul { margin: 0 0 12px; padding-left: 22px; }
+.answer li { margin-bottom: 5px; }
+
+/* ── Datenreihen (Impressum) ────────────────────────────────────────────────
+ * Zwei Spalten am Rechner, untereinander am Telefon. Die Beschriftung ist
+ * klein und ruhig, der Inhalt gross – so liest man eine Anschrift, nicht wie
+ * einen Fliesstext. */
+
+.rows {
+  display: grid;
+  gap: 1px;
+  background: var(--stroke);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: var(--s4);
+  background: var(--surface);
+  padding: 18px 24px;
+}
+.row dt {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 5px;
+}
+.row dd { margin: 0; font-size: 17px; line-height: 1.6; color: var(--ink); }
+.row dd .sub { display: block; color: var(--ink-2); font-size: 15px; margin-top: 3px; }
+
+@media (max-width: 620px) {
+  .row { grid-template-columns: 1fr; gap: var(--s1); }
+  .row dt { padding-top: 0; }
+}
+
+/* ── Rechtstext ─────────────────────────────────────────────────────────────
+ * Lange Absaetze, die niemand freiwillig liest. Deshalb: enge Zeilenlaenge,
+ * klare Zwischenraeume, und Ueberschriften, die man beim Ueberfliegen findet. */
+
+.prose { max-width: 66ch; }
+.prose h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -.012em;
+  margin: var(--s6) 0 var(--s2);
+  scroll-margin-top: 80px;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose h2 .num {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mint);
+  margin-right: 10px;
+  letter-spacing: 0;
+}
+.prose p { margin: 0 0 var(--s3); color: var(--ink-2); }
+.prose p strong { color: var(--ink); font-weight: 600; }
+.prose ul { margin: 0 0 var(--s3); padding-left: 22px; color: var(--ink-2); }
+.prose li { margin-bottom: 6px; }
+.prose .stamp {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--ink-3);
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: var(--s5);
+}
+
+/* Die Trennlinie zwischen den beiden Sprachfassungen einer Rechtsseite. */
+.split {
+  margin: var(--s7) 0 var(--s6);
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--stroke), transparent);
+}
+
+/* ── Fusszeile ──────────────────────────────────────────────────────────── */
+
+footer {
+  margin-top: var(--s6);
+  padding: var(--s5) 0 var(--s7);
+  color: var(--ink-3);
+  font-size: 14px;
+  border-top: 1px solid var(--stroke);
+}
+.flinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) 20px;
+  margin-bottom: 18px;
+}
+.flinks a { color: var(--ink-2); text-decoration: none; transition: color .18s ease; }
+.flinks a:hover { color: var(--mint); }
+.fnote { margin: 0 0 12px; line-height: 1.6; max-width: 62ch; }
