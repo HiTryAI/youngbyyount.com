@@ -136,9 +136,18 @@
     // hand-kept list once silently stranded the seven newest games on the
     // download page; never again.
     var PLAYABLE = /^[A-Z]{2}[0-9]\./;
+    // Der Personen-Code des Absenders (&r=…, seit 18.08.2026). Er ist der
+    // Grund, warum aus einer angenommenen Herausforderung ein Kontakt wird
+    // statt einer einmaligen Runde zwischen zwei Fremden. Er wird nirgends
+    // angezeigt – er reist nur mit: in die Browser-Runde, in den App-Sprung
+    // und in die Zwischenablage.
+    var FROM = (new URLSearchParams(location.search).get('r') || '').trim();
+    function withFrom(url) {
+      return FROM ? url + '&r=' + encodeURIComponent(FROM) : url;
+    }
     function maybePlay(code) {
       if (PLAYABLE.test(code)) {
-        location.replace('/d/play/?c=' + encodeURIComponent(code));
+        location.replace(withFrom('/d/play/?c=' + encodeURIComponent(code)));
         return true;
       }
       return false;
@@ -152,12 +161,20 @@
       // link) — but from a same-site tap Safari stays in the browser, so
       // offer the youngbyyou:// jump straight into the duel.
       const openApp = document.getElementById('openApp');
-      openApp.href = 'youngbyyou://d?c=' + encodeURIComponent(code);
+      openApp.href = withFrom('youngbyyou://d?c=' + encodeURIComponent(code));
       openApp.hidden = false;
       const row = document.getElementById('codeRow');
       row.addEventListener('click', async () => {
         try {
-          await navigator.clipboard.writeText(code);
+          // Zwei Zeilen statt einer zusammengesetzten: Der Spiel-Code bleibt
+          // für sich (Punkte und `=` darin würden in einer Adresse
+          // verstümmelt), der Mensch reist als eigener, sauberer
+          // Einladungs-Link daneben. Die frisch geladene App liest ihn beim
+          // ersten Start aus der Zwischenablage.
+          await navigator.clipboard.writeText(
+            FROM
+              ? code + '\n' + location.origin + '/r/?c=' + encodeURIComponent(FROM)
+              : code);
           document.getElementById('copyLabel').textContent = 'Kopiert ✓';
         } catch (e) {
           const sel = window.getSelection(); const r = document.createRange();
