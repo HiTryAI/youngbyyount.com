@@ -101,7 +101,7 @@
     </ol>
 
     <div class="codewrap" id="codeBox" hidden>
-      <div class="codelabel">Dein Herausforderungs‑Code</div>
+      <div class="codelabel" id="codeLabelText">Dein Herausforderungs‑Code</div>
       <div class="code" id="codeRow" title="Tippen zum Kopieren">
         <code id="codeText"></code>
         <span class="copy" id="copyLabel">Kopieren</span>
@@ -200,6 +200,29 @@
       const openApp = document.getElementById('openApp');
       openApp.href = withFrom('youngbyyou://d?g=' + encodeURIComponent(game));
       openApp.hidden = false;
+      if (!FROM) return;
+      // Der App Store verschluckt den Link: Wer die App hier erst lädt,
+      // startet sie ohne jede Spur davon, wer ihn geschickt hat. Die
+      // Zwischenablage ist die einzige Brücke über diesen Bruch – die frisch
+      // geladene App fragt beim ersten Start danach und liest den Code
+      // heraus. Ohne diesen Kasten bliebe der neue Mensch ein Fremder.
+      document.getElementById('codeLabelText').textContent =
+        'Damit ihr euch findet';
+      document.getElementById('step3').innerHTML =
+        '<b>Code einfügen</b>, dann das Spiel starten';
+      const link = location.origin + '/r/?c=' + encodeURIComponent(FROM);
+      document.getElementById('codeText').textContent = link;
+      document.getElementById('codeBox').hidden = false;
+      document.getElementById('codeRow').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(link);
+          document.getElementById('copyLabel').textContent = 'Kopiert ✓';
+        } catch (e) {
+          const sel = window.getSelection(); const r = document.createRange();
+          r.selectNodeContents(document.getElementById('codeText'));
+          sel.removeAllRanges(); sel.addRange(r);
+        }
+      });
     }
 
     const params = new URLSearchParams(location.search);
